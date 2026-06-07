@@ -1,0 +1,23 @@
+{
+  "skill_name": "publish-research-topic",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "我的 42-research 课题产物 research/topics/03-bun-vs-node/index.html 已经写好并校验通过了。帮我把它发布上线，让它出现在网站上。",
+      "expected_output": "应给出端到端发布步骤：校验产物→copy 到 web/public/topics/03-bun-vs-node/→抓一手来源封面+coverSource→登记 web/src/data/topics.ts(全字段, slug=bun-vs-node 去前缀、artifact/cover 带前缀, 与 JSON-LD 一致)→起 8042 验详情页+目录+5端点(robots/sitemap/rss/llms/{slug}.md)全200→tsc --noEmit/test/build→commit(中文,无Generated,不push)。",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "课题发布上线时，除了把产物放进 web/public，还要在哪些地方登记？有哪些容易漏导致页面或 SEO 出问题的步骤？",
+      "expected_output": "应指出 topics.ts 登记(全字段与JSON-LD一致, slug去前缀/路径带前缀别填反)、封面 cover+coverSource、5个机器可读端点必须含本课题且200、produce 副本漏了详情页会空。强调一致性与端点验证。",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "课题发布完，我直接 git commit 然后 push 到远端就行了吧？另外类型检查跑 pnpm -C web typecheck 对吗？",
+      "expected_output": "应纠正两点：本项目规约只 commit 不 push(不要执行 git push)；没有 typecheck script，类型检查直接用 pnpm -C web exec tsc --noEmit。并提醒 commit 信息中文、无 Generated、conventional 风格。",
+      "files": []
+    }
+  ]
+}

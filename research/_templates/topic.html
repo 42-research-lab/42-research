@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<!--
+  42-research · 课题产物模板 (Self-contained Research Artifact)
+  规范见 ADR-001: 此 HTML 同时是「真相源 + 展示页 + AI 可读数据」。
+  构建时解析下方 <script type="application/ld+json"> 入 D1。
+  使用: 复制本文件到 research/topics/<slug>/index.html, 替换 {{占位}}。
+-->
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{TITLE}} · 42-research</title>
+  <meta name="description" content="{{ABSTRACT}}" />
+
+  <!-- ============ 结构化元数据 (D1 索引的真相源) ============ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "identifier": "{{SLUG}}",
+    "headline": "{{TITLE}}",
+    "abstract": "{{ABSTRACT}}",
+    "datePublished": "{{DATE_PUBLISHED}}",
+    "dateModified": "{{DATE_MODIFIED}}",
+    "author": { "@type": "Organization", "name": "42-research" },
+    "keywords": ["{{TAG_1}}", "{{TAG_2}}"],
+    "researchStatus": "hypothesis|survey|experiment|verify|synthesize|publish",
+    "hypothesis": "{{HYPOTHESIS}}",
+    "conclusion": "{{CONCLUSION}}",
+    "citation": [
+      {
+        "@type": "CreativeWork",
+        "url": "{{CITATION_URL}}",
+        "name": "{{CITATION_TITLE}}",
+        "datePublished": "{{CITATION_DATE}}",
+        "tier": "primary|secondary",
+        "verified": true,
+        "accessed": "{{ACCESSED_DATE}}"
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #0a0a0f; --fg: #e8e8ed; --muted: #9090a0; --accent: #f6821f;
+      --accent2: #6b8cff; --card: #14141c; --border: #26263a; --ok: #3ecf8e; --warn: #ffb454;
+      --max: 760px; --radius: 12px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--bg); color: var(--fg);
+      font: 16px/1.7 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 4rem 1.5rem 6rem; }
+    header.topic { border-bottom: 1px solid var(--border); padding-bottom: 2rem; margin-bottom: 2.5rem; }
+    .badge { display: inline-block; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: .2rem .7rem; }
+    h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); line-height: 1.15; margin: 1rem 0 .5rem; letter-spacing: -.02em; }
+    .meta { color: var(--muted); font-size: .9rem; }
+    .abstract { font-size: 1.1rem; color: var(--fg); opacity: .9; margin-top: 1.5rem; }
+    h2 { font-size: 1.5rem; margin: 3rem 0 1rem; letter-spacing: -.01em; }
+    h3 { font-size: 1.15rem; margin: 2rem 0 .75rem; color: var(--accent2); }
+    a { color: var(--accent2); text-decoration: none; border-bottom: 1px solid transparent; }
+    a:hover { border-bottom-color: var(--accent2); }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin: 1.5rem 0; }
+    .hypothesis { border-left: 3px solid var(--accent2); }
+    .conclusion { border-left: 3px solid var(--ok); }
+    table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: .92rem; }
+    th, td { text-align: left; padding: .7rem .9rem; border-bottom: 1px solid var(--border); }
+    th { color: var(--muted); font-weight: 600; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+    /* tab 组件: 纯 CSS, 自包含 */
+    .tabs { margin: 2rem 0; }
+    .tabs input { display: none; }
+    .tab-labels { display: flex; gap: .5rem; flex-wrap: wrap; border-bottom: 1px solid var(--border); }
+    .tab-labels label { cursor: pointer; padding: .6rem 1rem; color: var(--muted); border-bottom: 2px solid transparent; font-size: .9rem; }
+    .tab-panel { display: none; padding-top: 1.5rem; }
+    #t1:checked ~ .tab-labels label[for=t1],
+    #t2:checked ~ .tab-labels label[for=t2],
+    #t3:checked ~ .tab-labels label[for=t3] { color: var(--accent); border-bottom-color: var(--accent); }
+    #t1:checked ~ #p1, #t2:checked ~ #p2, #t3:checked ~ #p3 { display: block; }
+    /* 折叠 */
+    details { border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; margin: 1rem 0; }
+    summary { cursor: pointer; font-weight: 600; color: var(--accent2); }
+    .cite { font-size: .82rem; color: var(--muted); }
+    .cite .tier { color: var(--accent); font-size: .72rem; }
+    footer.topic { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); color: var(--muted); font-size: .85rem; }
+    @media (max-width: 600px) { .wrap { padding: 2.5rem 1.1rem 4rem; } }
+  </style>
+</head>
+<body>
+  <article class="wrap">
+    <header class="topic">
+      <span class="badge">Research · {{STATUS}}</span>
+      <h1>{{TITLE}}</h1>
+      <p class="meta">发布 {{DATE_PUBLISHED}} · 更新 {{DATE_MODIFIED}} · 42-research</p>
+      <p class="abstract">{{ABSTRACT}}</p>
+    </header>
+
+    <section>
+      <div class="card hypothesis">
+        <h3 style="margin-top:0">🔬 假设 (Hypothesis)</h3>
+        <p>{{HYPOTHESIS}}</p>
+      </div>
+    </section>
+
+    <h2>正文</h2>
+    <p>{{BODY}}</p>
+
+    <!-- 决策矩阵示例 -->
+    <h2>决策矩阵</h2>
+    <table>
+      <thead><tr><th>维度</th><th>选项 A</th><th>选项 B</th><th>结论</th></tr></thead>
+      <tbody>
+        <tr><td>{{DIM}}</td><td>{{A}}</td><td>{{B}}</td><td>{{VERDICT}}</td></tr>
+      </tbody>
+    </table>
+
+    <section>
+      <div class="card conclusion">
+        <h3 style="margin-top:0">✅ 结论 (Conclusion)</h3>
+        <p>{{CONCLUSION}}</p>
+      </div>
+    </section>
+
+    <details>
+      <summary>📚 引用与来源 (Citations)</summary>
+      <p class="cite">
+        <a href="{{CITATION_URL}}">{{CITATION_TITLE}}</a>
+        <span class="tier">[{{TIER}}]</span> · accessed {{ACCESSED_DATE}}
+      </p>
+    </details>
+
+    <footer class="topic">
+      42-research · 本产物为自包含语义化 HTML，遵循 <a href="https://schema.org/ScholarlyArticle">schema.org/ScholarlyArticle</a>。
+      真相源在 git，查询索引在 D1。
+    </footer>
+  </article>
+</body>
+</html>

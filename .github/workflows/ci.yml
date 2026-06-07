@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+# Keep only the latest run per branch to save minutes.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  web:
+    name: Web · typecheck / test / build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.5.2
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: web/pnpm-lock.yaml
+
+      - name: Install dependencies
+        # strict-dep-builds=false: unapproved build scripts (esbuild/sharp/workerd) only warn, not fail.
+        # On CI (Linux) these use prebuilt artifacts — no local compile needed; vite build is verified to work.
+        run: pnpm install --frozen-lockfile --config.strict-dep-builds=false
+
+      - name: Typecheck
+        run: pnpm exec tsc --noEmit
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
+
+  research:
+    name: Research · artifact quality gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate all topic artifacts (JSON-LD / citation tiers / self-contained)
+        run: |
+          fail=0
+          for f in research/topics/*/index.html; do
+            echo "Validating $f"
+            python3 .claude/skills/research-artifact-html/scripts/validate_artifact.py "$f" || fail=1
+          done
+          exit $fail

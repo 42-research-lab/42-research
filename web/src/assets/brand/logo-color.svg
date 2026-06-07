@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="46" height="52" viewBox="0 0 46 52" fill="none" role="img" aria-label="42-research">
+  <!-- 六边形外框：数据/分子结构 -->
+  <path d="M23 3 L41 13.5 V34.5 L23 45 L5 34.5 V13.5 Z" fill="#13131c" stroke="#3a3a52" stroke-width="1.6"/>
+  <!-- 顶面（浅蓝弱面） -->
+  <path d="M23 3 L23 24 L5 13.5 Z" fill="#6b8cff" fill-opacity="0.22"/>
+  <!-- 左上切面：索引（学术蓝） -->
+  <path d="M23 3 L41 13.5 L23 24 Z" fill="#6b8cff" fill-opacity="0.55"/>
+  <!-- 右切面：真相源（Cloudflare 橙） -->
+  <path d="M23 24 L41 13.5 V34.5 Z" fill="#f6821f"/>
+</svg>
