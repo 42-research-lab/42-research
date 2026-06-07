@@ -8,7 +8,7 @@
 import { Link } from '@tanstack/react-router'
 import type { CSSProperties } from 'react'
 import type { Topic } from '../data/topics'
-import { STATUS_LABEL } from '../data/topics'
+import { useT } from '../i18n/useLocale'
 import { LogoMark } from './Logo'
 
 interface TopicCardProps {
@@ -18,6 +18,7 @@ interface TopicCardProps {
 }
 
 export function TopicCard({ topic, featured = false, style }: TopicCardProps) {
+  const t = useT()
   return (
     <Link
       to="/research/$slug"
@@ -34,7 +35,7 @@ export function TopicCard({ topic, featured = false, style }: TopicCardProps) {
         <div className="flex flex-wrap items-center gap-2">
           <span className="mono text-xl font-bold text-[var(--border-hi)]">{topic.no}</span>
           <span className={`badge ${topic.status === 'publish' ? 'published' : ''}`}>
-            {STATUS_LABEL[topic.status]}
+            {t.status[topic.status]}
           </span>
           <span className="mono rounded-md border border-[var(--border)] px-2 py-0.5 text-xs text-[var(--muted)]">
             {topic.category}
@@ -70,7 +71,9 @@ export function TopicCard({ topic, featured = false, style }: TopicCardProps) {
         {/* 底部 meta */}
         <div className="mono mt-4 flex items-center justify-between text-xs text-[var(--muted)]">
           <span>{topic.datePublished}</span>
-          <span>{topic.citations} 引用</span>
+          <span>
+            {topic.citations} {t.card.citations}
+          </span>
         </div>
       </div>
     </Link>

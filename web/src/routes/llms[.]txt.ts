@@ -1,8 +1,9 @@
 /**
  * GET /llms.txt
  *
- * 遵循 llmstxt.org 规范，为 LLM/AI Agent 提供站点结构导航。
- * 列出每个研究课题的 .md 端点（结构化、可直接消费）+ 主要页面。
+ * Follows the llmstxt.org spec to give LLMs / AI agents a map of the site.
+ * Lists each topic's .md endpoint (structured, directly consumable) plus key pages.
+ * English-first, matching the site's default locale.
  */
 import { createFileRoute } from '@tanstack/react-router'
 import { topics } from '../data/topics'
@@ -16,10 +17,10 @@ function buildLlmsTxt(): string {
     .join('\n')
 
   const pagesSection = [
-    `- [首页](${SITE.baseUrl}): ${SITE.tagline}`,
-    `- [研究目录](${SITE.baseUrl}/research): 全部研究课题列表`,
-    `- [关于](${SITE.baseUrl}/about): 42-research 的研究方法与三位一体架构`,
-    `- [提交课题](${SITE.baseUrl}/contribute): 提交你想看的研究课题`,
+    `- [Home](${SITE.baseUrl}): ${SITE.tagline}`,
+    `- [Research index](${SITE.baseUrl}/research): All research topics`,
+    `- [About](${SITE.baseUrl}/about): Research methodology of 42-research`,
+    `- [Contribute](${SITE.baseUrl}/contribute): Submit a research topic`,
   ].join('\n')
 
   const topicDetailsSection = publishedTopics
@@ -31,28 +32,28 @@ function buildLlmsTxt(): string {
     '',
     `> ${SITE.description}`,
     '',
-    '## 研究 (Research)',
+    '## Research',
     '',
-    '以下每个链接为 Markdown 格式的研究课题，含 YAML frontmatter 与结构化正文，适合 LLM 直接消费。',
+    'Each link below is a research topic in Markdown, with YAML frontmatter and a structured body — ideal for direct LLM consumption.',
     '',
-    researchSection || '（暂无已发布课题）',
+    researchSection || '(no published topics yet)',
     '',
-    '## 研究详情页 (Research Pages)',
+    '## Research Pages',
     '',
-    topicDetailsSection || '（暂无已发布课题）',
+    topicDetailsSection || '(no published topics yet)',
     '',
-    '## 页面 (Pages)',
+    '## Pages',
     '',
     pagesSection,
     '',
-    '## 数据端点 (Data Endpoints)',
+    '## Data Endpoints',
     '',
-    `- [RSS 订阅](${SITE.baseUrl}/rss.xml): RSS 2.0 格式，含所有已发布课题`,
-    `- [Sitemap](${SITE.baseUrl}/sitemap.xml): XML Sitemap，供搜索引擎与 AI 爬虫索引`,
-    `- [llms.txt](${SITE.baseUrl}/llms.txt): 本文件，AI Agent 站点导航`,
+    `- [RSS](${SITE.baseUrl}/rss.xml): RSS 2.0, all published topics`,
+    `- [Sitemap](${SITE.baseUrl}/sitemap.xml): XML sitemap for search engines and AI crawlers`,
+    `- [llms.txt](${SITE.baseUrl}/llms.txt): this file, the AI-agent site map`,
     '',
     `---`,
-    `*${SITE.name} · ${SITE.baseUrl} · 可复现、可溯源的技术研究*`,
+    `*${SITE.name} · ${SITE.baseUrl} · reproducible, traceable technical research*`,
   ].join('\n')
 }
 

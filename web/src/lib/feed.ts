@@ -64,7 +64,7 @@ export function buildRss(topics: Topic[]): string {
     `    <title>${escapeXml(SITE.name)}</title>`,
     `    <link>${escapeXml(SITE.baseUrl)}</link>`,
     `    <description>${escapeXml(SITE.description)}</description>`,
-    '    <language>zh-cn</language>',
+    `    <language>${SITE.locale}</language>`,
     `    <lastBuildDate>${buildDate}</lastBuildDate>`,
     `    <atom:link href="${escapeXml(SITE.baseUrl)}/rss.xml" rel="self" type="application/rss+xml"/>`,
     items,

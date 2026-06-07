@@ -3,6 +3,7 @@ import { topics } from '../data/topics'
 import { TopicCard } from '../components/TopicCard'
 import { SITE } from '../lib/site'
 import { websiteJsonLd, serializeJsonLd } from '../lib/seo'
+import { useT } from '../i18n/useLocale'
 
 export const Route = createFileRoute('/')({
   loader: () => ({ topics }),
@@ -33,7 +34,9 @@ export const Route = createFileRoute('/')({
 
 function Home() {
   const { topics } = Route.useLoaderData()
-  const published = topics.filter((t) => t.status === 'publish').length
+  const t = useT()
+  const h = t.home
+  const published = topics.filter((x) => x.status === 'publish').length
   const featured = topics.slice(0, 3)
 
   return (
@@ -43,27 +46,28 @@ function Home() {
         {/* 数据晶体 SVG 水印 */}
         <CrystalWatermark />
 
-        <p className="kicker mb-4">// research dossier · est. 2026</p>
+        <p className="kicker mb-4">{h.kicker}</p>
 
         <h1 className="display mb-6 max-w-4xl text-balance text-4xl leading-[1.12] font-extrabold tracking-tight text-[var(--fg)] sm:text-6xl sm:leading-[1.08]">
-          我们好奇的每一个问题，
+          {h.heroLine1}
           {/* 窄屏让整句自然流动换行；宽屏(sm+)才强制成两行的设计感 */}
           <br className="hidden sm:block" />
-          都值得被<span className="text-[var(--accent)]">好好回答</span>
+          {h.heroLine2}
+          <span className="text-[var(--accent)]">{h.heroEmphasis}</span>
           <span className="cursor" />
         </h1>
 
         <p className="mb-9 max-w-2xl text-base leading-8 text-[var(--fg-soft)] sm:text-lg">
-          42-research 研究技术与科技领域里大家真正关心、却少有人认真求证的问题。每个结论都说明在什么条件下成立、附可点击的一手来源——
-          <strong className="text-[var(--fg)]">不猜测，不附和未经核实的说法</strong>。
+          {h.heroBody}
+          <strong className="text-[var(--fg)]">{h.heroBodyStrong}</strong>
         </p>
 
         <div className="flex flex-wrap items-center gap-3">
           <Link to="/research" className="btn-primary">
-            浏览研究 →
+            {h.ctaBrowse}
           </Link>
           <Link to="/about" className="btn-ghost">
-            我们怎么做研究
+            {h.ctaHow}
           </Link>
         </div>
       </section>
@@ -71,63 +75,46 @@ function Home() {
       {/* ── 2. 大数字可信度条 ───────────────────────────────── */}
       <section
         className="mt-16 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-[var(--border)] sm:grid-cols-4"
-        aria-label="站点数据概览"
+        aria-label={h.stats.topics}
       >
-        <StatBlock value={String(topics.length)} label="研究课题" />
-        <StatBlock value={String(published)} label="已发布" accent />
-        <StatBlock value="100%" label="结论附一手来源" />
-        <StatBlock value="可复现" label="过程公开可查" mono />
+        <StatBlock value={String(topics.length)} label={h.stats.topics} />
+        <StatBlock value={String(published)} label={h.stats.published} accent />
+        <StatBlock value="100%" label={h.stats.primarySourced} />
+        <StatBlock value={h.stats.reproducibleValue} label={h.stats.reproducible} mono />
       </section>
 
       {/* ── 3. 研究领域（4 格静态） ─────────────────────────── */}
       <section className="mt-20">
         <div className="mb-8 flex items-baseline justify-between">
-          <h2 className="display text-2xl font-bold text-[var(--fg)] sm:text-3xl">研究领域</h2>
+          <h2 className="display text-2xl font-bold text-[var(--fg)] sm:text-3xl">{h.domains.heading}</h2>
           <span className="kicker">domains/</span>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <DomainCard
-            icon="◈"
-            title="AI 与机器智能"
-            desc="模型能力的真实边界、AI 工具在生产中的适用场景与限制，剥开宣传看数据。"
-          />
-          <DomainCard
-            icon="⬡"
-            title="架构与基础设施"
-            desc="Edge、云、数据库等方案的实际成本与延迟——按真实用量测算，不看厂商自测。"
-          />
-          <DomainCard
-            icon="◎"
-            title="工具与选型"
-            desc="框架、平台、付费服务怎么选。给出按场景分化的结论，而非一刀切的推荐。"
-          />
-          <DomainCard
-            icon="◇"
-            title="趋势与判断"
-            desc="一项技术是真趋势还是炒作？用一手信号和第一性原理判断，记录会被证伪的预测。"
-          />
+          {h.domains.items.map((d) => (
+            <DomainCard key={d.title} icon={d.icon} title={d.title} desc={d.desc} />
+          ))}
         </div>
       </section>
 
       {/* ── 4. 精选研究 ────────────────────────────────────── */}
       <section className="mt-20">
         <div className="mb-8 flex items-baseline justify-between">
-          <h2 className="display text-2xl font-bold text-[var(--fg)] sm:text-3xl">精选研究</h2>
+          <h2 className="display text-2xl font-bold text-[var(--fg)] sm:text-3xl">{h.featured.heading}</h2>
           <Link
             to="/research"
             className="mono text-sm text-[var(--fg-soft)] transition-colors hover:text-[var(--accent)]"
           >
-            → 全部研究
+            {h.featured.all}
           </Link>
         </div>
 
         {featured.length > 0 ? (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {featured.map((t, i) => (
+            {featured.map((x, i) => (
               <TopicCard
-                key={t.slug}
-                topic={t}
+                key={x.slug}
+                topic={x}
                 featured
                 style={{ animationDelay: `${i * 100 + 120}ms` }}
               />
@@ -135,42 +122,33 @@ function Home() {
           </div>
         ) : (
           <div className="card p-10 text-center">
-            <p className="mono text-sm text-[var(--muted)]">研究进行中，首篇即将发布。</p>
+            <p className="mono text-sm text-[var(--muted)]">{h.featured.empty}</p>
           </div>
         )}
       </section>
 
       {/* ── 5. 为什么可信 ──────────────────────────────────── */}
       <section className="card mt-20 p-6 sm:p-8">
-        <p className="kicker mb-3">// why trust this</p>
-        <h2 className="display mb-6 text-xl font-bold text-[var(--fg)]">为什么可以相信结论</h2>
+        <p className="kicker mb-3">{h.trust.kicker}</p>
+        <h2 className="display mb-6 text-xl font-bold text-[var(--fg)]">{h.trust.heading}</h2>
         <div className="grid gap-6 sm:grid-cols-3">
-          <TrustItem
-            title="只用一手来源"
-            desc="数据取自官方文档或我们直接测量，不引用二手转述与营销材料。每个事实都附可点击的出处。"
-          />
-          <TrustItem
-            title="结论会标明边界"
-            desc="每个结论都说明在什么条件下成立、什么条件下不成立——不给你一个假装放之四海皆准的答案。"
-          />
-          <TrustItem
-            title="先自我反驳"
-            desc="下结论前主动找反例、质疑自己。把不确定的地方如实标出，而不是藏起来。"
-          />
+          {h.trust.items.map((item) => (
+            <TrustItem key={item.title} title={item.title} desc={item.desc} />
+          ))}
         </div>
       </section>
 
       {/* ── 6. 末尾 CTA ───────────────────────────────────── */}
       <section className="mt-20 flex flex-col items-center gap-4 py-12 text-center">
-        <p className="kicker">// contribute</p>
+        <p className="kicker">{h.cta.kicker}</p>
         <h2 className="display text-2xl font-bold text-[var(--fg)] sm:text-3xl">
-          有想看的研究课题？
+          {h.cta.heading}
         </h2>
         <p className="max-w-lg text-sm leading-7 text-[var(--fg-soft)]">
-          有什么技术问题你一直想弄清楚、却找不到经得起核实的答案？提交它。我们会用同样的研究流程，给出可溯源的结论。
+          {h.cta.body}
         </p>
         <Link to="/contribute" className="btn-primary mt-2">
-          提交你想看的研究课题 →
+          {h.cta.button}
         </Link>
       </section>
     </main>

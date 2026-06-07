@@ -1,15 +1,18 @@
 import { Link } from '@tanstack/react-router'
 import { LogoMark } from './Logo'
 import ThemeToggle from './ThemeToggle'
+import LangToggle from './LangToggle'
 import { SITE } from '../lib/site'
-
-const NAV = [
-  { to: '/research', label: '研究' },
-  { to: '/contribute', label: '贡献' },
-  { to: '/about', label: '关于' },
-] as const
+import { useT } from '../i18n/useLocale'
 
 export default function Header() {
+  const t = useT()
+  const nav = [
+    { to: '/research', label: t.nav.research },
+    { to: '/contribute', label: t.nav.contribute },
+    { to: '/about', label: t.nav.about },
+  ] as const
+
   return (
     <header className="site-header sticky top-0 z-50 px-4">
       <nav className="page-wrap flex flex-nowrap items-center gap-3 py-4 sm:gap-4">
@@ -33,7 +36,7 @@ export default function Header() {
 
         {/* 导航 — 最重要，shrink-0 永不收缩、nowrap 永不折行，始终单行平铺 */}
         <div className="flex shrink-0 flex-nowrap items-center gap-4 sm:ml-4 sm:gap-6">
-          {NAV.map((item) => (
+          {nav.map((item) => (
             <Link
               key={item.to}
               to={item.to}
@@ -45,15 +48,16 @@ export default function Header() {
           ))}
         </div>
 
-        {/* 右侧：主题切换（桌面三 icon / 移动单 icon）+ GitHub —— theme 最先缩 */}
+        {/* 右侧：语言切换 + 主题切换（桌面三 icon / 移动单 icon）+ GitHub —— 最先缩 */}
         <div className="ml-auto flex shrink-0 items-center gap-1 sm:gap-2">
+          <LangToggle />
           <ThemeToggle />
           <a
             href={SITE.repoUrl}
             target="_blank"
             rel="noreferrer"
-            aria-label="GitHub 仓库"
-            title="GitHub 仓库"
+            aria-label="GitHub"
+            title="GitHub"
             className="rounded-lg p-2 text-[var(--fg)] transition hover:bg-[var(--card)]"
           >
             <svg viewBox="0 0 16 16" aria-hidden="true" width="20" height="20">

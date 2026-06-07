@@ -50,12 +50,3 @@ export const topics: Topic[] = [
     coverSource: 'https://blog.cloudflare.com/voidzero-joins-cloudflare/',
   },
 ]
-
-export const STATUS_LABEL: Record<Topic['status'], string> = {
-  hypothesis: '假设',
-  survey: '调研',
-  experiment: '实验',
-  verify: '验证',
-  synthesize: '综合',
-  publish: '已发布',
-}

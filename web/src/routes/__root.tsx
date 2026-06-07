@@ -3,6 +3,9 @@ import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
+import { LocaleProvider } from '../i18n/useLocale'
+import { LOCALE_INIT_SCRIPT } from '../i18n'
+import { en } from '../i18n/en'
 
 import appCss from '../styles.css?url'
 
@@ -19,12 +22,11 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: '42-research · 严谨、可溯源、可同行评审的技术研究',
+        title: en.site.title,
       },
       {
         name: 'description',
-        content:
-          '42-research — 一个严谨、可复现、可同行评审的技术研究项目。研究产物为自包含语义化 HTML，真相源在 git，查询索引在 D1。',
+        content: en.site.description,
       },
       // 浏览器 UI 主题色：随系统亮/暗自动取值
       { name: 'theme-color', content: '#0a0a0f', media: '(prefers-color-scheme: dark)' },
@@ -51,15 +53,20 @@ export const Route = createRootRoute({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="zh-CN" suppressHydrationWarning>
+    // 默认 en(英文为主)。LOCALE_INIT_SCRIPT 会在首屏前按持久化选择改写 lang,
+    // 客户端 LocaleProvider 再据此驱动文案; suppressHydrationWarning 容忍这次改写。
+    <html lang="en" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: LOCALE_INIT_SCRIPT }} />
         <HeadContent />
       </head>
       <body className="font-sans antialiased [overflow-wrap:anywhere] selection:bg-[rgba(246,130,31,0.26)]">
-        <Header />
-        {children}
-        <Footer />
+        <LocaleProvider>
+          <Header />
+          {children}
+          <Footer />
+        </LocaleProvider>
         <TanStackDevtools
           config={{
             position: 'bottom-right',

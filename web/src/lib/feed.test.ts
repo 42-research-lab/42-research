@@ -47,7 +47,7 @@ test('buildRss 含 channel 元数据', () => {
   const xml = buildRss([publishedTopic])
   expect(xml).toContain(`<title>${SITE.name}</title>`)
   expect(xml).toContain(`<link>${SITE.baseUrl}</link>`)
-  expect(xml).toContain('<language>zh-cn</language>')
+  expect(xml).toContain(`<language>${SITE.locale}</language>`)
 })
 
 test('buildRss 只收录 publish 状态课题', () => {

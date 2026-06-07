@@ -1,11 +1,12 @@
 import { createFileRoute, Link, notFound } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { getRequest } from '@tanstack/react-start/server'
-import { topics, STATUS_LABEL } from '../data/topics'
+import { topics } from '../data/topics'
 import { extractBody, extractJsonLd } from '../lib/artifact'
 import { SITE, topicUrl } from '../lib/site'
 import { articleJsonLd, serializeJsonLd } from '../lib/seo'
 import { htmlToText, topicToMarkdown } from '../lib/markdown'
+import { useT } from '../i18n/useLocale'
 import ErrorPage from '../components/ErrorPage'
 
 /**
@@ -142,17 +143,23 @@ export const Route = createFileRoute('/research/$slug')({
 
   component: ResearchDetail,
 
-  notFoundComponent: () => (
+  notFoundComponent: () => <TopicNotFound />,
+})
+
+function TopicNotFound() {
+  const tr = useT()
+  return (
     <ErrorPage
       code="404"
-      title="找不到这个课题"
-      message="这个研究课题不存在，或 slug 有误。去研究目录看看其他课题。"
+      title={tr.detail.notFoundTitle}
+      message={tr.detail.notFoundMessage}
     />
-  ),
-})
+  )
+}
 
 function ResearchDetail() {
   const { topic: t, bodyHtml } = Route.useLoaderData()
+  const tr = useT()
 
   return (
     <main className="page-wrap px-4 pb-16 pt-12">
@@ -161,7 +168,7 @@ function ResearchDetail() {
         to="/research"
         className="mono text-sm text-[var(--muted)] transition hover:text-[var(--fg)]"
       >
-        ← 研究目录
+        {tr.detail.breadcrumb}
       </Link>
 
       {/* 文章头部元信息 */}
@@ -169,10 +176,10 @@ function ResearchDetail() {
         <div className="flex flex-wrap items-center gap-3">
           <span className="mono text-2xl font-bold text-[var(--border-hi)]">{t.no}</span>
           <span className={`badge ${t.status === 'publish' ? 'published' : ''}`}>
-            {STATUS_LABEL[t.status]}
+            {tr.status[t.status]}
           </span>
           <span className="mono text-xs text-[var(--muted)]">
-            {t.datePublished} · {t.citations} 一手引用
+            {t.datePublished} · {t.citations} {tr.detail.primaryCitations}
           </span>
         </div>
         <h1 className="display mt-4 text-3xl font-extrabold tracking-tight text-[var(--fg)] sm:text-5xl">
@@ -197,7 +204,7 @@ function ResearchDetail() {
 
       {/* TL;DR 结论块 — 醒目卡片，便于机器/人快速提取 */}
       <div className="rise card mt-8 border-l-4 border-l-[var(--ok)] p-5" style={{ animationDelay: '120ms' }}>
-        <p className="kicker mb-2">TL;DR · 一句话结论</p>
+        <p className="kicker mb-2">{tr.detail.tldrKicker}</p>
         <p className="text-base leading-7 text-[var(--fg)]">{t.tldr}</p>
       </div>
 
@@ -212,7 +219,7 @@ function ResearchDetail() {
         ) : (
           // fetch 失败降级：展示 abstract
           <div className="card p-6">
-            <p className="kicker mb-2">摘要</p>
+            <p className="kicker mb-2">{tr.detail.abstractKicker}</p>
             <p className="text-base leading-7 text-[var(--fg-soft)]">{t.abstract}</p>
           </div>
         )}
@@ -221,7 +228,7 @@ function ResearchDetail() {
       {/* 封面来源标注（合规） */}
       {t.coverSource && (
         <p className="mt-8 text-xs text-[var(--muted)]">
-          封面来源：
+          {tr.detail.coverSource}
           <a href={t.coverSource} target="_blank" rel="noreferrer" className="hover:text-[var(--fg-soft)]">
             {t.coverSource}
           </a>
@@ -236,10 +243,10 @@ function ResearchDetail() {
           rel="noreferrer"
           className="mono text-sm text-[var(--muted)] transition hover:text-[var(--fg-soft)]"
         >
-          查看原始自包含 HTML 产物 ↗
+          {tr.detail.rawArtifact}
         </a>
         <p className="mt-1 text-xs text-[var(--muted)]">
-          真相源为自包含语义化 HTML，含 JSON-LD 结构化元数据，可独立打开、可溯源（ADR-001）
+          {tr.detail.rawArtifactNote}
         </p>
       </div>
     </main>
