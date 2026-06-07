@@ -93,6 +93,7 @@ TanStack Start · React 19 · TypeScript · Tailwind CSS · Cloudflare Workers /
 | [002](docs/decisions/ADR-002-frontend-stack-resources.md) | Frontend stack and resources |
 | [003](docs/decisions/ADR-003-ssr-detail-over-iframe.md) | SSR detail page instead of iframe |
 | [004](docs/decisions/ADR-004-dual-format-and-llm-seo.md) | Dual-format publishing + LLM-SEO |
+| [005](docs/decisions/ADR-005-open-source-governance-and-branching.md) | Open-source governance + dev → main branching |
 
 ---
 
