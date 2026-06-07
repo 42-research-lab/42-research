@@ -1,52 +1,93 @@
-# 贡献者公约 · Code of Conduct
+# Code of Conduct
 
-## 我们的承诺
+## Our Pledge
 
-为营造开放、友善的环境，我们作为贡献者与维护者承诺：让参与本项目成为一段
-不受骚扰的体验，无论年龄、体型、可见或不可见的残障、族裔、性别认同与表达、
-经验水平、教育背景、社会经济地位、国籍、外貌、种族、宗教或性取向。
+We as members, contributors, and maintainers of **42-research-lab** pledge to make participation in our community a harassment-free experience for everyone, regardless of age, body size, visible or invisible disability, ethnicity, sex characteristics, gender identity and expression, level of experience, education, socioeconomic status, nationality, personal appearance, race, caste, color, religion, or sexual identity and orientation.
 
-## 本项目尤其看重
+We pledge to act and interact in ways that contribute to an open, welcoming, diverse, inclusive, and healthy community.
 
-42-research 是一个研究项目，除通用准则外，我们对**学术诚信**有更高要求：
+---
 
-- **诚实优先于面子** —— 发现自己的结论错了，如实纠正并记录，而非掩饰或附和。
-- **就事论事** —— 批评针对论点、数据与方法，不针对人。
-- **可溯源** —— 提出异议时给出可核实的来源，而非"我觉得"。
+## Academic Integrity — This Project's Additional Standard
 
-## 我们的标准
+42-research is a reproducible, traceable, and peer-reviewable technical research project. Beyond the general standards below, we hold a higher bar for **academic honesty**:
 
-有助于营造积极环境的行为包括：
+- **Honesty over face** — If you find your own conclusion was wrong, correct and document it openly rather than concealing or papering over it.
+- **Criticize the argument, not the person** — All critique must target claims, data, and methodology. Personal attacks disguised as technical feedback are not acceptable.
+- **Be traceable** — When raising an objection, provide a verifiable source or reproducible evidence. "I think so" is not sufficient grounds for disputing a result.
 
-- 对他人展现同理与善意
-- 尊重不同的观点与经验
-- 优雅地给予和接受建设性反馈
-- 为自己的错误负责、向受影响者致歉、从经验中学习
-- 关注对整个社区最有利的事
+---
 
-不可接受的行为包括：
+## Standards
 
-- 使用性化的语言或图像，以及任何形式的性骚扰
-- 挑衅、侮辱或贬损性评论，以及人身或政治攻击
-- 公开或私下的骚扰
-- 未经明确许可发布他人的私人信息（如住址、邮箱）
-- 在专业场合中合理认定为不当的其他行为
+Examples of behavior that contributes to a positive environment:
 
-## 执行责任
+- Demonstrating empathy and kindness toward other people
+- Being respectful of differing opinions, viewpoints, and experiences
+- Giving and gracefully accepting constructive feedback
+- Accepting responsibility and apologizing to those affected by our mistakes, and learning from the experience
+- Focusing on what is best not just for us as individuals, but for the overall community
 
-社区维护者负责澄清与执行可接受行为的标准，并对任何被认定为不当、威胁、
-冒犯或有害的行为采取适当、公正的纠正措施。
+Examples of unacceptable behavior:
 
-## 适用范围
+- The use of sexualized language or imagery, and sexual attention or advances of any kind
+- Trolling, insulting or derogatory comments, and personal or political attacks
+- Public or private harassment
+- Publishing others' private information, such as a physical or email address, without their explicit permission
+- Other conduct which could reasonably be considered inappropriate in a professional setting
 
-本公约适用于所有社区空间，也适用于个人在公开场合代表本社区之时。
+---
 
-## 执行
+## Enforcement Responsibilities
 
-如遇辱骂、骚扰或其他不可接受的行为，可通过 GitHub Issue（针对公开问题）或
-向仓库维护者私下报告。所有投诉都会被及时、公正地审查与处理。维护者有义务
-为报告者保密。
+Community maintainers are responsible for clarifying and enforcing our standards of acceptable behavior and will take appropriate and fair corrective action in response to any behavior that they deem inappropriate, threatening, offensive, or harmful.
 
-## 归属
+Community maintainers have the right and responsibility to remove, edit, or reject comments, commits, code, wiki edits, issues, and other contributions that are not aligned to this Code of Conduct, and will communicate reasons for moderation decisions when appropriate.
 
-本公约改编自 [Contributor Covenant](https://www.contributor-covenant.org) v2.1。
+---
+
+## Scope
+
+This Code of Conduct applies within all community spaces, including GitHub Issues, Pull Requests, Discussions, and any other official project channels. It also applies when an individual is officially representing the community in public spaces.
+
+---
+
+## Enforcement
+
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by:
+
+- Opening a **GitHub Issue** for matters that can be discussed publicly, or
+- Contacting the repository maintainers **privately** for sensitive matters.
+
+All complaints will be reviewed and investigated promptly and fairly. Maintainers are obligated to respect the privacy and security of the reporter of any incident.
+
+---
+
+## Attribution
+
+This Code of Conduct is adapted from the [Contributor Covenant](https://www.contributor-covenant.org), version 2.1, available at <https://www.contributor-covenant.org/version/2/1/code_of_conduct.html>.
+
+---
+
+<details>
+<summary>中文简要版（折叠）</summary>
+
+## 行为准则摘要
+
+我们承诺让所有人的参与体验不受骚扰，无论背景如何。
+
+**本项目额外要求学术诚信：**
+
+- **诚实优先于面子** —— 发现错误如实纠正，不掩饰。
+- **就事论事** —— 批评针对论点与数据，不针对人。
+- **可溯源** —— 提出异议须给出可核实的来源。
+
+可接受的行为：善意与尊重、建设性反馈、为错误负责。
+
+不可接受的行为：骚扰、人身攻击、发布他人隐私信息等。
+
+如遇不当行为，可通过 GitHub Issue（公开问题）或私下联系维护者举报。
+
+改编自 [Contributor Covenant](https://www.contributor-covenant.org) v2.1。
+
+</details>

@@ -1,153 +1,159 @@
-# 贡献指南 · Contributing to 42-research
+# Contributing to 42-research
 
-感谢你考虑为 **42-research** 做贡献。这不是一个普通的代码仓库——它是一个
-**可复现、可溯源、可同行评审**的技术研究项目。贡献的核心不是"写代码"，而是
-**用严谨的方法产出经得起核实的结论**。
+Thank you for considering a contribution. This is not an ordinary code repository — it is a **reproducible, traceable, peer-reviewable** technical research project. The core of contributing is not "writing code," but **producing conclusions that hold up to verification using rigorous methods**.
 
-> 在动手前，请先读 [`docs/methodology/RESEARCH_METHODOLOGY.md`](docs/methodology/RESEARCH_METHODOLOGY.md)
-> 与 [`docs/decisions/`](docs/decisions/) 下的 ADR。它们是本项目的宪法。
+> Before you start, please read [`docs/methodology/RESEARCH_METHODOLOGY.md`](docs/methodology/RESEARCH_METHODOLOGY.md) and the ADRs under [`docs/decisions/`](docs/decisions/). They are the constitution of this project.
 
 ---
 
-## 贡献类型
+## Types of contribution
 
-| 类型 | 说明 | 入口 |
+| Type | Description | Where |
 | --- | --- | --- |
-| **新研究课题** | 提出并完成一个完整深度的课题 | `research/topics/<NN>-<slug>/` |
-| **修正/补强已有课题** | 补充引用、纠正过时事实、增加反例 | 对应课题目录 |
-| **方法论改进** | 改进研究标准本身 | `docs/methodology/` + 新 ADR |
-| **网站/工具** | 改进展示站点或构建工具 | `web/` · `.claude/skills/` |
+| **New research topic** | Propose and complete a topic in depth | `research/topics/<NN>-<slug>/` |
+| **Fix / strengthen a topic** | Add citations, correct stale facts, add counter-examples | The topic's directory |
+| **Methodology improvement** | Improve the research standards themselves | `docs/methodology/` + a new ADR |
+| **Website / tooling** | Improve the site or build tooling | `web/` · `.claude/skills/` |
 
-> 完整的 research loop 由三个 skill 串起：`research-methodology`（怎么研究）→
-> `research-artifact-html`（结晶为产物）→ `publish-research-topic`（上站发布），
-> 均在 `.claude/skills/` 下。
+> The full research loop is covered by three skills under `.claude/skills/`: `research-methodology` (how to research) → `research-artifact-html` (crystallize into an artifact) → `publish-research-topic` (publish to the site).
 
 ---
 
-## 研究课题贡献流程
+## Research topic workflow
 
-每个课题必须走完 6 阶段生命周期（状态记录在 HTML 产物的 JSON-LD `researchStatus`）：
+Every topic walks the full six-stage lifecycle (the current stage is recorded in the artifact's JSON-LD `researchStatus`):
 
 ```
-1. hypothesis   提出假设 + 定义可证伪的判据
-2. survey       多源采集 (官方文档 / 一手数据 / 社区实践)
-3. experiment   可复现实测 (基准 / 成本模型 / 部署)，记录环境与命令
-4. verify       对抗验证：主动找反例，质疑自己
-5. synthesize   综合成结论 + 决策矩阵 + 适用边界
-6. publish      产出自包含 HTML，元数据可入 D1
+1. hypothesis   State a hypothesis and define falsifiable criteria
+2. survey       Gather from multiple sources (official docs / primary data / community practice)
+3. experiment   Reproducible measurement (benchmarks / cost models / deployment), with environment and commands recorded
+4. verify       Adversarial verification: actively seek counter-examples, challenge your own conclusion
+5. synthesize   Synthesize into a conclusion with a decision matrix and applicability boundaries
+6. publish      Produce a self-contained HTML artifact; metadata can be indexed in D1
 ```
 
-### 1. 用 skill 生成产物
+### 1. Generate the artifact with the skill
 
-本项目提供 `research-artifact-html` skill（见 `.claude/skills/research-artifact-html/`）。
-它落地 ADR-001 的产物规范——**每个课题 = 一个自包含语义化 HTML**：
+The project provides the `research-artifact-html` skill (see `.claude/skills/research-artifact-html/`). It implements the ADR-001 artifact spec — **each topic is one self-contained semantic HTML file**:
 
-- `<head>` 内嵌 `schema.org/ScholarlyArticle` 的 JSON-LD（hypothesis / conclusion /
-  keywords / citation[] / researchStatus）
-- `<body>` 是富排版可读正文（tab / 折叠 / 决策矩阵 / 响应式）
-- CSS 内联，零外部依赖（自包含）
+- The `<head>` embeds `schema.org/ScholarlyArticle` JSON-LD (hypothesis / conclusion / keywords / citation[] / researchStatus)
+- The `<body>` is richly formatted, readable prose (tabs / collapsibles / decision matrix / responsive)
+- CSS is inlined, with zero external dependencies (self-contained)
 
-产物落在 `research/topics/<NN>-<slug>/index.html`，原始引用素材落在同目录
-`sources.md`。
+The artifact goes in `research/topics/<NN>-<slug>/index.html`; raw citation material goes in `sources.md` in the same directory.
 
-### 2. 引用必须分级
+### 2. Citations must be tiered
 
-每条引用在 `sources.md` 与 JSON-LD `citation[]` 中记录，并标 `tier`：
+Each citation is recorded in `sources.md` and in the JSON-LD `citation[]`, annotated with its `tier`:
 
 ```yaml
 - url: https://...
-  title: 标题
-  author: 作者/机构
-  date: 来源发布日期
-  accessed: YYYY-MM-DD     # 你核实的日期
-  verified: true            # 是否独立核实
-  claim: 它支撑的具体声明
-  tier: primary | secondary # 一手(官方/原始数据) vs 二手(博客/转述)
+  title: Title
+  author: Author / organization
+  date: Source publication date
+  accessed: YYYY-MM-DD     # the date you verified it
+  verified: true           # independently verified?
+  claim: The specific claim it supports
+  tier: primary | secondary # primary (official / raw data) vs secondary (blog / paraphrase)
 ```
 
-**核心结论必须有一手来源支撑。** 一手与二手冲突时以一手为准，并记录冲突。
+**Core conclusions must be backed by a primary source.** On a primary-vs-secondary conflict, primary wins, and the conflict is recorded.
 
-### 3. 对抗验证不可跳过
+### 3. Adversarial verification is not optional
 
-`synthesize` 前，对每个核心结论主动追问：
+Before `synthesize`, challenge each core conclusion:
 
-- 是否有反例 / 边界条件？
-- 数据是否有偏（厂商自测 vs 独立测试）？
-- 是否混淆了相关性与因果性？
-- 结论是否依赖某个快速变化的事实（时效性）？
+- Are there counter-examples or boundary conditions?
+- Is the data biased (vendor self-benchmark vs independent test)?
+- Is correlation being confused with causation?
+- Does the conclusion depend on a fast-changing fact (time-sensitivity)?
 
-鼓励并行派多个 skeptic 独立尝试推翻结论；多数推翻则结论不成立。
+You are encouraged to dispatch multiple skeptics in parallel to independently attempt a rebuttal; if a majority refute it, the conclusion does not stand.
 
 ---
 
-## 质量门（Definition of Done）
+## Definition of done
 
-PR 合并前，对照 checklist 自检：
+Before a PR is merged, self-check against the list:
 
-- [ ] 假设明确且可证伪
-- [ ] 每个事实声明有 ≥1 个核实引用（核心声明需一手来源）
-- [ ] 实验可复现（环境、命令、版本已记录）
-- [ ] 已做对抗验证，记录了反例与边界
-- [ ] 结论含决策矩阵与适用边界
-- [ ] HTML 产物自包含、含完整 JSON-LD、响应式
-- [ ] 无未核实的「听说」式断言
-- [ ] 运行校验脚本通过：
+- [ ] Hypothesis is explicit and falsifiable
+- [ ] Every factual claim has ≥1 verified citation (core claims need a primary source)
+- [ ] Experiment is reproducible (environment, commands, versions recorded)
+- [ ] Adversarial verification done, with counter-examples and boundaries recorded
+- [ ] Conclusion includes a decision matrix and applicability boundaries
+- [ ] HTML artifact is self-contained, with complete JSON-LD, responsive
+- [ ] No unverified "I heard that…" assertions
+- [ ] The validation script passes:
       `uv run .claude/skills/research-artifact-html/scripts/validate_artifact.py <path>`
 
 ---
 
-## 本地开发
+## Local development
 
 ```bash
-# 校验某个 HTML 产物
+# Validate an HTML artifact
 uv run .claude/skills/research-artifact-html/scripts/validate_artifact.py \
   research/topics/01-vibecoding-cloudflare-vs-vercel/index.html
 
-# 展示站点（TanStack Start + Cloudflare Workers）
+# The website (TanStack Start + Cloudflare Workers)
 pnpm -C web install
-pnpm -C web dev        # 本地预览
-pnpm -C web build      # 构建验证
+pnpm -C web dev        # local preview on :8042
+pnpm -C web build      # build check
 ```
 
-> 说明：仓库用 `pnpm`（Node）与 `uv`（Python）。已发布课题的 HTML 副本需同步到
-> `web/public/topics/<NN>-<slug>/`，详情页在服务端提取其正文做 SSR 渲染（[ADR-003](docs/decisions/ADR-003-ssr-detail-over-iframe.md)）。
-> 发布全流程见 `publish-research-topic` skill。
+> The repo uses `pnpm` (Node) and `uv` (Python). A published topic's HTML copy must be synced to `web/public/topics/<NN>-<slug>/`; the detail page extracts its body and renders it server-side ([ADR-003](docs/decisions/ADR-003-ssr-detail-over-iframe.md)). The full publish flow is covered by the `publish-research-topic` skill.
 
 ---
 
-## 分支策略
+## Branch strategy
 
-采用 `dev → main` 双分支迭代：
+We use a `dev → main` two-branch workflow:
 
-| 分支 | 角色 | 规则 |
+| Branch | Role | Rule |
 | --- | --- | --- |
-| `main` | 稳定发布分支 | 受保护，只接受来自 `dev` 的 release PR；始终可部署 |
-| `dev` | 集成分支 | 日常贡献汇入此分支；CI 必须通过 |
+| `main` | Stable release branch | Protected; accepts only release PRs from `dev`; always deployable |
+| `dev` | Integration branch | Day-to-day contributions land here; CI must pass |
 
-贡献流程：
+Workflow:
 
 ```
-从 dev 切功能分支  →  feat/xxx · fix/xxx · docs/xxx
-       ↓ 开发 + 自检
-PR 到 dev          →  CI(tsc/test/build + 产物质量门) 必须绿
-       ↓ 评审合并
-积累若干改动后      →  dev PR 到 main 完成一次 release
+Branch from dev   →  feat/xxx · fix/xxx · docs/xxx
+       ↓ develop + self-check
+PR into dev       →  CI (tsc / test / build + artifact quality gate) must be green
+       ↓ review + merge
+After enough changes  →  dev PR into main for a release
 ```
 
-- 功能分支命名对齐 conventional commits 前缀：`feat/` `fix/` `docs/` `chore/`。
-- **不要直接向 `main` 提交或发 PR**（release 除外）。
+- Branch names follow conventional-commit prefixes: `feat/` `fix/` `docs/` `chore/`.
+- **Do not commit or PR directly to `main`** (except for releases).
 
-## 提交规范
+## Commit conventions
 
-- 提交信息简洁、用中文、说明「为什么」，不含自动生成的署名行。
-- 一次提交对应一个逻辑变更，保持可 diff、可评审。
-- 遵循 conventional commits：`feat(scope): ...` / `fix(scope): ...` / `docs: ...` / `chore: ...`。
+- Keep messages concise, **in English**, explaining the "why". No auto-generated signature lines.
+- One logical change per commit, kept diffable and reviewable.
+- Follow conventional commits: `feat(scope): ...` / `fix(scope): ...` / `docs: ...` / `chore: ...`.
 
 ---
 
-## 行为准则
+## Conduct
 
-诚实优先于面子（Linus 精神）：发现自己的结论错了，如实纠正并记录。
-我们重视**经得起核实的结论**，而不是听起来正确的断言。
+Honesty over face: if you find your own conclusion was wrong, correct and record it. We value **conclusions that hold up to verification**, not assertions that merely sound right. See the [Code of Conduct](CODE_OF_CONDUCT.md).
 
-许可证：[MIT](LICENSE)。贡献即表示你同意以 MIT 授权你的贡献。
+License: [MIT](LICENSE). By contributing, you agree to license your contribution under the MIT License.
+
+---
+
+<details>
+<summary>中文简介</summary>
+
+这是一个**可复现、可溯源、可同行评审**的技术研究项目。贡献的核心不是"写代码"，而是用严谨方法产出经得起核实的结论。动手前请先读 [`docs/methodology/RESEARCH_METHODOLOGY.md`](docs/methodology/RESEARCH_METHODOLOGY.md)。
+
+- 每个课题走完六阶段生命周期：hypothesis → survey → experiment → verify → synthesize → publish。
+- 引用必须分级（一手优先），核心结论需一手来源支撑。
+- synthesize 前必须做对抗验证，主动找反例。
+- 分支策略 `dev → main`：日常贡献 PR 到 `dev`（CI 必过），release 时 `dev` PR 到 `main`。
+- 提交信息用英文、conventional 风格、不含自动生成署名。
+
+完整质量门见上方 Definition of done。许可证 [MIT](LICENSE)。
+
+</details>

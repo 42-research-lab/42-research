@@ -8,150 +8,118 @@
 > *"The Answer to the Ultimate Question of Life, the Universe, and Everything is 42."*
 > — Douglas Adams, *The Hitchhiker's Guide to the Galaxy*
 
-一个**严谨、可复现、可同行评审**的技术研究项目，并将研究成果通过公开网站展示。
+**Every question worth asking deserves a real answer.**
 
-研究遵循 YC 最佳实践与第一性原理：每个结论都可溯源、每个声明都经核实、每个决策都有记录。
+42-research investigates the technical questions people genuinely care about — yet rarely verify rigorously — and publishes answers that hold up to scrutiny. Every conclusion is **reproducible, traceable, and peer-reviewable**: it states the conditions under which it holds and links to clickable primary sources.
 
----
-
-## 🧬 双子系统
-
-| 子系统 | 内容 | 路径 |
-|--------|------|------|
-| **(A) 研究档案体系** | 方法论、课题产物、决策记录(ADR) | `docs/` `research/` |
-| **(B) 公开展示网站** | TanStack Start + Cloudflare 全栈应用 | `web/` |
-
-> 网站本身即课题一《Vibecoding + Cloudflare or Vercel?》的 **dogfooding 实证**。
+🌐 **Website:** https://42-research.pages.dev (English / 中文)
 
 ---
 
-## 🏛 核心架构：三位一体
+## What this is
 
-详见 [ADR-001](docs/decisions/ADR-001-html-as-source-d1-as-index.md)。
+A research project with two parts:
+
+| Part | Contents | Path |
+|------|----------|------|
+| **Research archive** | Methodology, topic artifacts, decision records | `docs/` · `research/` |
+| **Public website** | The site that publishes the research | `web/` |
+
+Each research topic is published as a **self-contained, semantic HTML artifact** that embeds [schema.org/ScholarlyArticle](https://schema.org/ScholarlyArticle) JSON-LD (hypothesis, conclusion, citations, status). The artifact is the single source of truth; the website renders it and the metadata is indexed for query.
+
+---
+
+## How research is done
+
+Every topic follows a six-stage lifecycle, with the current stage recorded in the artifact's JSON-LD:
 
 ```
-研究产物 = 自包含语义化 HTML  (真相源 + 展示页 + AI可读数据)
-   ├──> D1 (SQLite)   查询索引: 筛选/搜索/排序/统计
-   ├──> git           过程留痕: diff/版本/同行评审
-   └──> R2            资产存储: 图表/附件/数据集
+hypothesis → survey → experiment → verify → synthesize → publish
 ```
 
-**职责分工**（基于 Thariq Shihipar 已核实研究）：
-- 人读的最终产物 → **HTML**（自包含、富交互）
-- research loop 内 agent 间传递 → **Markdown**
-- 结构化查询 → **D1** ｜ 过程与评审 → **git**
+The standards that make a conclusion publishable:
+
+- **Fact-based, not from memory** — every claim is verified against official docs or primary data.
+- **Don't echo, verify** — popular claims are tested independently; deviations are recorded honestly.
+- **Falsifiable** — every conclusion states where it holds and where it does not.
+- **Clickable citations** — every fact carries a URL, with verification date and status. Primary sources outweigh secondary ones.
+- **Adversarial verification** — before synthesizing, each conclusion is challenged for counter-examples, bias, and time-sensitivity.
+
+Full methodology: [`docs/methodology/RESEARCH_METHODOLOGY.md`](docs/methodology/RESEARCH_METHODOLOGY.md).
 
 ---
 
-## 🛠 技术栈
+## Discoverability
 
-| 层 | 选型 | 状态 |
-|----|------|------|
-| 框架 | TanStack Start (v1 RC) | API 稳定，feature-complete |
-| 构建 | Vite (VoidZero → Cloudflare) | 趋势核心 |
-| 运行时 | Cloudflare Workers | production |
-| 数据库 | D1 (SQLite at edge) | production-ready |
-| 对象存储 | R2 | production-ready |
-| 语言 | TypeScript | — |
-| 样式 | Tailwind CSS | — |
+The site is friendly to search engines, AI agents, and feed readers:
+
+| Endpoint | Format | Purpose |
+|----------|--------|---------|
+| `/research/{slug}` | HTML (SSR) | Human-readable article |
+| `/research/{slug}.md` | Markdown + YAML frontmatter | Direct consumption by AI agents / MCP |
+| `/rss.xml` | RSS 2.0 | Feed readers and aggregators |
+| `/sitemap.xml` | XML sitemap | Search-engine and crawler indexing |
+| `/llms.txt` | Markdown ([llmstxt.org](https://llmstxt.org)) | Site map for LLMs / AI agents |
+| `/robots.txt` | Dynamic | Allows major AI crawlers, declares the sitemap |
+
+All HTML pages carry schema.org JSON-LD; the default language is English with Chinese available. See [ADR-004](docs/decisions/ADR-004-dual-format-and-llm-seo.md).
 
 ---
 
-## 📂 目录结构
+## Tech stack
+
+TanStack Start · React 19 · TypeScript · Tailwind CSS · Cloudflare Workers / D1 / R2.
+
+---
+
+## Repository layout
 
 ```
 42-research/
 ├── docs/
-│   ├── specs/            # 设计文档
-│   ├── decisions/        # ADR 架构决策记录
-│   └── methodology/      # 研究方法论
+│   ├── decisions/      # Architecture decision records (ADR)
+│   └── methodology/    # Research methodology
 ├── research/
-│   ├── topics/<slug>/    # 各课题: index.html (产物) + sources.md (原始引用)
-│   └── _templates/       # 课题 HTML 模板 (含 JSON-LD)
-├── .claude/skills/       # 项目沉淀的可复用 Claude Code skills
-├── web/                  # TanStack Start + Cloudflare 网站
-└── README.md
+│   ├── topics/<NN>-<slug>/   # Each topic: index.html (artifact) + sources.md
+│   └── _templates/          # Topic HTML template (with JSON-LD)
+└── web/                # TanStack Start + Cloudflare website
 ```
 
----
+## Decision records
 
-## 📋 决策记录 (ADR)
-
-| # | 决策 | 状态 |
-|---|------|------|
-| [001](docs/decisions/ADR-001-html-as-source-d1-as-index.md) | 三位一体架构：HTML 为真相源，D1 为查询索引 | Accepted |
-| [002](docs/decisions/ADR-002-frontend-stack-resources.md) | 前端技术选型资源清单（RemixIcon / motion / three.js / cal-heatmap …） | Accepted |
-| [003](docs/decisions/ADR-003-ssr-detail-over-iframe.md) | SSR 详情页替代 iframe（ADR-001 展示层注记） | Accepted |
-| [004](docs/decisions/ADR-004-dual-format-and-llm-seo.md) | 双格式发布 + LLM-SEO 全栈可发现性策略 | Accepted |
+| # | Decision |
+|---|----------|
+| [001](docs/decisions/ADR-001-html-as-source-d1-as-index.md) | HTML artifact as the source of truth, D1 as the query index |
+| [002](docs/decisions/ADR-002-frontend-stack-resources.md) | Frontend stack and resources |
+| [003](docs/decisions/ADR-003-ssr-detail-over-iframe.md) | SSR detail page instead of iframe |
+| [004](docs/decisions/ADR-004-dual-format-and-llm-seo.md) | Dual-format publishing + LLM-SEO |
 
 ---
 
-## 🌐 可发现性 (Discoverability)
+## Contributing
 
-站点对 Google/Bing/AI Agent/MCP 全栈友好，提供以下端点：
+Contributions are welcome — the goal is **verifiable conclusions, not just code**. You can propose a topic or complete a study following the methodology. See [CONTRIBUTING.md](CONTRIBUTING.md) and the [Code of Conduct](CODE_OF_CONDUCT.md).
 
-| 端点 | 格式 | 用途 |
-|------|------|------|
-| `/rss.xml` | RSS 2.0 | Feed Reader、AI Aggregator 订阅所有已发布课题 |
-| `/llms.txt` | Markdown（llmstxt.org） | LLM/AI Agent 一站式发现全部端点与内容 |
-| `/research/{slug}.md` | Markdown + YAML frontmatter | AI Agent/MCP 直接消费单篇研究，含结构化元数据 |
-| `/sitemap.xml` | XML Sitemap | Google/Bing 索引、AI 爬虫发现所有页面 |
-| `/robots.txt` | 动态生成 | Allow 所有主流 AI 爬虫（GPTBot/ClaudeBot/Google-Extended 等），声明 Sitemap |
-
-所有 HTML 页面含 schema.org JSON-LD（WebSite/ScholarlyArticle），canonical 在 `<link rel="canonical">`，全站 head 注入 RSS alternate link。详见 [ADR-004](docs/decisions/ADR-004-dual-format-and-llm-seo.md)。
+The repository uses a `dev → main` branch workflow: contributions land on `dev` via PR (CI must pass), and `main` stays release-ready.
 
 ---
 
-## 🔬 研究课题
+## License
 
-| # | 课题 | 状态 |
-|---|------|------|
-| [01](research/topics/01-vibecoding-cloudflare-vs-vercel/index.html) | Vibecoding + Cloudflare or Vercel? | ✅ 已发布 |
+[MIT](LICENSE) © 2026 42-research-lab and contributors.
 
 ---
 
-## 🧩 项目沉淀的 Skills
+<details>
+<summary>中文简介</summary>
 
-完整的 research loop 由三个 Claude Code skill 串起，覆盖「怎么研究 → 结晶为产物 → 上站发布」：
+**每一个值得好奇的问题，都值得被好好回答。**
 
-| Skill | 作用 |
-|-------|------|
-| [research-methodology](.claude/skills/research-methodology/SKILL.md) | 执行研究方法论：6 阶段生命周期 · 一手优先引用分级 · 对抗验证 · DoD 质量门 |
-| [research-artifact-html](.claude/skills/research-artifact-html/SKILL.md) | 生成自包含语义化 HTML 研究产物（落地 ADR-001，含校验脚本） |
-| [publish-research-topic](.claude/skills/publish-research-topic/SKILL.md) | 课题端到端上站：校验 · 抓封面 · 登记 · 验证 SEO/AI 端点 · 三道构建关 |
+42-research 研究技术与科技领域里大家真正关心、却少有人认真求证的问题，并发布经得起核实的答案。每个结论都**可复现、可溯源、可同行评审**：说明在什么条件下成立，并附可点击的一手来源。
 
----
+- 研究遵循六阶段生命周期：hypothesis → survey → experiment → verify → synthesize → publish。
+- 每个课题发布为自包含语义化 HTML 产物，内嵌 schema.org/ScholarlyArticle 的 JSON-LD。
+- 网站默认英文，提供中文；对搜索引擎与 AI Agent 全栈友好（`.md` / RSS / sitemap / llms.txt）。
+- 方法论见 [`docs/methodology/RESEARCH_METHODOLOGY.md`](docs/methodology/RESEARCH_METHODOLOGY.md)，参与方式见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
-## 🔐 凭证管理
-
-`.cloudflare.env` / `.ghcr.env` 含敏感凭证，**已 gitignore，绝不入库**。
-部署所需的密钥通过 GitHub Actions Secrets 注入，不落仓库。
-
----
-
-## 🤝 参与贡献
-
-贡献的核心是**用严谨方法产出经得起核实的结论**，而非单纯写代码。完整流程
-（6 阶段生命周期 · 引用分级 · 对抗验证 · 质量门）见 [CONTRIBUTING.md](CONTRIBUTING.md)。
-
-新课题请用 `research-artifact-html` skill 生成自包含 HTML 产物，并通过校验脚本：
-
-```bash
-uv run .claude/skills/research-artifact-html/scripts/validate_artifact.py <path>
-```
-
----
-
-## 📄 许可证
-
-本项目以 [MIT License](LICENSE) 开源，版权 © 2026 42-research-lab and contributors。
-
----
-
-## 🧭 研究精神
-
-> Linus 的诚实 · 尤雨溪的执着 · Musk 的第一性原理 · IronMan 的极客精神
-
-不附和未经核实的说法。例如：课题立项时核实到「TanStack Start 彻底打败 Next.js」
-是**夸大**——事实是它处于 v1 RC、快速崛起但远未"彻底打败"。research 如实记录，
-而非附和。这正是本项目的严谨性所在。
+</details>
