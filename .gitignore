@@ -1,0 +1,56 @@
+# ============================================================
+#  42-research · .gitignore
+#  安全第一: 凭证、构建产物、本地状态一律不入库
+# ============================================================
+
+# --- 敏感凭证 (绝不入库) ---
+.cloudflare.env
+.ghcr.env
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# --- 依赖 ---
+node_modules/
+.pnpm-store/
+
+# --- 构建产物 ---
+dist/
+build/
+.output/
+.vinxi/
+.tanstack/
+.nitro/
+
+# --- Cloudflare 本地状态 ---
+.wrangler/
+.dev.vars
+wrangler.toml.bak
+
+# --- 测试/覆盖率 ---
+coverage/
+.vitest/
+
+# --- 系统 / 编辑器 ---
+.DS_Store
+*.log
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# --- Claude / 会话状态 (本地工作记忆, 不入库) ---
+.remember/
+# skill 本身(.claude/skills/*)是团队资产, 入库; 但 eval 工作痕迹/快照不入库
+.claude/skills-workspace/
+# superpowers skill(brainstorming/writing-plans)的思考过程痕迹, 不入公开库
+docs/superpowers/
+
+# --- 临时 ---
+*.tmp
+tmp/
+.cache/
+.superpowers/
+.claude/scheduled_tasks.lock

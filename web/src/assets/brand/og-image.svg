@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <rect width="1200" height="630" fill="#0a0a0f"/>
+  <!-- 网格纹理 -->
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 H0 V40" fill="none" stroke="#16161f" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <!-- 大 logo -->
+  <g transform="translate(110 175) scale(5.2)">
+    <path d="M23 3 L41 13.5 V34.5 L23 45 L5 34.5 V13.5 Z" fill="#13131c" stroke="#3a3a52" stroke-width="1.6"/>
+    <path d="M23 3 L23 24 L5 13.5 Z" fill="#6b8cff" fill-opacity="0.22"/>
+    <path d="M23 3 L41 13.5 L23 24 Z" fill="#6b8cff" fill-opacity="0.55"/>
+    <path d="M23 24 L41 13.5 V34.5 Z" fill="#f6821f"/>
+  </g>
+  <!-- 文案 -->
+  <text x="370" y="270" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="64" font-weight="700" letter-spacing="-1.5" fill="#e8e8ef">42<tspan fill="#f6821f">·</tspan>Research</text>
+  <text x="372" y="330" font-family="ui-monospace, monospace" font-size="26" letter-spacing="3" fill="#71718a">RESEARCH DOSSIER · EST. 2026</text>
+  <text x="372" y="408" font-family="Georgia, 'Times New Roman', serif" font-size="40" font-weight="600" fill="#b4b4c4">严谨的研究，<tspan fill="#f6821f">可溯源</tspan>的答案</text>
+  <!-- 底部条 -->
+  <rect x="0" y="618" width="1200" height="12" fill="#f6821f"/>
+</svg>

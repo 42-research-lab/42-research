@@ -1,0 +1,23 @@
+{
+  "skill_name": "research-artifact-html",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "我刚研究完一个 42-research 课题：『Bun 能不能在生产环境替代 Node.js』，结论是『短期内特定场景可以、通用生产仍以 Node 为稳』。帮我把它写成可以发布的课题产物 HTML，放到 research/topics/ 下，序号 02。",
+      "expected_output": "在 research/topics/02-<slug>/index.html 生成自包含语义化 HTML：含 ScholarlyArticle JSON-LD（identifier=目录名 02-...、hypothesis/conclusion/citation 等），body 用语义化标签、不把关键信息藏进默认折叠（因 SSR 会剥样式），引用标 tier。应说明 slug 去前缀映射。",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "给我讲讲 42-research 的课题产物 HTML 在写 body 正文时要注意什么？我担心写出来在网站上显示不对。",
+      "expected_output": "应指出下游消费约束：SSR 详情页(ADR-003)提取 body 会剥掉 <style>，CSS-only 的 tab/折叠会降级为静态，所以正文要『全展开也读得通』；双格式(ADR-004)还会转 .md，必须用真实语义化标签(h2/h3/table/ul)而非 div 模拟。",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "为 42-research 写一个新课题 HTML，目录我建在 research/topics/07-edge-databases，但 JSON-LD 的 identifier 我想直接用 edge-databases 简洁点，URL 也用这个。这样行吗？",
+      "expected_output": "应纠正：identifier 必须与目录名一致(07-edge-databases)，校验脚本会比对，不一致直接失败；公开 slug 才是去前缀的 edge-databases，用于 URL 和 topics.ts。讲清『磁盘带序号、URL 去前缀』的映射。",
+      "files": []
+    }
+  ]
+}

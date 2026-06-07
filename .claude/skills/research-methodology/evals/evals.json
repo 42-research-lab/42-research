@@ -1,0 +1,23 @@
+{
+  "skill_name": "research-methodology",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "我想为 42-research 研究一个新课题：『SQLite（边缘部署）能不能替代 Postgres 用于中小型 SaaS』。该怎么系统地开始？",
+      "expected_output": "应给出 6 阶段生命周期(hypothesis→survey→experiment→verify→synthesize→publish)的可执行路径：先定可证伪假设+判据，多源核实(一手优先)并边记 sources.md，可复现实验记录环境/命令，强调 synthesize 前必须做对抗验证，结论带适用边界。不应直接给『SQLite 行/不行』的速断。",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "网上都说『Rust 比 Go 快一个数量级』，我想在 42-research 里直接引用这个结论支撑我的课题。可以吗？",
+      "expected_output": "应体现『不附和要求证』第一性原理：流行说法是待验证假设不是事实，需独立核实；区分一手(官方/原始基准)与二手(转述)，厂商/缺独立复现的 benchmark 要标注『未独立验证』；用对抗验证找反例与边界(哪种 workload、是否混淆相关与因果)。",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "我的课题快写完了，结论是『Cloudflare 比 Vercel 更省钱』。在我把它综合成最终结论之前，你建议我做什么来保证它站得住？",
+      "expected_output": "应聚焦对抗验证(verify 阶段)：对该结论主动问『可能错在哪』——反例/边界(egress 极低场景?)、数据偏差(厂商自测?)、相关vs因果、时效性；建议派并行 skeptic 各带不同视角尝试推翻，多数推翻则不成立；并对照 DoD 质量门清单。",
+      "files": []
+    }
+  ]
+}

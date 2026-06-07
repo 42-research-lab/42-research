@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none" role="img" aria-label="42-research">
+  <!--
+    透明背景，只有数据晶体本身（不要整体底块，标签栏上更干净）。
+    六边形框色跟随「系统」主题：亮系统用深框、暗系统用浅框，保证两种标签栏都可辨。
+    橙蓝晶体切面始终保留为品牌色。
+  -->
+  <style>
+    .frame { fill: #ffffff; stroke: #3a3a52; }
+    @media (prefers-color-scheme: dark) {
+      .frame { fill: #13131c; stroke: #6b7299; }
+    }
+  </style>
+  <path class="frame" d="M24 4 L42 14.5 V35.5 L24 46 L6 35.5 V14.5 Z" stroke-width="1.8"/>
+  <path d="M24 4 L24 25 L6 14.5 Z" fill="#6b8cff" fill-opacity="0.28"/>
+  <path d="M24 4 L42 14.5 L24 25 Z" fill="#6b8cff" fill-opacity="0.62"/>
+  <path d="M24 25 L42 14.5 V35.5 Z" fill="#f6821f"/>
+</svg>
