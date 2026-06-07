@@ -6,14 +6,14 @@ on:
   pull_request:
     branches: [main, dev]
 
-# 同一分支的并发运行只保留最新一次,节省额度
+# Keep only the latest run per branch to save minutes.
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   web:
-    name: Web · 类型检查 / 测试 / 构建
+    name: Web · typecheck / test / build
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -31,22 +31,22 @@ jobs:
           cache: pnpm
           cache-dependency-path: web/pnpm-lock.yaml
 
-      - name: 安装依赖
-        # strict-dep-builds=false: esbuild/sharp/workerd 的 build 脚本未批准时仅警告不致命。
-        # 这些依赖在 CI(Linux)用预编译产物即可,无需本地编译,vite build 已验证可正常工作。
+      - name: Install dependencies
+        # strict-dep-builds=false: unapproved build scripts (esbuild/sharp/workerd) only warn, not fail.
+        # On CI (Linux) these use prebuilt artifacts — no local compile needed; vite build is verified to work.
         run: pnpm install --frozen-lockfile --config.strict-dep-builds=false
 
-      - name: 类型检查
+      - name: Typecheck
         run: pnpm exec tsc --noEmit
 
-      - name: 测试
+      - name: Test
         run: pnpm test
 
-      - name: 构建
+      - name: Build
         run: pnpm build
 
   research:
-    name: Research · 课题产物质量门
+    name: Research · artifact quality gate
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -55,11 +55,11 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: 校验所有课题产物 (JSON-LD / 引用分级 / 自包含)
+      - name: Validate all topic artifacts (JSON-LD / citation tiers / self-contained)
         run: |
           fail=0
           for f in research/topics/*/index.html; do
-            echo "▸ 校验 $f"
+            echo "Validating $f"
             python3 .claude/skills/research-artifact-html/scripts/validate_artifact.py "$f" || fail=1
           done
           exit $fail
