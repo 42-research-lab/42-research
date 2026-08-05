@@ -19,6 +19,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ResearchIndexRouteImport } from './routes/research.index'
 import { Route as TopicsSlugRouteImport } from './routes/topics.$slug'
+import { Route as ResearchChar123slugChar125DotmdRouteImport } from './routes/research.{$slug}[.]md'
 import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -71,6 +72,12 @@ const TopicsSlugRoute = TopicsSlugRouteImport.update({
   path: '/topics/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResearchChar123slugChar125DotmdRoute =
+  ResearchChar123slugChar125DotmdRouteImport.update({
+    id: '/{$slug}.md',
+    path: '/{$slug}.md',
+    getParentRoute: () => ResearchRoute,
+  } as any)
 const ResearchSlugRoute = ResearchSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -87,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/rss.xml': typeof RssDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/research/$slug': typeof ResearchSlugRoute
+  '/research/{$slug}.md': typeof ResearchChar123slugChar125DotmdRoute
   '/topics/$slug': typeof TopicsSlugRoute
   '/research/': typeof ResearchIndexRoute
 }
@@ -99,6 +107,7 @@ export interface FileRoutesByTo {
   '/rss.xml': typeof RssDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/research/$slug': typeof ResearchSlugRoute
+  '/research/{$slug}.md': typeof ResearchChar123slugChar125DotmdRoute
   '/topics/$slug': typeof TopicsSlugRoute
   '/research': typeof ResearchIndexRoute
 }
@@ -113,6 +122,7 @@ export interface FileRoutesById {
   '/rss.xml': typeof RssDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/research/$slug': typeof ResearchSlugRoute
+  '/research/{$slug}.md': typeof ResearchChar123slugChar125DotmdRoute
   '/topics/$slug': typeof TopicsSlugRoute
   '/research/': typeof ResearchIndexRoute
 }
@@ -128,6 +138,7 @@ export interface FileRouteTypes {
     | '/rss.xml'
     | '/sitemap.xml'
     | '/research/$slug'
+    | '/research/{$slug}.md'
     | '/topics/$slug'
     | '/research/'
   fileRoutesByTo: FileRoutesByTo
@@ -140,6 +151,7 @@ export interface FileRouteTypes {
     | '/rss.xml'
     | '/sitemap.xml'
     | '/research/$slug'
+    | '/research/{$slug}.md'
     | '/topics/$slug'
     | '/research'
   id:
@@ -153,6 +165,7 @@ export interface FileRouteTypes {
     | '/rss.xml'
     | '/sitemap.xml'
     | '/research/$slug'
+    | '/research/{$slug}.md'
     | '/topics/$slug'
     | '/research/'
   fileRoutesById: FileRoutesById
@@ -241,6 +254,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TopicsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/research/{$slug}.md': {
+      id: '/research/{$slug}.md'
+      path: '/{$slug}.md'
+      fullPath: '/research/{$slug}.md'
+      preLoaderRoute: typeof ResearchChar123slugChar125DotmdRouteImport
+      parentRoute: typeof ResearchRoute
+    }
     '/research/$slug': {
       id: '/research/$slug'
       path: '/$slug'
@@ -253,11 +273,13 @@ declare module '@tanstack/react-router' {
 
 interface ResearchRouteChildren {
   ResearchSlugRoute: typeof ResearchSlugRoute
+  ResearchChar123slugChar125DotmdRoute: typeof ResearchChar123slugChar125DotmdRoute
   ResearchIndexRoute: typeof ResearchIndexRoute
 }
 
 const ResearchRouteChildren: ResearchRouteChildren = {
   ResearchSlugRoute: ResearchSlugRoute,
+  ResearchChar123slugChar125DotmdRoute: ResearchChar123slugChar125DotmdRoute,
   ResearchIndexRoute: ResearchIndexRoute,
 }
 

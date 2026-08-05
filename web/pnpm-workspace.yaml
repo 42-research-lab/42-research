@@ -1,7 +1,7 @@
 allowBuilds:
-  esbuild: set this to true or false
-  sharp: set this to true or false
-  workerd: set this to true or false
+  esbuild: true
+  sharp: true
+  workerd: true
 # 允许这些带原生二进制/编译产物的依赖在安装时执行 build 脚本。
 # 注意: CI 用 --config.strict-dep-builds=false 让"未批准的 build"仅警告不致命,
 # 因为 esbuild/sharp/workerd 在 CI 用预编译二进制即可,无需本地编译。

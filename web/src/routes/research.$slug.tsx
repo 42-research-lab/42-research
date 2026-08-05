@@ -5,7 +5,6 @@ import { topics } from '../data/topics'
 import { extractBody, extractJsonLd } from '../lib/artifact'
 import { SITE, topicUrl } from '../lib/site'
 import { articleJsonLd, serializeJsonLd } from '../lib/seo'
-import { htmlToText, topicToMarkdown } from '../lib/markdown'
 import { useT } from '../i18n/useLocale'
 import ErrorPage from '../components/ErrorPage'
 
@@ -40,65 +39,8 @@ const getArtifact = createServerFn({ method: 'GET' })
   })
 
 export const Route = createFileRoute('/research/$slug')({
-  server: {
-    handlers: {
-      /**
-       * GET /research/{slug}.md — Markdown 端点（AI Agent / MCP / LLM 消费）
-       *
-       * 当 slug 以 .md 结尾时提供 Markdown 输出（含 YAML frontmatter）。
-       * 页面路由 /research/$slug 匹配优先于 splat，slug 会含 .md 后缀，
-       * 此处拦截并返回 Markdown Response，阻止进入 loader/component。
-       *
-       * production / wrangler dev：env.ASSETS.fetch 读产物 HTML。
-       * vite dev：同源 fetch（getRequest().url 推导 origin）。
-       * 失败时降级 abstract，绝不崩溃。
-       */
-      GET: async ({ params, request }) => {
-        const rawSlug = params.slug
-        if (!rawSlug.endsWith('.md')) {
-          // 非 .md 请求：返回 null/undefined 让 loader+component 正常处理
-          return undefined as unknown as Response
-        }
-
-        const slug = rawSlug.replace(/\.md$/i, '')
-        const topic = topics.find((t) => t.slug === slug)
-
-        if (!topic) {
-          return new Response(`# 404 Not Found\n\nNo topic found for slug: ${slug}`, {
-            status: 404,
-            headers: { 'Content-Type': 'text/markdown; charset=utf-8' },
-          })
-        }
-
-        let bodyText = ''
-        try {
-          let res: Response
-          if (import.meta.env.PROD) {
-            const { env } = await import('cloudflare:workers')
-            res = await env.ASSETS.fetch(new URL(topic.artifact, 'https://assets.local'))
-          } else {
-            const origin = new URL(request.url).origin
-            res = await fetch(new URL(topic.artifact, origin))
-          }
-          if (res.ok) {
-            const html = await res.text()
-            bodyText = htmlToText(extractBody(html))
-          }
-        } catch {
-          // 降级：bodyText 为空，topicToMarkdown 使用 abstract 兜底
-        }
-
-        return new Response(topicToMarkdown(topic, bodyText), {
-          status: 200,
-          headers: {
-            'Content-Type': 'text/markdown; charset=utf-8',
-            'Cache-Control': 'public, max-age=3600',
-          },
-        })
-      },
-    },
-  },
-
+  // .md 端点已拆至独立路由 research.{$slug}[.]md.ts（ADR-004），
+  // 本页面路由不再挂 GET handler——start-server-core 1.169+ 要求 handler 必须返回 Response。
   loader: async ({ params }) => {
     const topic = topics.find((t) => t.slug === params.slug)
     if (!topic) throw notFound()
