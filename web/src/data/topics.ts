@@ -50,8 +50,28 @@ export const topics: Topic[] = [
     coverSource: 'https://blog.cloudflare.com/voidzero-joins-cloudflare/',
   },
   {
-    slug: 'mai-image-25-vs-gpt-image-2',
+    slug: 'microsoft-build-2026-ai',
     no: '02',
+    title: 'Microsoft Build 2026：AI Agent 全栈时间线',
+    abstract:
+      'Microsoft Build 2026（2026-06-02~03，San Francisco Fort Mason）的 AI 主线，以时间线组织：从自有 MAI 模型层、Foundry agent 运行时、Microsoft IQ 知识底座，到 Windows agent OS 与治理栈。全部基于官方一手来源、可点击、可复核。',
+    status: 'publish',
+    hypothesis:
+      'Build 2026 的 AI 公告不是离散的产品堆叠，而是一条可被还原的主线：Microsoft 在自下而上地把「可治理、能交付真实工作的 agent 系统」做成全栈基础设施。能否仅凭官方一手来源，可点击、可复核地把它组织成一条时间线？',
+    conclusion:
+      '可以。「AI 不会改变你的业务，运行它的系统会」贯穿全部公告：模型层（7 个 MAI）→运行时（Foundry Agent Service）→知识层（Microsoft IQ）→应用层（Scout/协作 agent）→OS 层（Windows agent 运行时/Project Solara）→治理层（open trust stack/Agent 365）。但多数能力为 preview 而非 GA，关键 benchmark 为厂商自测未独立验证，两个流行说法经对抗验证被纠正。主线清晰，落地待验。',
+    keywords: ['microsoft-build-2026', 'ai-agents', 'copilot', 'foundry', 'microsoft-iq', 'mai-models', 'windows-agent', 'agentic-ai'],
+    datePublished: '2026-06-22',
+    citations: 19,
+    artifact: '/topics/02-microsoft-build-2026-ai/index.zh.html',
+    category: '发布会研读',
+    tldr: '自下而上的 agent 全栈：模型→运行时→知识→应用→OS→治理；主线清晰但多为预览，两个流行说法被对抗验证纠正',
+    cover: '/topics/02-microsoft-build-2026-ai/cover.png',
+    coverSource: '/topics/02-microsoft-build-2026-ai/index.zh.html',
+  },
+  {
+    slug: 'mai-image-25-vs-gpt-image-2',
+    no: '03',
     title: 'MAI-Image-2.5 vs GPT-Image-2：微软自研生图追上 OpenAI 了吗？',
     abstract:
       '在 Azure AI Foundry 上以同一组 10 场景 prompt 实测 MAI-Image-2.5 三档与 GPT-Image-2 两档（50 请求、46 成功、4 个被内容过滤拦截），延迟与 token 用量取自逐请求台账并脱敏公开。结论按内容类型分化：文字渲染归 GPT，人像摄影归 MAI——后者在 Azure 默认内容过滤下是唯一可用选项。',
@@ -63,10 +83,10 @@ export const topics: Topic[] = [
     keywords: ['mai-image-2.5', 'gpt-image-2', 'azure-ai-foundry', 'image-generation', 'content-filter', 'model-evaluation', 'text-to-image'],
     datePublished: '2026-08-05',
     citations: 9,
-    artifact: '/topics/02-mai-image-25-vs-gpt-image-2/index.html',
+    artifact: '/topics/03-mai-image-25-vs-gpt-image-2/index.html',
     category: '模型评测',
     tldr: '文字归 GPT、人像归 MAI：中文海报 GPT 近乎零错字，MAI 三款均有字形级错字；真人题材 GPT 被 Azure 默认内容过滤拦截、MAI 是唯一可用选项；延迟差十倍，同档成本持平——分流是唯一理性解',
-    cover: '/topics/02-mai-image-25-vs-gpt-image-2/cover.jpg',
-    coverSource: '/topics/02-mai-image-25-vs-gpt-image-2/index.html',
+    cover: '/topics/03-mai-image-25-vs-gpt-image-2/cover.jpg',
+    coverSource: '/topics/03-mai-image-25-vs-gpt-image-2/index.html',
   },
 ]

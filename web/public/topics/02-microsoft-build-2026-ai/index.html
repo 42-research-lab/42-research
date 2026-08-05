@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<!--
+  42-research · Topic 02 artifact (Self-contained Research Artifact) · English
+  This HTML is source-of-truth + presentation + AI-readable data at once (see ADR-001).
+  Topic: Microsoft Build 2026 AI throughline, tech-editorial layout.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Microsoft Build 2026: The AI-Agent Full Stack · 42-research</title>
+  <meta name="description" content="Microsoft Build 2026 (Jun 2–3, San Francisco), read as one stack: seven in-house MAI models, the Foundry agent runtime, the Microsoft IQ knowledge layer, Windows as an agent host, and the governance layer. Every claim links to a Microsoft primary source." />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "identifier": "02-microsoft-build-2026-ai",
+    "inLanguage": "en",
+    "headline": "Microsoft Build 2026: The AI-Agent Full Stack",
+    "abstract": "Build 2026's AI announcements, read bottom-up as a single stack: in-house MAI models, the Foundry agent runtime, the Microsoft IQ knowledge layer, Windows as a governed agent host, and the trust/governance layer. Built entirely on Microsoft primary sources, each claim clickable and checkable.",
+    "datePublished": "2026-06-22",
+    "dateModified": "2026-06-22",
+    "author": { "@type": "Organization", "name": "42-research" },
+    "keywords": ["microsoft-build-2026", "ai-agents", "copilot", "foundry", "microsoft-iq", "mai-models", "windows-agent", "agentic-ai"],
+    "researchStatus": "publish",
+    "hypothesis": "Build 2026's AI announcements aren't a pile of separate products — they're parts of one thing: Microsoft is building a bottom-up, full-stack foundation for AI agents that can do real work and stay governed. Can that be reconstructed as a single, source-checkable stack from primary sources alone?",
+    "conclusion": "Yes. Nadella's framing — 'AI won't transform your business; the system that runs it will' — runs through every announcement: models (7 MAI, led by Suleyman, weights shipped to third parties for the first time) → runtime (Foundry Agent Service) → knowledge (Microsoft IQ) → apps (Scout / collaborative agents) → OS (Windows agent runtime / Project Solara) → governance (open trust stack / Agent 365). But temper the hype: most of it is public preview, not GA; key benchmarks are vendor-run and unverified; and two popular claims were corrected under adversarial review — 'Copilot rebuilt across OpenAI/Anthropic/open-source' conflates Copilot with Foundry and predates Build, and 'Windows Agent Framework hit GA' is false (the GA'd thing is cross-platform MAF, shipped back in April). Clear blueprint, landing still to be proven.",
+    "citation": [
+      { "@type": "CreativeWork", "url": "https://news.microsoft.com/build-2026/", "name": "Microsoft Build 2026 official news hub", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://microsoft.ai/news/microsoft-build-2026-mai-keynote-transcript/", "name": "MAI Build 2026 keynote transcript (official)", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://microsoft.ai/news/building-a-hillclimbing-machine-launching-seven-new-mai-models/", "name": "Building a hill-climbing machine: 7 new MAI models", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://devblogs.microsoft.com/foundry/whats-new-in-microsoft-foundry-build-2026/", "name": "What's new in Microsoft Foundry (Build 2026)", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://devblogs.microsoft.com/foundry/agent-service-build2026/", "name": "Foundry Agent Service — agents at scale", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://devblogs.microsoft.com/foundry/build-smarter-agents-faster-with-foundry-iq/", "name": "Foundry IQ — unified knowledge plane", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/improve-recall-by-up-to-54-using-knowledge-bases/4524852", "name": "Foundry IQ +54% recall eval (exact framing)", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://devblogs.microsoft.com/foundry/build-2026-open-trust-stack-ai-agents/", "name": "Open trust stack for AI agents (ASSERT/ACS)", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://devblogs.microsoft.com/agent-framework/microsoft-agent-framework-at-build-2026-announce/", "name": "Microsoft Agent Framework (MAF) at Build 2026 — 1.0 GA predates Build", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://devblogs.microsoft.com/microsoft365dev/work-iq-production-ready-intelligence-for-every-agent/", "name": "Work IQ + Work IQ API", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://blogs.bing.com/search/June-2026/Announcing-Microsoft-Web-IQ", "name": "Announcing Microsoft Web IQ", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://www.microsoft.com/en-us/microsoft-365/blog/2026/06/02/introducing-microsoft-scout-your-always-on-personal-agent/", "name": "Introducing Microsoft Scout", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://github.blog/news-insights/product-news/github-copilot-app-the-agent-native-desktop-experience/", "name": "GitHub Copilot app — agent-native desktop", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://www.microsoft.com/en-us/microsoft-365/blog/2026/03/09/powering-frontier-transformation-with-copilot-and-agents/", "name": "Copilot multi-model (Mar 2026 Wave 3, predates Build)", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://blogs.windows.com/windowsdeveloper/2026/06/02/windows-platform-security-for-ai-agents/", "name": "Windows platform security for AI agents", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://commandline.microsoft.com/project-solara-build-2026/", "name": "Project Solara — agent-first device platform", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://azure.microsoft.com/en-us/blog/microsoft-build-2026-building-agentic-apps-with-microsoft-fabric-and-microsoft-databases/", "name": "Agentic apps with Fabric & Databases (Fabric IQ)", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://azure.microsoft.com/en-us/blog/announcing-microsoft-discovery-general-availability-and-microsoft-discovery-app-preview/", "name": "Microsoft Discovery GA", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://www.youtube.com/watch?v=FFMm454fxNA", "name": "Build 2026 Satya Nadella Opening Keynote (official full video)", "tier": "primary", "verified": true, "accessed": "2026-06-22" }
+    ]
+  }
+  </script>
+
+  <style>
+    /*
+      主题自适应：产物用自有前缀变量 --a-*，其值继承「外层站点」的同名站点变量
+      (--bg/--fg/--card/...)，站点不存在时（独立打开原始产物）回退到 fallback 暗色。
+      用不同变量名（--a-bg vs 站点 --bg）避免 scope 后 :root→.artifact-embed 的自引用循环。
+      详情页处于 html.light/.dark 之下，var(--a-bg) 命中站点主题值，自动 light/dark 自适应。
+    */
+    :root {
+      --a-bg: var(--bg, #0a0a0f);
+      --a-fg: var(--fg, #e8e8ed);
+      --a-fg-soft: var(--fg-soft, #c8c8d4);
+      --a-muted: var(--muted, #9090a0);
+      --a-accent: var(--accent, #f6821f);
+      --a-accent2: var(--accent-2, #6b8cff);
+      --a-card: var(--card, #14141c);
+      --a-card-hi: var(--card-hi, #1a1a26);
+      --a-border: var(--border, #26263a);
+      --a-border-hi: var(--border-hi, #36364e);
+      --a-ok: var(--ok, #3ecf8e);
+      --a-warn: var(--warn, #ffb454);
+      --read: 760px;
+      --wide: 1180px;
+      --radius: 14px;
+      /* 卡片层次：阴影 + 卡面底色。默认（暗色）阴影深、卡面比 bg 略亮 */
+      --a-shadow: 0 1px 3px rgba(0,0,0,.4), 0 6px 18px rgba(0,0,0,.22);
+      --a-surface: var(--a-card);
+    }
+    /* light 主题下：卡面用纯白拉开与米白背景的层次，阴影更轻盈柔和 */
+    html.light .artifact-embed, .artifact-embed.is-light {
+      --a-surface: #ffffff;
+      --a-shadow: 0 1px 2px rgba(60,50,30,.06), 0 8px 24px rgba(60,50,30,.10);
+    }
+    * { box-sizing: border-box; }
+    body, .artifact-embed { margin: 0; background: var(--a-bg); color: var(--a-fg);
+      font: 17px/1.75 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased; }
+    a { color: var(--a-accent2); text-decoration: none; border-bottom: 1px solid transparent; }
+    a:hover { border-bottom-color: var(--a-accent2); }
+    img { max-width: 100%; display: block; }
+
+    /* ── 栏宽节奏：正文窄栏居中，图文/hero 可出血到宽栏 ── */
+    .read { max-width: var(--read); margin-inline: auto; padding-inline: 1.5rem; }
+    .wide { max-width: var(--wide); margin-inline: auto; padding-inline: 1.5rem; }
+
+    /* ── 通用排版 ── */
+    p { margin: 1rem 0; }
+    .read h2 { font-size: clamp(1.7rem, 4vw, 2.3rem); letter-spacing: -.02em; margin: 0 0 1rem;
+      line-height: 1.12; }
+    h3 { font-size: 1.15rem; color: var(--a-accent2); margin: 1.8rem 0 .5rem; }
+    ul, ol { padding-left: 1.2rem; } li { margin: .45rem 0; }
+    strong { color: var(--a-fg); }
+    em { color: var(--a-muted); }
+
+    /* ══════ HERO（官方大图 + 毛玻璃文字面板）══════ */
+    .hero { position: relative; min-height: 80vh; display: flex; align-items: flex-end;
+      overflow: hidden; border-bottom: 1px solid var(--a-border); }
+    .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+      filter: saturate(1.05); }
+    /* 轻量整体压暗（仅压底部，保留图像观感），毛玻璃面板负责文字承载 */
+    .hero-shade { position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(8,8,12,.25) 0%, rgba(8,8,12,.05) 30%, rgba(8,8,12,.55) 100%); }
+    .hero-wrap { position: relative; max-width: var(--wide); margin-inline: auto; width: 100%;
+      padding: 0 1.5rem 3rem; }
+    /* 毛玻璃文字面板：半透明深底 + 背景模糊 + 细边，让文字从图像里「浮」出来 */
+    .hero-inner { max-width: 48rem; padding: 1.8rem 2.2rem 1.9rem; border-radius: 18px;
+      background: rgba(14,14,22,.55);
+      -webkit-backdrop-filter: blur(20px) saturate(1.3); backdrop-filter: blur(20px) saturate(1.3);
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow: 0 16px 50px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.08); }
+    .eyebrow { display: inline-flex; align-items: center; gap: .6rem; font-size: .75rem;
+      letter-spacing: .16em; text-transform: uppercase; color: #ffb877; font-weight: 700; }
+    .eyebrow::before { content: ""; width: 1.8rem; height: 1px; background: #ffb877; }
+    /* 面板内文字恒定浅色（面板深底之上），不随主题 */
+    .hero h1 { font-size: clamp(2rem, 5vw, 3.6rem); line-height: 1.06; letter-spacing: -.035em;
+      margin: 1rem 0 .8rem; font-weight: 800; max-width: none; color: #fff; }
+    .hero h1 .ms { color: #9db4ff; }
+    .hero h1 .l2 { white-space: nowrap; }  /* 第二行整体不换行（宽屏）*/
+    .hero .dek { font-size: clamp(1.02rem, 2vw, 1.3rem); color: rgba(255,255,255,.86); max-width: 44ch;
+      line-height: 1.5; margin: 0; }
+    .hero .byline { margin: 1.3rem 0 0; font-size: .82rem; color: rgba(255,255,255,.62);
+      font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+    .hero .credit { position: absolute; right: 1rem; bottom: .5rem; font-size: .68rem;
+      color: rgba(255,255,255,.4); }
+    @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+      /* 不支持背景模糊的浏览器：加深面板底色保证可读 */
+      .hero-inner { background: rgba(10,10,16,.82); }
+    }
+
+    /* ── lede 引子段（hero 后第一段大字，跟随主题）── */
+    .lede { font-size: clamp(1.2rem, 2.6vw, 1.55rem); line-height: 1.6; color: var(--a-fg-soft);
+      margin: 3rem auto 0; font-weight: 400; }
+    .lede strong { color: var(--a-fg); }
+
+    /* ── 「这份报告适合谁看」导读区 ── */
+    .audience { max-width: var(--wide); margin: 2.5rem auto 0; padding-inline: 1.5rem; }
+    .audience h3 { font-size: 1.05rem; color: var(--a-fg); margin: 0 0 1rem; }
+    .aud-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+    .aud-card { background: var(--a-surface); box-shadow: var(--a-shadow); border: 1px solid var(--a-border); border-radius: var(--radius);
+      border-top: 3px solid var(--a-accent); padding: 1rem 1.1rem; }
+    .aud-card .who { font-weight: 700; color: var(--a-fg); font-size: .98rem; margin-bottom: .3rem; }
+    .aud-card .what { font-size: .88rem; color: var(--a-fg-soft); line-height: 1.55; margin: 0; }
+    .aud-card .jump { font-size: .8rem; color: var(--a-accent); margin-top: .5rem; }
+
+    /* ── 「不同人群视角」小栏（模块末尾，取代旧 .why 的拓展）── */
+    .persona { margin-top: 1.6rem; border: 1px solid var(--a-border); border-radius: var(--radius);
+      background: var(--a-surface); box-shadow: var(--a-shadow); overflow: hidden; }
+    .persona-title { font-size: .82rem; font-weight: 700; letter-spacing: .04em; color: var(--a-muted);
+      padding: .7rem 1.1rem; border-bottom: 1px solid var(--a-border); text-transform: uppercase; }
+    .persona-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    .persona-cell { padding: .9rem 1.1rem; border-top: 1px solid var(--a-border); }
+    .persona-cell:not(:last-child) { border-right: 1px solid var(--a-border); }
+    .persona-cell .p-who { font-size: .8rem; font-weight: 700; color: var(--a-accent2); margin-bottom: .3rem; }
+    .persona-cell .p-txt { font-size: .88rem; color: var(--a-fg-soft); line-height: 1.55; margin: 0; }
+
+    /* ── pull quote 金句（居中：顶部短竖线 + 大字居中 + cite 居中限宽分两行）── */
+    .pull { margin: 3.5rem auto; max-width: 880px; padding: 0 1.5rem; text-align: center; }
+    .pull::before { content: ""; display: block; width: 3rem; height: 4px; border-radius: 2px;
+      background: var(--a-accent); margin: 0 auto 1.4rem; }
+    .pull blockquote { margin: 0; padding: 0;
+      font-size: clamp(1.5rem, 3.2vw, 2.1rem); line-height: 1.32; font-weight: 700; letter-spacing: -.015em;
+      color: var(--a-fg); text-wrap: balance; }
+    .pull blockquote .q-accent { color: var(--a-accent); }
+    .pull cite { display: block; margin: 1.2rem auto 0; font-style: normal; font-size: .92rem;
+      color: var(--a-muted); max-width: 52ch; line-height: 1.6; }
+
+    /* ── 卡片块（假设/纠错/结论）── */
+    .card { background: var(--a-surface); box-shadow: var(--a-shadow); border: 1px solid var(--a-border); border-radius: var(--radius);
+      padding: 1.4rem 1.6rem; margin: 1.8rem auto; }
+    .card.hypothesis { border-left: 4px solid var(--a-accent2); }
+    .card.conclusion { border-left: 4px solid var(--a-ok); }
+    .card.warn-box { border-left: 4px solid var(--a-warn); }
+    .card h3 { margin-top: 0; }
+    /* 纠错双卡并排（窄屏堆叠）*/
+    .myth-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; max-width: var(--wide); margin: 1.5rem auto 0; }
+    .myth-grid .card { margin: 0; }
+    .myth-grid ul { padding-left: 1.1rem; margin: .6rem 0 0; }
+    .myth-grid li { margin: .4rem 0; font-size: .95rem; }
+
+    /* ── 视频嵌入（16:9，iframe 不被 SSR strip）── */
+    .video-embed { position: relative; width: 100%; padding-top: 56.25%; margin: 1.5rem auto;
+      border-radius: var(--radius); overflow: hidden; border: 1px solid var(--a-border); background: #000; }
+    .video-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+    /* ══════ 编辑式模块（图文交替）══════ */
+    .feature { max-width: var(--wide); margin: 4rem auto 0; padding-inline: 1.5rem;
+      padding-top: 2.2rem; border-top: 1px solid var(--a-border); }
+    .feature-head { margin-bottom: 1.4rem; }
+    /* 编号行：实心徽章 + kicker，清晰传达「第几个模块 · 什么层」 */
+    .feature-kicker { display: flex; align-items: center; gap: .7rem; font-size: .82rem;
+      letter-spacing: .04em; color: var(--a-muted); font-weight: 600; margin: 0 0 .5rem; }
+    .feature-no { flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
+      width: 2rem; height: 2rem; border-radius: 8px; background: var(--a-accent); color: #1a0e02;
+      font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .95rem; font-weight: 800; }
+    .feature.blue .feature-no { background: var(--a-accent2); color: #060912; }
+    .feature h2 { font-size: clamp(1.55rem, 3.6vw, 2.1rem); letter-spacing: -.02em; line-height: 1.14;
+      margin: 0 0 .5rem; }
+    .feature-dek { color: var(--a-muted); font-size: 1.02rem; line-height: 1.6; max-width: 56ch; margin: 0; }
+
+    /*
+      模块布局（解决「左侧填不满就留大空白」+「卡片整齐对齐」）：
+      放弃刚性左右两栏。媒体区（图 + 数据块）置顶横向铺开；公告卡在下方用
+      响应式网格 auto-fill 铺满全宽、等宽对齐。无侧栏 → 无空白；卡片天然整齐。
+    */
+    .split { margin-top: 1.6rem; }
+    /*
+      媒体区：单张图居中横铺（克制最大宽度），不与数据块并排——避免右侧失衡留空。
+      图作为模块的视觉引导，宽度收敛，下方接公告卡网格。
+    */
+    .split .col-media { display: block; margin-bottom: 1.6rem; }
+    .split .col-media > figure.shot { max-width: 720px; margin-inline: auto; }
+    /* 仅照片限高（避免超大图）；SVG 信息图保持自然高度，绝不裁剪（裁剪会导致溢出重叠） */
+    .split .col-media > figure.shot:not(.svg) img { max-height: 360px; object-fit: cover; }
+    .split .col-media > figure.shot.svg .svgbox { max-width: 520px; margin-inline: auto; }
+    /*
+      公告卡 + 数据卡：固定最多 2 列——2 卡正好铺满两列（不留空栏），3 卡为 2+1。
+      比 auto-fit 更可控，杜绝宽屏下 2 卡却排成 3 列、空一列的问题。
+    */
+    .split .col-body { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.1rem; align-items: stretch; }
+    /* stats 作为网格首项时跨整行做横幅，内容居中 */
+    .split .col-body > .stats { grid-column: 1 / -1; flex-direction: row; justify-content: center;
+      gap: 1.5rem 3rem; }
+
+    /* 模块配图 */
+    figure.shot { margin: 0; }
+    figure.shot img { width: 100%; border-radius: var(--radius); border: 1px solid var(--a-border); }
+    /*
+      自绘 SVG 图块：主题自适应。结构色（底/卡/边/文字）走 --svg-* 变量随主题切换，
+      强调色（橙/蓝/绿）在 SVG 内保留。light 下浅底深字、dark 下深底浅字，与页面统一。
+    */
+    figure.shot.svg .svgbox {
+      --svg-bg: var(--a-surface);      /* 图块底 = 卡面（白/暗，与背景拉开） */
+      --svg-card: var(--a-card-hi);    /* 图内方块底（比图块底略沉，制造层次） */
+      --svg-border: var(--a-border-hi);/* 图内描边/连接线（加重，看得清） */
+      --svg-fg: var(--a-fg);           /* 图内主文字 */
+      --svg-muted: var(--a-muted);     /* 图内次要文字 */
+      background: var(--svg-bg); box-shadow: var(--a-shadow);
+      border-radius: var(--radius); border: 1px solid var(--a-border); padding: 1.2rem;
+      display: flex; align-items: center; justify-content: center; }
+    figure.shot figcaption { font-size: .78rem; color: var(--a-muted); margin-top: .55rem; line-height: 1.5;
+      text-align: center; }
+    figure.shot figcaption a { color: var(--a-muted); border-bottom: 1px dotted var(--a-border); }
+
+    /* 数据高亮块在 light 下也要有底色对比 */
+    .stats { background: var(--a-surface); box-shadow: var(--a-shadow); border-color: var(--a-border); }
+
+    /*
+      公告条目 → 独立卡片（每条带边框/背景/hover）。
+      解决「右侧没卡片、左空白、留白失衡」：卡片自适应高度，内容多寡都成块。
+    */
+    .ann { background: var(--a-surface); box-shadow: var(--a-shadow); border: 1px solid var(--a-border); border-radius: var(--radius);
+      padding: 1rem 1.2rem; transition: border-color .2s, transform .2s, box-shadow .2s; }
+    .ann:hover { border-color: var(--a-border-hi); transform: translateY(-2px);
+      box-shadow: 0 6px 22px rgba(0,0,0,.18); }
+    .ann-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .45rem .7rem; margin-bottom: .5rem; }
+    .ann-head .name { font-weight: 700; font-size: 1.02rem; color: var(--a-fg); }
+    .ann ul { margin: .5rem 0; }
+    .ann .meta-row { display: flex; flex-wrap: wrap; gap: .4rem .9rem; font-size: .8rem; color: var(--a-muted); margin: .2rem 0 .5rem; }
+    .ann .meta-row b { color: var(--a-fg-soft); font-weight: 600; }
+    .ann .src { font-size: .76rem; color: var(--a-muted); margin-top: .6rem;
+      padding-top: .5rem; border-top: 1px dashed var(--a-border); }
+    .ann .src a { color: var(--a-muted); }
+    /* 模块内来源行的 primary 标签是重复噪音——统一隐藏，文末已声明全部一手来源 */
+    .ann .src .tier { display: none; }
+
+    /* 状态徽章 */
+    .st { display: inline-block; font-size: .66rem; letter-spacing: .04em; text-transform: uppercase;
+      padding: .14rem .55rem; border-radius: 999px; border: 1px solid var(--a-border); color: var(--a-muted); font-weight: 700; }
+    .st.ga { color: var(--a-ok); border-color: var(--a-ok); }
+    .st.preview { color: var(--a-accent2); border-color: var(--a-accent2); }
+    .st.announced { color: var(--a-warn); border-color: var(--a-warn); }
+
+    /* 关键数字高亮 + 厂商自测标注 */
+    .kpi { display: inline-block; font-size: .78rem; padding: .12rem .5rem; border-radius: 6px;
+      background: rgba(107,140,255,.12); border: 1px solid var(--a-border); color: var(--a-accent2); margin: .15rem .3rem .15rem 0; }
+    .vendor { color: var(--a-warn); white-space: nowrap; }
+    .num { color: var(--a-accent); font-weight: 700; }
+
+    /* 数据高亮块（大数字 + 标签）*/
+    .stats { display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; margin: 1.2rem 0; padding: 1rem 1.2rem;
+      background: rgba(255,255,255,.02); border: 1px solid var(--a-border); border-radius: var(--radius); }
+    .stat { min-width: 0; text-align: center; }
+    .stat .big { font-size: 1.7rem; font-weight: 800; letter-spacing: -.02em; color: var(--a-accent); line-height: 1.1;
+      font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+    .stat .big.blue { color: var(--a-accent2); }
+    .stat .lbl { font-size: .76rem; color: var(--a-muted); margin-top: .15rem; }
+
+    /* 模块收尾「为什么重要」拉条 */
+    .why { margin-top: 1.6rem; padding: .9rem 1.2rem; border-left: 3px solid var(--a-accent2);
+      background: rgba(107,140,255,.07); border-radius: 0 10px 10px 0; font-size: .95rem; color: var(--a-fg-soft); }
+    .why b { color: var(--a-accent2); }
+
+    /* 全栈速览图：可 hover（整图轻微抬升 + 描边），呼应卡片交互语言 */
+    figure.overview .svgbox { transition: border-color .2s, transform .2s, box-shadow .2s; cursor: default; }
+    figure.overview .svgbox:hover { border-color: var(--a-accent); transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(0,0,0,.22); }
+
+    /* 标签 / 引用：柔和的填充式 chip（不用亮色描边，避免 light 下晃眼）*/
+    .tier { display: inline-block; white-space: nowrap; font-size: .7rem; padding: .12rem .5rem;
+      border-radius: 999px; border: 1px solid transparent; color: var(--a-muted);
+      background: var(--a-card-hi); vertical-align: middle; font-weight: 600; }
+    .tier.primary { color: var(--a-ok); background: color-mix(in srgb, var(--a-ok) 14%, transparent); }
+    .tier.secondary { color: var(--a-warn); background: color-mix(in srgb, var(--a-warn) 16%, transparent); }
+    .cite { font-size: .82rem; color: var(--a-muted); margin: .6rem 0; line-height: 1.9; }
+    .cite a { display: inline-block; margin-right: .2rem; }
+    /* keynote 来源行的 primary 标签是重复噪音，隐藏（文末统一声明一手来源）*/
+    .cite .tier { display: none; }
+
+    /* 对抗验证卡片网格（第10条重排）*/
+    .verify-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.1rem; max-width: var(--wide); margin: 1.6rem auto 0; }
+    .vcard { background: var(--a-surface); box-shadow: var(--a-shadow); border: 1px solid var(--a-border); border-radius: var(--radius);
+      border-left: 3px solid var(--a-warn); padding: 1rem 1.2rem; transition: border-color .2s, transform .2s; }
+    .vcard:hover { transform: translateY(-2px); border-left-color: var(--a-accent); }
+    .vcard-head { display: flex; align-items: flex-start; justify-content: space-between; gap: .6rem; margin-bottom: .5rem; }
+    .vcard .vclaim { font-weight: 700; color: var(--a-fg); font-size: .96rem; line-height: 1.35; }
+    .vcard p { margin: 0; font-size: .9rem; color: var(--a-fg-soft); line-height: 1.55; }
+
+    hr.rule { border: 0; border-top: 1px solid var(--a-border); max-width: var(--read); margin: 4rem auto 0; }
+    details { border: 1px solid var(--a-border); border-radius: var(--radius); padding: 1rem 1.25rem; margin: 1rem auto; max-width: var(--read); }
+    summary { cursor: pointer; font-weight: 600; color: var(--a-accent2); }
+    footer.topic { max-width: var(--read); margin: 3rem auto 0; padding: 2rem 1.5rem 5rem;
+      border-top: 1px solid var(--a-border); color: var(--a-muted); font-size: .85rem; }
+    section { scroll-margin-top: 1rem; }
+
+    /* ── 平板 ── */
+    @media (max-width: 860px) {
+      .myth-grid { grid-template-columns: 1fr; }
+      .split .col-media { grid-template-columns: 1fr; }
+      .split .col-media .stats { flex-direction: row; }
+    }
+    /* ── 移动端小屏（全面适配 + 统一呼吸边距）── */
+    @media (max-width: 600px) {
+      body, .artifact-embed { font-size: 15.5px; }
+      /* 所有顶层容器统一 1.15rem 左右边距，卡片不再贴边 */
+      .read, .wide, .audience, .feature, .pull { padding-inline: 1.15rem; }
+      details, footer.topic { margin-inline: 1.15rem; }
+      .hero { min-height: 68vh; }
+      .hero-wrap { padding: 0 1.15rem 2rem; }
+      .hero-inner { max-width: 100%; padding: 1.3rem 1.3rem 1.4rem; border-radius: 14px; }
+      .hero h1 { font-size: clamp(1.8rem, 8vw, 2.4rem); }
+      .hero h1 .l2 { white-space: normal; }
+      .pull blockquote { font-size: 1.3rem; }
+      .feature { margin-top: 3rem; padding-top: 1.8rem; }
+      .split .col-body { grid-template-columns: 1fr; }   /* 公告卡单列 */
+      .stats { gap: .8rem 1.2rem; padding: .9rem 1rem; }
+      .stat .big { font-size: 1.4rem; }
+      .feature h2 { font-size: clamp(1.4rem, 6vw, 1.7rem); }
+      .ann { padding: .95rem 1.1rem; }
+      figure.shot.svg .svgbox { padding: .9rem; }
+      /* persona 三栏在小屏堆叠为单列，cell 右边框改下边框 */
+      .persona-cell:not(:last-child) { border-right: 0; }
+      /* 全栈速览图：移动端横向滚动，避免字被压到看不清 */
+      figure.overview .svgbox { overflow-x: auto; justify-content: flex-start; }
+      figure.overview svg { min-width: 560px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════ HERO ══════════ -->
+  <header class="hero">
+    <img class="hero-img" src="https://microsoft.ai/wp-content/uploads/2026/05/HeroCollageBuild3-copy-1-1.jpg" alt="Microsoft Build 2026 key visual collage" loading="eager" />
+    <div class="hero-shade"></div>
+    <div class="hero-wrap">
+      <div class="hero-inner">
+        <span class="eyebrow">42-research · Topic 02 · Conference read</span>
+        <h1><span class="ms">Microsoft Build 2026</span><br><span class="l2">The AI-Agent Full Stack</span></h1>
+        <p class="dek">Two days, 70+ announcements. Strip the hype and one throughline remains: turn agents that do real work into governed, full-stack infrastructure.</p>
+        <p class="byline">Jun 2–3, 2026 · San Francisco · Fort Mason &nbsp;|&nbsp; Every claim traced to a primary source</p>
+      </div>
+    </div>
+    <span class="credit">Key visual © Microsoft (microsoft.ai, cited)</span>
+  </header>
+
+  <article>
+
+    <!-- ── lede ── -->
+    <p class="lede read">Microsoft's annual developer conference came back to a live stage in San Francisco. Over two days it shipped 70-plus announcements — at first glance, a pile of unrelated product names. Line them up, though, and a single chain appears: <strong>Microsoft is turning "agents that do your work" from demo-ware into infrastructure that actually runs inside a company and stays under control.</strong> This report lays out that chain — and every claim links to Microsoft's own source.</p>
+
+    <!-- ── hypothesis ── -->
+    <div class="card hypothesis read">
+      <h3>🔬 The claim we set out to test</h3>
+      <p>Build 2026's AI announcements aren't separate bets — they're <strong>parts of one machine</strong>: Microsoft is building, <strong>from the model up, a full stack that lets AI agents do reliable work while staying governable by the enterprise</strong>. We test two things: whether that chain actually holds, and what's usable today versus still a slide.</p>
+    </div>
+
+    <!-- ── who this is for ── -->
+    <section class="audience">
+      <h3>👥 Who this report is for</h3>
+      <div class="aud-grid">
+        <div class="aud-card">
+          <p class="who">People who use AI to get work done</p>
+          <p class="what">Developers, PMs, ops — what new tools landed, what you can use today, and what to wait for.</p>
+          <p class="jump">Start with → Models · Apps</p>
+        </div>
+        <div class="aud-card">
+          <p class="who">People who build AI models / tools</p>
+          <p class="what">Model vendors, open-source, tool startups — where Microsoft places its own models, and what it left open to third parties.</p>
+          <p class="jump">Start with → Models · Runtime · Governance</p>
+        </div>
+        <div class="aud-card">
+          <p class="who">Azure partners / sales</p>
+          <p class="what">Pitching this to customers — what's GA (sellable today), what's preview, and how the pieces combine.</p>
+          <p class="jump">Start with → Runtime · Knowledge · Governance</p>
+        </div>
+        <div class="aud-card">
+          <p class="who">People tracking where AI is going</p>
+          <p class="what">Investors, analysts — Microsoft's overall play, and where the hype needs cooling.</p>
+          <p class="jump">Start with → Throughline · Adversarial check · Conclusion</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Two myths to clear up first (split into two standalone cards) ── -->
+    <section class="wide">
+      <h2>First, two myths going around that we'll clear up</h2>
+      <p style="color:var(--a-fg-soft);max-width:62ch;">The moment the conference ended, claims started spreading online and in the press. We checked each one against the official source documents and found that the two below are <strong>either wrong or overblown</strong>. Let's set them straight so you don't get misled:</p>
+      <div class="myth-grid">
+        <div class="card warn-box">
+          <p class="myth-tag"><span class="tier secondary">① Inaccurate</span></p>
+          <h3 style="margin:.5rem 0 0;font-size:1.05rem;line-height:1.3;">"Copilot was rebuilt into a platform that runs OpenAI, Anthropic, and open-source models all at once"</h3>
+          <ul>
+            <li><strong>The thing that lets you freely swap in open-source models is Foundry, the developer product — not Copilot, the consumer one.</strong> The two are being conflated.</li>
+            <li>"Rebuilt" is the media's word; Microsoft itself only said it "added a few more model options." Nowhere near that dramatic.</li>
+            <li><strong>And Copilot's ability to switch models has been around since March this year — it's not news from the June conference.</strong> Using Anthropic's models still requires an admin to flip a switch and is limited to certain regions.</li>
+          </ul>
+        </div>
+        <div class="card warn-box">
+          <p class="myth-tag"><span class="tier secondary">② Debunked</span></p>
+          <h3 style="margin:.5rem 0 0;font-size:1.05rem;line-height:1.3;">"Windows' AI agent framework officially launched at this conference"</h3>
+          <ul>
+            <li>What actually "officially launched" is the <strong>cross-platform Microsoft Agent Framework</strong>, and it <strong>shipped back in April this year</strong> — not at this conference.</li>
+            <li>The Windows-<em>specific</em> stack shown at the conference (Windows Agent Runtime and the like) is still <strong>alpha / preview</strong>, rolling out only with the Windows 11 update in the second half of the year.</li>
+            <li>In other words: nothing called a "Windows AI agent framework" actually landed at this conference.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── main-thread pull quote ── -->
+    <div class="pull">
+      <blockquote>"AI won't transform your business — <span class="q-accent">the system that runs it</span> will."</blockquote>
+      <cite>— Microsoft CEO Satya Nadella, opening Build 2026. His point: <strong>a smart AI alone is useless; what actually changes how you work is "the whole system that keeps the AI doing reliable work"</strong> — the model, the context it needs to understand, and the tools it can use. You need all three.</cite>
+    </div>
+
+    <!-- ── keynote video ── -->
+    <section class="read">
+      <div class="video-embed">
+        <iframe src="https://www.youtube.com/embed/FFMm454fxNA"
+          title="Microsoft Build 2026 | Satya Nadella Opening Keynote"
+          loading="lazy" allowfullscreen
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      </div>
+      <p class="cite">Source: <a href="https://www.youtube.com/watch?v=FFMm454fxNA">Satya Nadella Opening Keynote (official Microsoft Developer)</a> <span class="tier primary">primary</span> · <a href="https://microsoft.ai/news/microsoft-build-2026-mai-keynote-transcript/">official transcript</a> <span class="tier primary">primary</span> · condensed <a href="https://www.youtube.com/watch?v=ZhZqeo7SD0Y">Highlights</a> · <a href="https://build.microsoft.com/en-US/sessions">all sessions on demand</a></p>
+    </section>
+
+    <!-- ── full-stack overview diagram ── -->
+    <section class="wide">
+      <figure class="shot svg overview">
+        <div class="svgbox">
+          <svg viewBox="0 0 900 230" width="100%" font-family="-apple-system, system-ui, sans-serif" role="img" aria-label="The bottom-up AI agent stack: models → runtime → knowledge → apps → OS → governance">
+            <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#f6821f"/><stop offset="1" stop-color="#6b8cff"/></linearGradient></defs>
+            <text x="20" y="26" fill="var(--svg-fg)" font-size="15" font-weight="700">The bottom-up AI agent stack</text>
+            <g font-size="12.5" font-weight="600">
+              <rect x="20" y="44" width="860" height="24" rx="5" fill="var(--svg-card)" stroke="var(--svg-border)"/><rect x="20" y="44" width="4" height="24" fill="#f6821f"/><text x="36" y="60" fill="var(--svg-fg)">06 · Governance — Open trust stack · ASSERT (open source) · cross-framework observability (GA)</text>
+              <rect x="20" y="72" width="860" height="24" rx="5" fill="var(--svg-card)" stroke="var(--svg-border)"/><rect x="20" y="72" width="4" height="24" fill="#6b8cff"/><text x="36" y="88" fill="var(--svg-fg)">05 · OS — Windows agent runtime · Project Solara (mostly preview)</text>
+              <rect x="20" y="100" width="860" height="24" rx="5" fill="var(--svg-card)" stroke="var(--svg-border)"/><rect x="20" y="100" width="4" height="24" fill="#f6821f"/><text x="36" y="116" fill="var(--svg-fg)">04 · Apps — Scout · collaborative agents · GitHub Copilot app</text>
+              <rect x="20" y="128" width="860" height="24" rx="5" fill="var(--svg-card)" stroke="var(--svg-border)"/><rect x="20" y="128" width="4" height="24" fill="#6b8cff"/><text x="36" y="144" fill="var(--svg-fg)">03 · Knowledge — Microsoft IQ: Work / Fabric / Foundry (KB GA) / Web IQ</text>
+              <rect x="20" y="156" width="860" height="24" rx="5" fill="var(--svg-card)" stroke="var(--svg-border)"/><rect x="20" y="156" width="4" height="24" fill="#f6821f"/><text x="36" y="172" fill="var(--svg-fg)">02 · Runtime — Microsoft Foundry · Agent Service · Model Router (GA)</text>
+              <rect x="20" y="184" width="860" height="24" rx="5" fill="var(--svg-card)" stroke="url(#g)"/><rect x="20" y="184" width="4" height="24" fill="#f6821f"/><text x="36" y="200" fill="#f6821f">01 · Models — 7 MAI models · led by Suleyman · first weight distribution (the foundation)</text>
+            </g>
+          </svg>
+        </div>
+        <figcaption>This "AI agent stack" runs bottom to top across six layers (drawn by 42-research from official announcements). Orange = parts already generally available / blue = mostly still in preview. We break it down layer by layer below.</figcaption>
+      </figure>
+    </section>
+
+    <!-- ══════════ Module 01 · Model layer ══════════ -->
+    <section class="feature" id="m1">
+      <div class="feature-head">
+        <p class="feature-kicker"><span class="feature-no">01</span> Model layer · the "brain" at the bottom</p>
+        <h2>Microsoft built 7 AI models of its own</h2>
+        <p class="feature-dek">In the past, Microsoft's AI was largely reselling OpenAI's. This time, Microsoft's own AI team (MAI, led by Mustafa Suleyman) put out 7 in-house models in one shot, spanning image generation, speech, transcription, reasoning, and coding. <strong>Put plainly: Microsoft wants to hold "the brain of AI" in its own hands and stop depending on others at every turn.</strong> This is the foundation of the whole system.</p>
+      </div>
+      <div class="split">
+        <div class="col-media">
+          <figure class="shot">
+            <img src="https://microsoft.ai/wp-content/uploads/2026/05/Group-2147234751-2.jpg" alt="The seven MAI models shown on stage at the Build 2026 keynote" loading="lazy" />
+            <figcaption>The seven MAI models debut on stage at the Build 2026 keynote. Image © Microsoft, via <a href="https://microsoft.ai/news/building-a-hillclimbing-machine-launching-seven-new-mai-models/">microsoft.ai</a>.</figcaption>
+          </figure>
+        </div>
+        <div class="col-body">
+          <div class="stats">
+            <div class="stat"><div class="big">7</div><div class="lbl">new models (5 base + 2 Flash)</div></div>
+            <div class="stat"><div class="big blue">5</div><div class="lbl">modalities: image / speech / transcription / thinking / coding</div></div>
+            <div class="stat"><div class="big blue">3</div><div class="lbl">third-party distribution channels</div></div>
+          </div>
+          <div class="ann">
+            <div class="ann-head"><span class="name">The MAI seven-model family (hill-climbing machine)</span> <span class="st announced">Announced · mostly preview</span></div>
+            <div class="meta-row"><span><b>Led by</b> Mustafa Suleyman / MAI</span><span><b>Vision</b> "humanist super intelligence"</span><span><b>Trained on</b> Maia 200 chips</span></div>
+            <ul>
+              <li>Microsoft frames the strategy as a <strong>"hill-climbing machine"</strong> (iterative self-improvement rather than one giant release), spanning five categories: <strong>image / speech / transcription / thinking / coding</strong>.</li>
+              <li><strong>The full seven-model lineup</strong>: MAI-Image-2.5, MAI-Image-2.5-Flash, MAI-Transcribe-1.5, MAI-Voice-2, MAI-Voice-2-Flash, MAI-Thinking-1, MAI-Code-1-Flash.</li>
+              <li><span class="num">★</span> <strong>First time distributing weights to third parties</strong>: beyond Foundry, they land on <strong>Open Router / Fireworks / Baseten</strong>, so customers can "tune the weights themselves" — a major signal of reducing OpenAI dependence. The voice models are clone-resistant and <strong>watermarked throughout</strong>; Microsoft claims <span class="kpi">1.4× performance/watt</span> on Maia 200 <span class="vendor">⚠ not independently verified</span>.</li>
+            </ul>
+            <p class="src">Source: <a href="https://microsoft.ai/news/building-a-hillclimbing-machine-launching-seven-new-mai-models/">Building a hill-climbing machine</a> · <a href="https://microsoft.ai/news/microsoft-build-2026-mai-keynote-transcript/">MAI keynote transcript</a> <span class="tier primary">primary</span></p>
+          </div>
+          <div class="ann">
+            <div class="ann-head"><span class="name">MAI-Thinking-1 (the model that "reasons")</span> <span class="st preview">still in limited preview</span></div>
+            <div class="meta-row"><span><b>Size</b> mid-range (~35B parameters)</span><span><b>Memory span</b> ~250K-word context</span><span><b>Training</b> not copied from anyone else's model</span></div>
+            <ul>
+              <li>This is Microsoft's first model built to "think and write code." Microsoft claims it gets <strong>about half right on the hardest coding benchmark (<span class="kpi">SWE-Bench Pro 53%</span>), on par with the top-tier Opus 4.6</strong>, and nearly aces competition math problems <span class="vendor">⚠ all tested by Microsoft itself</span>.</li>
+              <li>But right now it's <strong>open only as a limited preview</strong> — and Microsoft's own two documents conflict (one says preview, one says GA); we go with the more specific one (preview).</li>
+            </ul>
+            <p class="src">Source: <a href="https://microsoft.ai/news/microsoft-build-2026-mai-keynote-transcript/">MAI keynote transcript</a> <span class="tier primary">primary</span></p>
+          </div>
+          <div class="ann">
+            <div class="ann-head"><span class="name">The rest: coding / image / transcription / voice</span> <span class="st ga">some usable now, rolling out</span></div>
+            <ul>
+              <li><strong>MAI-Code-1-Flash for coding</strong>: <span class="kpi">very small (5B parameters)</span>, yet claims to get half right on coding benchmarks (51%) and cost less than peers <span class="vendor">⚠ Microsoft's own number</span>; already in VS Code and other dev tools.</li>
+              <li><strong>MAI-Image-2.5 for image generation</strong>: Microsoft claims it ranks #2 on image editing, beating Google's Nano Banana 2 <span class="vendor">⚠</span>, and it already works inside PowerPoint. <strong>MAI-Transcribe-1.5 for transcription</strong>: supports 43 languages, claimed 5× faster <span class="vendor">⚠</span>. <strong>MAI-Voice-2 for speech synthesis</strong>: 15 languages.</li>
+            </ul>
+            <p class="src">Source: <a href="https://microsoft.ai/news/building-a-hillclimbing-machine-launching-seven-new-mai-models/">Building a hill-climbing machine</a> <span class="tier primary">primary</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="persona">
+        <div class="persona-title">What this means for you</div>
+        <div class="persona-row">
+          <div class="persona-cell"><p class="p-who">If you use AI</p><p class="p-txt">A few more models to pick from — especially MAI-Code, which is small and cheap, perfect to drop into everyday dev tools.</p></div>
+          <div class="persona-cell"><p class="p-who">If you build models / tools</p><p class="p-txt">Note this one: Microsoft put its own model weights on third-party platforms like Fireworks and OpenRouter for the first time — it's grabbing for "model distribution" turf.</p></div>
+          <div class="persona-cell"><p class="p-who">Azure partners</p><p class="p-txt">You've got a new card to play: "Microsoft-built, cost-controlled." But most of it is still in preview, so don't rush to promise customers ship dates.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ Module 02 · Runtime layer ══════════ -->
+    <section class="feature blue flip" id="m2">
+      <div class="feature-head">
+        <p class="feature-kicker"><span class="feature-no">02</span> Runtime layer · where AI actually "runs"</p>
+        <h2>Foundry: the "factory" that pushes AI agents into production</h2>
+        <p class="feature-dek">Plenty of AI agents demo well but never dare go live — they're unstable, insecure, and impossible to debug when something breaks. Foundry is Microsoft's answer: <strong>a "production floor" where AI agents run reliably and can be monitored and governed.</strong> This is the most concrete product core of the entire conference.</p>
+      </div>
+      <div class="split">
+        <div class="col-media">
+          <figure class="shot svg">
+            <div class="svgbox">
+              <svg viewBox="0 0 320 250" width="100%" role="img" aria-label="Microsoft Agent Platform, three layers: Build / Deploy / Operate">
+                <text x="160" y="22" text-anchor="middle" fill="var(--svg-muted)" font-size="10" font-family="system-ui">Microsoft Agent Platform</text>
+                <g font-family="system-ui">
+                  <rect x="40" y="38" width="240" height="56" rx="11" fill="var(--svg-card)" stroke="#6b8cff"/>
+                  <text x="58" y="60" fill="#6b8cff" font-size="13" font-weight="800">Build</text>
+                  <text x="58" y="80" fill="var(--svg-muted)" font-size="10">Foundry · Toolkit · Agent Framework</text>
+                  <rect x="40" y="100" width="240" height="56" rx="11" fill="var(--svg-card)" stroke="#f6821f"/>
+                  <text x="58" y="122" fill="#f6821f" font-size="13" font-weight="800">Deploy</text>
+                  <text x="58" y="142" fill="var(--svg-muted)" font-size="10">Agent Service · isolated sandbox · managed compute</text>
+                  <rect x="40" y="162" width="240" height="56" rx="11" fill="var(--svg-card)" stroke="#3ecf8e"/>
+                  <text x="58" y="184" fill="#3ecf8e" font-size="13" font-weight="800">Operate</text>
+                  <text x="58" y="204" fill="var(--svg-muted)" font-size="10">observability (GA) · evals · ROI · guardrails</text>
+                </g>
+                <g stroke="var(--svg-border)" stroke-width="1.5"><line x1="160" y1="94" x2="160" y2="100"/><line x1="160" y1="156" x2="160" y2="162"/></g>
+              </svg>
+            </div>
+            <figcaption>The Build / Deploy / Operate layers of the Microsoft Agent Platform (drawn by 42-research from the <a href="https://devblogs.microsoft.com/foundry/agent-service-build2026/">Foundry devblog</a>).</figcaption>
+          </figure>
+        </div>
+        <div class="col-body">
+          <div class="stats">
+            <div class="stat"><div class="big">11,000+</div><div class="lbl">model catalog (Microsoft's claim)</div></div>
+            <div class="stat"><div class="big blue">GA</div><div class="lbl">Model Router · Fireworks</div></div>
+            <div class="stat"><div class="big blue">1:1</div><div class="lbl">isolated sandbox per session</div></div>
+          </div>
+          <div class="ann">
+            <div class="ann-head"><span class="name">Foundry: a platform that runs any model</span> <span class="st preview">in preview</span></div>
+            <div class="meta-row"><span><b>Models you can run</b> OpenAI · Anthropic · open source · Microsoft's own</span></div>
+            <ul>
+              <li>It used to be called Azure AI Foundry; this release upgrades it into a unified platform. Last week it added OpenAI's realtime voice and <strong>Claude Opus 4.8</strong> too.</li>
+              <li><strong>"Model Router"</strong> (now GA) <strong>automatically picks the best-fit model for your need and budget</strong> — so Foundry isn't locked to one vendor; it calls whichever works best, and elastically allocates GPU compute on demand.</li>
+              <li>The open-source model hosting service <strong>Fireworks</strong> is also fully integrated; Microsoft claims it handled <span class="kpi">176 billion calls and is used by 17 Fortune 500 companies</span> during preview <span class="vendor">⚠ Microsoft's own number</span>.</li>
+            </ul>
+            <p class="src">Source: <a href="https://devblogs.microsoft.com/foundry/whats-new-in-microsoft-foundry-build-2026/">What's new in Foundry</a> · <a href="https://devblogs.microsoft.com/foundry/build-2026-foundry-models/">Foundry Models</a> <span class="tier primary">primary</span></p>
+          </div>
+          <div class="ann">
+            <div class="ann-head"><span class="name">Agent Service: the "runtime environment" that hosts AI agents</span> <span class="st preview">preview · GA timing uncertain</span></div>
+            <div class="meta-row"><span><b>Tool-agnostic</b> connects Microsoft / GitHub / LangGraph and more</span></div>
+            <ul>
+              <li>Each AI agent runs in <strong>its own "isolated room"</strong> (dedicated compute, memory, and file space, no interference), able to hold up under <strong>overnight, long-running, work-on-its-own</strong> tasks.</li>
+              <li>It can also give AI agents <strong>an "identity" like an employee</strong> — issue a badge, an email, a presence in Teams, a slot in the org chart; they can also <strong>run on a schedule</strong> or <strong>call one another</strong> (all still in preview).</li>
+              <li>It gives AI a <strong>"memory"</strong>: it can remember how to do things, your preferences, and the current conversation (Microsoft claims the "how-to memory" lifts task success rate by <span class="kpi">+7–14%</span> <span class="vendor">⚠ Microsoft's own number</span>).</li>
+              <li><span class="num">⚠</span> <strong>On when it goes GA, Microsoft's own two documents contradict each other</strong> (one says "within 30 days," one says "end of June"), and the official docs still marked it "preview" on June 19. As of our check it had not officially launched.</li>
+            </ul>
+            <p class="src">Source: <a href="https://devblogs.microsoft.com/foundry/agent-service-build2026/">Build and run agents at scale with Foundry</a> <span class="tier primary">primary</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="persona">
+        <div class="persona-title">What this means for you</div>
+        <div class="persona-row">
+          <div class="persona-cell"><p class="p-who">If you use AI</p><p class="p-txt">Want an AI agent that "works on its own and runs tasks overnight"? There's now an official hosted environment — no need to stand up your own servers.</p></div>
+          <div class="persona-cell"><p class="p-who">If you build models / tools</p><p class="p-txt">It's "framework-agnostic" — you can plug in LangGraph and others. But it also means Microsoft wants to be the hub "everyone connects to."</p></div>
+          <div class="persona-cell"><p class="p-who">Azure partners</p><p class="p-txt">This is the best "ready to ship" story to tell customers; Model Router and Fireworks are GA, while hosted agents are still racing toward GA.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ Module 03 · Knowledge layer ══════════ -->
+    <section class="feature" id="m3">
+      <div class="feature-head">
+        <p class="feature-kicker"><span class="feature-no">03</span> Knowledge layer · making AI "understand your stuff"</p>
+        <h2>Microsoft IQ: the four kinds of "knowledge" fed to AI</h2>
+        <p class="feature-dek">No matter how smart the model is, it doesn't know what's going on inside your company. Microsoft uses four "IQs" to feed different knowledge to AI: <strong>Work IQ</strong> (your email/meetings/files), <strong>Fabric IQ</strong> (your company's business logic), <strong>Foundry IQ</strong> (reusable knowledge bases), and <strong>Web IQ</strong> (the live web). Put together, that's what lets AI actually answer to the point.</p>
+      </div>
+      <div class="split">
+        <div class="col-media">
+          <figure class="shot svg">
+            <div class="svgbox">
+              <svg viewBox="0 0 320 300" width="100%" role="img" aria-label="The four legs of Microsoft IQ feeding into an agent">
+                <defs><radialGradient id="iqc"><stop offset="0" stop-color="var(--svg-bg)"/><stop offset="1" stop-color="var(--svg-card)"/></radialGradient></defs>
+                <circle cx="160" cy="150" r="46" fill="url(#iqc)" stroke="#f6821f" stroke-width="2"/>
+                <text x="160" y="146" text-anchor="middle" fill="#f6821f" font-size="15" font-weight="800" font-family="system-ui">Agent</text>
+                <text x="160" y="164" text-anchor="middle" fill="var(--svg-muted)" font-size="10" font-family="system-ui">grounded</text>
+                <g font-family="system-ui" font-size="12" font-weight="700">
+                  <g><line x1="160" y1="104" x2="160" y2="46" stroke="var(--svg-border)" stroke-width="1.5"/><rect x="108" y="20" width="104" height="28" rx="6" fill="var(--svg-card)" stroke="#6b8cff"/><text x="160" y="38" text-anchor="middle" fill="#6b8cff">Work IQ</text></g>
+                  <g><line x1="206" y1="150" x2="270" y2="150" stroke="var(--svg-border)" stroke-width="1.5"/><rect x="252" y="136" width="60" height="28" rx="6" fill="var(--svg-card)" stroke="#6b8cff"/><text x="282" y="154" text-anchor="middle" fill="#6b8cff">Fabric</text></g>
+                  <g><line x1="160" y1="196" x2="160" y2="254" stroke="var(--svg-border)" stroke-width="1.5"/><rect x="104" y="252" width="112" height="28" rx="6" fill="var(--svg-card)" stroke="#3ecf8e"/><text x="160" y="270" text-anchor="middle" fill="#3ecf8e">Foundry IQ · GA</text></g>
+                  <g><line x1="114" y1="150" x2="50" y2="150" stroke="var(--svg-border)" stroke-width="1.5"/><rect x="8" y="136" width="60" height="28" rx="6" fill="var(--svg-card)" stroke="#6b8cff"/><text x="38" y="154" text-anchor="middle" fill="#6b8cff">Web IQ</text></g>
+                </g>
+              </svg>
+            </div>
+            <figcaption>Four IQ legs feed into a single grounded agent (drawn by 42-research).</figcaption>
+          </figure>
+        </div>
+        <div class="col-body">
+          <div class="stats">
+            <div class="stat"><div class="big">+54%</div><div class="lbl">recall (combined, vendor-tested ⚠)</div></div>
+            <div class="stat"><div class="big blue">6-16</div><div class="lbl">Work IQ API endpoints GA</div></div>
+            <div class="stat"><div class="big blue">&lt;165ms</div><div class="lbl">Web IQ latency (Microsoft's claim ⚠)</div></div>
+          </div>
+          <div class="ann">
+            <div class="ann-head"><span class="name">Foundry IQ (unified knowledge plane)</span> <span class="st ga">Knowledge Bases GA · Serverless Preview</span></div>
+            <div class="meta-row"><span><b>Knowledge sources</b> Work · Fabric · Azure SQL · File · MCP</span><span><b>Serverless</b> $0.24/CU-hour · scale-to-zero</span></div>
+            <ul>
+              <li>The "knowledge base" feature is <strong>now GA</strong>, and <strong>it's not limited to Microsoft's own — Claude, ChatGPT, and others can plug straight in</strong>. It turns "have the AI look things up before answering" (the industry calls it RAG), once a chore you had to build yourself, into an out-of-the-box service.</li>
+              <li><span class="num">⚠</span> The widely quoted <strong>"+54% recall" needs its framing corrected</strong>: it refers to "evidence recall"; <strong>a pure knowledge base only gets +46%</strong>, and <span class="kpi">+54% requires a "small model + agentic retrieval" combination</span>; benchmarked on BrowseComp-Plus with Microsoft's own gpt-5.4 <span class="vendor">⚠ vendor-tested, "up to" is the upper bound</span>.</li>
+            </ul>
+            <p class="src">Source: <a href="https://devblogs.microsoft.com/foundry/build-smarter-agents-faster-with-foundry-iq/">Foundry IQ</a> · <a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/improve-recall-by-up-to-54-using-knowledge-bases/4524852">the original +54% recall benchmark</a> <span class="tier primary">primary</span></p>
+          </div>
+          <div class="ann">
+            <div class="ann-head"><span class="name">Work IQ + Work IQ API</span> <span class="st preview">Preview · API GA 6-16</span></div>
+            <ul>
+              <li>Captures how work actually happens (M365 email/meeting/file/Teams signals), providing a shared intelligence layer for all agents.</li>
+              <li><strong>Work IQ API</strong> (endpoints <span class="kpi">GA set for 2026-06-16</span>) is exposed three ways: A2A, remote MCP server, and REST; <strong>10 general-purpose tools</strong> collapse hundreds of operations, independent of Copilot licensing and billed by usage.</li>
+            </ul>
+            <p class="src">Source: <a href="https://devblogs.microsoft.com/microsoft365dev/work-iq-production-ready-intelligence-for-every-agent/">Work IQ + API</a> <span class="tier primary">primary</span></p>
+          </div>
+          <div class="ann">
+            <div class="ann-head"><span class="name">Microsoft Web IQ</span> <span class="st preview">Limited-access Preview</span></div>
+            <ul>
+              <li>Built on the Bing / Microsoft web index (Microsoft says it already serves 1 billion+ users), it delivers real-time, citation-backed grounding across <strong>web / news / images / video / shopping</strong>; model-agnostic and MCP-native; Microsoft claims <span class="kpi">sub-165ms · zero data retention</span> <span class="vendor">⚠</span>.</li>
+            </ul>
+            <p class="src">Source: <a href="https://blogs.bing.com/search/June-2026/Announcing-Microsoft-Web-IQ">Announcing Microsoft Web IQ</a> <span class="tier primary">primary</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="persona">
+        <div class="persona-title">What this means for you</div>
+        <div class="persona-row">
+          <div class="persona-cell"><p class="p-who">If you use AI</p><p class="p-txt">AI can finally "understand your company's stuff" — read your email, files, and meetings — so the answers are reliable, not those of a smart stranger.</p></div>
+          <div class="persona-cell"><p class="p-who">If you build models / tools</p><p class="p-txt">Microsoft turned "feeding data to AI" into a standard service (and it's compatible with Claude/ChatGPT) — part of the build-your-own-RAG work just got absorbed.</p></div>
+          <div class="persona-cell"><p class="p-who">Azure partners</p><p class="p-txt">Knowledge bases are GA and a key selling point for enterprise adoption; but be clear that "+54%" is a vendor-tested number under a specific combination.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ Module 04 · Application layer ══════════ -->
+    <section class="feature blue flip" id="m4">
+      <div class="feature-head">
+        <p class="feature-kicker"><span class="feature-no">04</span> Application layer · the AI you'll actually use</p>
+        <h2>AI agents you can see and touch</h2>
+        <p class="feature-dek">The layers below are all groundwork; this is the one you'll open every day: <strong>Scout</strong> (a personal assistant that tracks your tasks and preps your meetings), AI that collaborates inside Teams, and the <strong>GitHub Copilot desktop app</strong> that hands work off to programmers' agents.</p>
+      </div>
+      <div class="split">
+        <div class="col-media">
+          <figure class="shot svg">
+            <div class="svgbox">
+              <svg viewBox="0 0 320 220" width="100%" role="img" aria-label="A personal agent proactively surfacing tasks">
+                <rect x="40" y="24" width="240" height="172" rx="14" fill="var(--svg-card)" stroke="var(--svg-border)"/>
+                <circle cx="70" cy="54" r="12" fill="#6b8cff" opacity=".25"/><circle cx="70" cy="54" r="5" fill="#6b8cff"/>
+                <text x="92" y="50" fill="var(--svg-fg)" font-size="12" font-weight="700" font-family="system-ui">Scout</text>
+                <text x="92" y="64" fill="var(--svg-muted)" font-size="9.5" font-family="system-ui">always-on · proactive</text>
+                <g font-family="system-ui" font-size="10">
+                  <rect x="62" y="86" width="196" height="26" rx="6" fill="var(--svg-card)" stroke="var(--svg-border)"/><text x="74" y="103" fill="var(--svg-muted)">↑ surface today's tasks</text>
+                  <rect x="62" y="118" width="196" height="26" rx="6" fill="var(--svg-card)" stroke="var(--svg-border)"/><text x="74" y="135" fill="var(--svg-muted)">↑ prep the 10:00 meeting</text>
+                  <rect x="62" y="150" width="196" height="26" rx="6" fill="var(--svg-card)" stroke="#f6821f"/><text x="74" y="167" fill="#f6821f">↑ draft a reply</text>
+                </g>
+              </svg>
+            </div>
+            <figcaption>An illustration of Scout proactively surfacing tasks (drawn by 42-research).</figcaption>
+          </figure>
+        </div>
+        <div class="col-body">
+          <div class="ann">
+            <div class="ann-head"><span class="name">Microsoft Scout (always-on personal agent)</span> <span class="st announced">Announced</span></div>
+            <ul>
+              <li>A personal agent that lives in M365, <strong>proactively</strong> surfacing tasks, prepping meetings, and drafting work, operating across apps and data (grounded by Work IQ).</li>
+              <li>This is the most "visible face" of the Microsoft agent platform — it gathers the capabilities of the three layers below into a single entry point users open every day.</li>
+            </ul>
+            <p class="src">Source: <a href="https://www.microsoft.com/en-us/microsoft-365/blog/2026/06/02/introducing-microsoft-scout-your-always-on-personal-agent/">Introducing Microsoft Scout</a> <span class="tier primary">primary</span></p>
+          </div>
+          <div class="ann">
+            <div class="ann-head"><span class="name">Collaborative agents + Frontier Tuning + RLEs</span> <span class="st preview">Preview / Announced</span></div>
+            <ul>
+              <li><strong>Collaborative agents</strong>: multi-agent orchestration where work happens (Teams / M365), with agents coordinating among themselves and with people, built on the M365 Agents SDK.</li>
+              <li><strong>Frontier Tuning</strong>: customize MAI models on your own data via <strong>reinforcement learning environments (RLEs)</strong> — which Microsoft calls an "AI training gym"; Microsoft claims Excel / McKinsey / Land O'Lakes tasks match or beat <span class="kpi">GPT-5.4/5.5 at 10× lower cost</span> <span class="vendor">⚠</span>.</li>
+            </ul>
+            <p class="src">Source: <a href="https://devblogs.microsoft.com/microsoft365dev/build-collaborative-agents-where-work-happens/">Collaborative agents</a> · <a href="https://devblogs.microsoft.com/microsoft365dev/frontier-tuning-teaching-ai-to-work-the-way-you-do/">Frontier Tuning</a> <span class="tier primary">primary</span></p>
+          </div>
+          <div class="ann">
+            <div class="ann-head"><span class="name">GitHub Copilot app (agent-native desktop)</span> <span class="st announced">Announced</span></div>
+            <ul>
+              <li>A brand-new desktop app that's <strong>agent-native</strong>: delegate coding tasks to agents from the desktop; the keynote positioned <strong>GitHub as "the control plane for all agents"</strong>.</li>
+            </ul>
+            <p class="src">Source: <a href="https://github.blog/news-insights/product-news/github-copilot-app-the-agent-native-desktop-experience/">GitHub Copilot app</a> <span class="tier primary">primary</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="persona">
+        <div class="persona-title">What this means for you</div>
+        <div class="persona-row">
+          <div class="persona-cell"><p class="p-who">If you use AI</p><p class="p-txt">This is what you'll actually open every day: Scout tracks your tasks, preps your meetings, and drafts; developers get a desktop tool dedicated to handing work off to AI.</p></div>
+          <div class="persona-cell"><p class="p-who">If you build models / tools</p><p class="p-txt">"Frontier Tuning" lets enterprises tune a bespoke model on their own data — customization is the opportunity at this layer, and the competitive battleground.</p></div>
+          <div class="persona-cell"><p class="p-who">Azure partners</p><p class="p-txt">Scout and collaborative agents are the best story to tell business teams; most are "announced," so be clear with customers about ship dates.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ Module 05 · OS / device layer ══════════ -->
+    <section class="feature" id="m5">
+      <div class="feature-head">
+        <p class="feature-kicker"><span class="feature-no">05</span> OS layer · AI moves into your computer</p>
+        <h2>Windows draws a "safety fence" around AI agents</h2>
+        <p class="feature-dek">If an AI agent is going to run on your own computer, the OS has to rein it in first — it can't be allowed to rummage through your files or change settings at will. That's the "fence" Windows is building here. A heads-up: <strong>this is also the layer the media overhyped the most</strong> — most of it hasn't actually shipped.</p>
+      </div>
+      <div class="split">
+        <div class="col-media">
+          <figure class="shot svg">
+            <div class="svgbox">
+              <svg viewBox="0 0 320 220" width="100%" role="img" aria-label="Windows gives the agent a permission boundary">
+                <rect x="30" y="30" width="260" height="160" rx="12" fill="var(--svg-card)" stroke="var(--svg-border)"/>
+                <text x="46" y="52" fill="var(--svg-muted)" font-size="10" font-family="system-ui">Windows · trust boundary</text>
+                <rect x="54" y="66" width="100" height="108" rx="10" fill="var(--svg-card)" stroke="#f6821f" stroke-dasharray="4 3"/>
+                <text x="104" y="92" text-anchor="middle" fill="#f6821f" font-size="11" font-weight="700" font-family="system-ui">Agent</text>
+                <text x="104" y="108" text-anchor="middle" fill="var(--svg-muted)" font-size="9" font-family="system-ui">scoped identity</text>
+                <text x="104" y="122" text-anchor="middle" fill="var(--svg-muted)" font-size="9" font-family="system-ui">permissions · audit</text>
+                <text x="104" y="136" text-anchor="middle" fill="var(--svg-muted)" font-size="9" font-family="system-ui">isolated sandbox</text>
+                <g font-family="system-ui" font-size="9">
+                  <rect x="174" y="70" width="92" height="22" rx="6" fill="var(--svg-card)" stroke="var(--svg-border)"/><text x="220" y="85" text-anchor="middle" fill="var(--svg-muted)">files (restricted)</text>
+                  <rect x="174" y="100" width="92" height="22" rx="6" fill="var(--svg-card)" stroke="var(--svg-border)"/><text x="220" y="115" text-anchor="middle" fill="var(--svg-muted)">system (restricted)</text>
+                  <rect x="174" y="130" width="92" height="22" rx="6" fill="var(--svg-card)" stroke="var(--svg-border)"/><text x="220" y="145" text-anchor="middle" fill="var(--svg-muted)">network (restricted)</text>
+                </g>
+                <line x1="154" y1="120" x2="174" y2="81" stroke="#f6821f" stroke-width="1"/><line x1="154" y1="120" x2="174" y2="111" stroke="#f6821f" stroke-width="1"/><line x1="154" y1="120" x2="174" y2="141" stroke="#f6821f" stroke-width="1"/>
+              </svg>
+            </div>
+            <figcaption>Windows gives the agent a permission boundary; it can't freely access the whole system (drawn by 42-research).</figcaption>
+          </figure>
+        </div>
+        <div class="col-body">
+          <div class="ann">
+            <div class="ann-head"><span class="name">Windows platform security for AI agents</span> <span class="st announced">Announced · dedicated stack is alpha/preview</span></div>
+            <ul>
+              <li>Introduces a security model for agents running on the OS: <strong>scoped identity / permissions / audit / isolation</strong>, so an agent can't freely access the whole system.</li>
+              <li><span class="num">⚠</span> <strong>Untangle two things that get conflated</strong>: what's GA is the <strong>cross-platform Microsoft Agent Framework (MAF)</strong> (.NET/Python SDK, which <strong>hit 1.0 GA on 2026-04-02, before Build</strong>); the Windows-<em>specific</em> stack shown at Build (Windows Agent Runtime / MXC / OpenClaw on Windows) is <strong>alpha / preview</strong>, shipping with Windows 11 <strong>26H2 (second half of 2026)</strong>. "Windows Agent Framework is GA" <strong>does not hold</strong>.</li>
+            </ul>
+            <p class="src">Source: <a href="https://blogs.windows.com/windowsdeveloper/2026/06/02/windows-platform-security-for-ai-agents/">Windows platform security for AI agents</a> · <a href="https://devblogs.microsoft.com/agent-framework/microsoft-agent-framework-at-build-2026-announce/">MAF (1.0 GA on 4/2)</a> <span class="tier primary">primary</span></p>
+          </div>
+          <div class="ann">
+            <div class="ann-head"><span class="name">Project Solara + Surface RTX Spark Dev Box</span> <span class="st announced">Announced</span></div>
+            <ul>
+              <li><strong>Project Solara</strong>: a new platform for <em>agent-first</em> devices, rebuilding the device/OS stack around "the agent as the primary actor" — a long-horizon vision.</li>
+              <li><strong>Surface RTX Spark Dev Box</strong>: dedicated local AI development hardware that runs models/agents locally on NVIDIA RTX — the "local counterpart" to cloud Foundry. MAI models will also reach the N1X on Windows "within a few months."</li>
+            </ul>
+            <p class="src">Source: <a href="https://commandline.microsoft.com/project-solara-build-2026/">Project Solara</a> · <a href="https://blogs.windows.com/devices/2026/06/02/building-the-next-generation-of-devices-for-developers-surface-rtx-spark-dev-box/">Surface RTX Spark Dev Box</a> <span class="tier primary">primary</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="persona">
+        <div class="persona-title">What this means for you</div>
+        <div class="persona-row">
+          <div class="persona-cell"><p class="p-who">If you use AI</p><p class="p-txt">In the future an AI agent can run on your own computer, locked in a "safety cage" — it can't rummage through your files and system. But most of this waits for the second-half Windows update.</p></div>
+          <div class="persona-cell"><p class="p-who">If you build models / tools</p><p class="p-txt">Local AI hardware (Surface Spark) and a device platform (Project Solara) are a new battleground, but it's all early days.</p></div>
+          <div class="persona-cell"><p class="p-who">Azure partners</p><p class="p-txt">⚠ This layer is the easiest to overhype — aside from one security model, the dedicated stack is basically preview/vision. Don't sell it as an off-the-shelf solution.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ Module 06 · Governance layer ══════════ -->
+    <section class="feature blue flip" id="m6">
+      <div class="feature-head">
+        <p class="feature-kicker"><span class="feature-no">06</span> Governance layer · making the boss comfortable using AI</p>
+        <h2>How to rein in AI so it can come into the company</h2>
+        <p class="feature-dek">When an enterprise puts AI to work, its biggest fears are "who's accountable when it errs, will it leak data, is it worth the money." This layer answers exactly those: <strong>set rules for AI, log everything, evaluate, and account for the return.</strong> And Microsoft open-sourced this toolset without locking it to its own platform — it wants to be the industry's "safety standard."</p>
+      </div>
+      <div class="split">
+        <div class="col-media">
+          <figure class="shot svg">
+            <div class="svgbox">
+              <svg viewBox="0 0 320 230" width="100%" role="img" aria-label="ACS applies guardrails at 5 checkpoints in the agent loop">
+                <text x="160" y="24" text-anchor="middle" fill="var(--svg-muted)" font-size="10" font-family="system-ui">ACS · 5 checkpoints in the agent loop</text>
+                <g font-family="system-ui" font-size="10" font-weight="700">
+                  <rect x="120" y="36" width="80" height="26" rx="13" fill="var(--svg-card)" stroke="#6b8cff"/><text x="160" y="53" text-anchor="middle" fill="#6b8cff">input</text>
+                  <rect x="120" y="76" width="80" height="26" rx="13" fill="var(--svg-card)" stroke="#6b8cff"/><text x="160" y="93" text-anchor="middle" fill="#6b8cff">LLM</text>
+                  <rect x="120" y="116" width="80" height="26" rx="13" fill="var(--svg-card)" stroke="#6b8cff"/><text x="160" y="133" text-anchor="middle" fill="#6b8cff">state</text>
+                  <rect x="120" y="156" width="80" height="26" rx="13" fill="var(--svg-card)" stroke="#6b8cff"/><text x="160" y="173" text-anchor="middle" fill="#6b8cff">tool</text>
+                  <rect x="120" y="196" width="80" height="26" rx="13" fill="var(--svg-card)" stroke="#3ecf8e"/><text x="160" y="213" text-anchor="middle" fill="#3ecf8e">output</text>
+                </g>
+                <g stroke="var(--svg-border)" stroke-width="1.5"><line x1="160" y1="62" x2="160" y2="76"/><line x1="160" y1="102" x2="160" y2="116"/><line x1="160" y1="142" x2="160" y2="156"/><line x1="160" y1="182" x2="160" y2="196"/></g>
+                <g font-family="system-ui" font-size="9" fill="#f6821f"><text x="214" y="53">🛡</text><text x="214" y="93">🛡</text><text x="214" y="133">🛡</text><text x="214" y="173">🛡</text><text x="214" y="213">🛡</text></g>
+              </svg>
+            </div>
+            <figcaption>Agent Control Spec applies deterministic guardrails at 5 checkpoints in the loop (drawn by 42-research).</figcaption>
+          </figure>
+        </div>
+        <div class="col-body">
+          <div class="ann">
+            <div class="ann-head"><span class="name">Two open "AI control standards": ASSERT and ACS</span> <span class="st ga">ASSERT is open source</span></div>
+            <div class="meta-row"><span><b>Who can use it</b> not limited to Microsoft; any vendor's tools can plug in</span><span><b>Already adopted by</b> KPMG · Zscaler · IBM and others</span></div>
+            <ul>
+              <li><strong>ASSERT</strong> (open source): helps you <strong>translate your company's rules into "automated checks,"</strong> then run those checks against the AI to find its faults. Microsoft explicitly says it's <strong>not tied to its own platform</strong> — it's meant for AI developers across the whole industry.</li>
+              <li><strong>ACS</strong>: a <strong>general standard for setting rules for AI</strong> — placing a checkpoint at each of the <strong>5 key steps</strong> of an AI doing work (receiving the instruction, calling the model, changing state, using a tool, producing output), with rules portable across different platforms.</li>
+            </ul>
+            <p class="src">Source: <a href="https://devblogs.microsoft.com/foundry/build-2026-open-trust-stack-ai-agents/">Open trust stack (ASSERT/ACS)</a> <span class="tier primary">primary</span></p>
+          </div>
+          <div class="ann">
+            <div class="ann-head"><span class="name">Cross-framework observability (GA) + in-Foundry guardrails + Agent ROI</span> <span class="st ga">Tracing &amp; Eval GA · rest Preview</span></div>
+            <ul>
+              <li><strong>Tracing &amp; Evaluations hit GA</strong> (6/3, built on OpenTelemetry, supporting LangChain/LangGraph/OpenAI SDK/MAF), with end-to-end tracing of prompts/models/tools/sub-agents.</li>
+              <li>Inside Foundry: Guided Guardrail Setup, Rubric Evaluator, Runtime DLP (all Preview), <strong>Purview Insights hit GA</strong>; <strong>Agent Optimizer</strong> (private preview → public this month); <strong>ROI for Agents</strong> (private preview) tracks completion rate / time saved / cost.</li>
+            </ul>
+            <p class="src">Source: <a href="https://devblogs.microsoft.com/foundry/build-2026-from-observability-to-roi-for-ai-agents-on-any-framework/">Observability to ROI</a> <span class="tier primary">primary</span></p>
+          </div>
+          <div class="ann">
+            <div class="ann-head"><span class="name">Security across the SDLC (Agent 365-style governance)</span> <span class="st preview">Preview</span></div>
+            <ul>
+              <li><strong>Protect code / agents / models</strong> (Defender + Entra Agent ID + Purview); every agent has an identity and is governed, including posture management and threat protection for AI workloads.</li>
+            </ul>
+            <p class="src">Source: <a href="https://www.microsoft.com/en-us/security/blog/2026/06/02/microsoft-build-2026-securing-code-agents-and-models-across-the-development-lifecycle/">Securing code, agents &amp; models across the SDLC</a> <span class="tier primary">primary</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="persona">
+        <div class="persona-title">What this means for you</div>
+        <div class="persona-row">
+          <div class="persona-cell"><p class="p-who">If you use AI</p><p class="p-txt">When AI comes into the company, the boss worries most about "who's responsible if it errs, will it leak data." This layer answers that — traceable, governable, with the books balanced.</p></div>
+          <div class="persona-cell"><p class="p-who">If you build models / tools</p><p class="p-txt">Microsoft open-sourced this set (ASSERT, ACS) and didn't lock it to its own platform — it wants to set the industry's "safety standard." Worth watching whether it catches on.</p></div>
+          <div class="persona-cell"><p class="p-who">Azure partners</p><p class="p-txt">"Secure and governable" is a key chip for winning over large enterprises; cross-framework observability is GA, so you can pitch it directly.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ Module 07 · Data and science ══════════ -->
+    <section class="feature" id="m7">
+      <div class="feature-head">
+        <p class="feature-kicker"><span class="feature-no">07</span> Data and science · already shipping</p>
+        <h2>Even databases are being "remade for AI," and R&amp;D is already using it</h2>
+        <p class="feature-dek">Beyond the main thread there's another signal worth watching: <strong>even databases are being optimized for AI</strong> (better storage of memory and retrieval). More concrete still is <strong>Microsoft Discovery</strong> — one of the few things at the whole event that's "already GA," and it's already helping Mayo Clinic do medical research, not just demos.</p>
+      </div>
+      <div class="split">
+        <div class="col-media">
+          <figure class="shot svg">
+            <div class="svgbox">
+              <svg viewBox="0 0 320 200" width="100%" role="img" aria-label="Databases become agent-aware; Discovery is GA">
+                <g font-family="system-ui">
+                  <ellipse cx="90" cy="56" rx="52" ry="16" fill="var(--svg-card)" stroke="#6b8cff"/>
+                  <path d="M38 56 v60 a52 16 0 0 0 104 0 v-60" fill="none" stroke="#6b8cff"/>
+                  <path d="M38 86 a52 16 0 0 0 104 0 M38 116 a52 16 0 0 0 104 0" fill="none" stroke="var(--svg-border)"/>
+                  <text x="90" y="150" text-anchor="middle" fill="var(--svg-muted)" font-size="10" font-weight="700">HorizonDB · Cosmos</text>
+                  <text x="90" y="164" text-anchor="middle" fill="var(--svg-muted)" font-size="9">agent memory · retrieval</text>
+                  <rect x="186" y="44" width="118" height="56" rx="12" fill="var(--svg-card)" stroke="#3ecf8e"/>
+                  <text x="245" y="68" text-anchor="middle" fill="#3ecf8e" font-size="12" font-weight="800">Discovery</text>
+                  <text x="245" y="86" text-anchor="middle" fill="#3ecf8e" font-size="11" font-weight="700">GA</text>
+                  <text x="245" y="128" text-anchor="middle" fill="var(--svg-muted)" font-size="9.5">research · Mayo Clinic</text>
+                  <line x1="142" y1="64" x2="186" y2="68" stroke="var(--svg-border)" stroke-width="1.5"/>
+                </g>
+              </svg>
+            </div>
+            <figcaption>Databases become agent-aware; Discovery is first to GA (drawn by 42-research).</figcaption>
+          </figure>
+        </div>
+        <div class="col-body">
+          <div class="ann">
+            <div class="ann-head"><span class="name">Fabric IQ + Cosmos DB + Azure HorizonDB</span> <span class="st preview">Preview</span></div>
+            <ul>
+              <li><strong>Fabric IQ</strong> models how the business operates (a semantic/ontology layer — the "business" leg of Microsoft IQ); the GPU-accelerated Fabric warehouse claims <span class="kpi">7× performance</span> <span class="vendor">⚠</span>.</li>
+              <li>Cosmos DB adds an agent memory toolkit / agentic retrieval / semantic reranking; <strong>Azure HorizonDB</strong> (managed PostgreSQL): zone-redundant, automatic failover, <span class="kpi">128TB/cluster · 15 read replicas · 3× throughput</span> <span class="vendor">⚠</span>.</li>
+            </ul>
+            <p class="src">Source: <a href="https://azure.microsoft.com/en-us/blog/microsoft-build-2026-building-agentic-apps-with-microsoft-fabric-and-microsoft-databases/">Agentic apps with Fabric &amp; Databases</a> <span class="tier primary">primary</span></p>
+          </div>
+          <div class="ann">
+            <div class="ann-head"><span class="name">Microsoft Discovery</span> <span class="st ga">GA</span></div>
+            <ul>
+              <li>The agentic AI platform for scientific R&amp;D <strong>hit GA</strong> (one of the few non-preview announcements at the whole event), with the Discovery app entering preview.</li>
+              <li>Used in the <strong>Mayo Clinic</strong> frontier medical-AI partnership (whose platform claims to cover roughly 100 million people across four continents) — agentic AI genuinely landing in science and medicine.</li>
+            </ul>
+            <p class="src">Source: <a href="https://azure.microsoft.com/en-us/blog/announcing-microsoft-discovery-general-availability-and-microsoft-discovery-app-preview/">Microsoft Discovery GA</a> <span class="tier primary">primary</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="persona">
+        <div class="persona-title">What this means for you</div>
+        <div class="persona-row">
+          <div class="persona-cell"><p class="p-who">If you use AI</p><p class="p-txt">Even databases are now "optimized for AI" — storing memory and doing retrieval more smoothly. The more tangible signal for everyone: Discovery is already helping hospitals do research.</p></div>
+          <div class="persona-cell"><p class="p-who">If you build models / tools</p><p class="p-txt">The data layer (Fabric, HorizonDB) is the foundation of AI applications, and Microsoft is betting heavily here too — an opportunity up and down the stack.</p></div>
+          <div class="persona-cell"><p class="p-who">Azure partners</p><p class="p-txt">Discovery is one of the few things at the event that's "already GA," with a flagship case like Mayo Clinic — the most mature solution to pitch.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="rule" />
+
+    <!-- ── Adversarial verification ── -->
+    <section class="read">
+      <h2 style="max-width:var(--read);margin-inline:auto;">We deliberately poked 5 holes</h2>
+      <p style="max-width:var(--read);margin-inline:auto;color:var(--a-fg-soft);">To avoid being swept up by the hype, we deliberately played devil's advocate — picking the 5 loudest claims and checking each against the official source documents to see if it holds. The conclusion: <strong>the broad direction is real, but some "highlights" don't survive the question "is it actually usable yet?"</strong> — one is outright debunked, and the rest are mostly "still in preview" or "vendor's own numbers."</p>
+      <div class="verify-grid">
+        <div class="vcard">
+          <div class="vcard-head"><span class="vclaim">Exactly 7 MAI models</span><span class="tier secondary">note this</span></div>
+          <p>"Seven" is confirmed word-for-word by two primary sources, but <strong>= 5 base + 2 Flash variants</strong>; "announced" is accurate, <strong>"launched / already GA" is overstated</strong>.</p>
+        </div>
+        <div class="vcard">
+          <div class="vcard-head"><span class="vclaim">Copilot spans OpenAI/Anthropic/open-source multi-model</span><span class="tier secondary">needs correction</span></div>
+          <p><strong>Open-source models are a Foundry capability, not in the Copilot product</strong>; "rebuilt" is a reporter's phrasing; <strong>and this dates to 2026-03, before Build</strong>.</p>
+        </div>
+        <div class="vcard">
+          <div class="vcard-head"><span class="vclaim">Foundry Agent Service GA in early July</span><span class="tier secondary">time-sensitive</span></div>
+          <p><strong>Two official sources conflict on timing</strong> ("next 30 days" vs "end of June"); Learn still marked it preview on 6/19.</p>
+        </div>
+        <div class="vcard">
+          <div class="vcard-head"><span class="vclaim">Windows Agent Framework is GA</span><span class="tier secondary">debunked</span></div>
+          <p>What hit GA is the <strong>cross-platform MAF, and it was GA on 4/2</strong>; the Windows-specific stack is alpha / preview.</p>
+        </div>
+        <div class="vcard">
+          <div class="vcard-head"><span class="vclaim">Foundry IQ recall +54%</span><span class="tier secondary">vendor benchmark</span></div>
+          <p><strong>A pure knowledge base only gets +46%</strong>; +54% requires a "small model + agentic retrieval" combination; vendor-tested, not independently verified.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Conclusion ── -->
+    <section class="read">
+      <div class="card conclusion">
+        <h3>✅ The one-line takeaway</h3>
+        <p>The main thread we set out to verify <strong>is real</strong>: the pile of Build 2026 announcements really does string together into one complete bottom-to-top chain — <strong>models → production floor → knowledge → apps → OS → control</strong> — and every link can be traced to a Microsoft source document. Nadella's line, "a smart AI alone is useless; you need the whole system that puts it to work," is the design logic of this chain.</p>
+        <p><strong>But don't let the hype go to your head</strong>: <strong>most of this chain is still in "preview," not usable right away</strong> (only a few things are truly GA: Microsoft Discovery, Foundry knowledge bases, Model Router, cross-framework observability); the eye-catching numbers (+54%, 10× cost savings, etc.) <strong>are all tested by Microsoft itself, with no third-party verification</strong>; and we corrected two myths going around. <strong>The blueprint is clear, but whether it ships remains to be seen.</strong> The most honest line we can give you: the vision is "a complete AI agent infrastructure," but what you can actually bet on and use today is only the handful of pieces that have officially shipped.</p>
+      </div>
+    </section>
+
+    <details>
+      <summary>📚 Citations and sources (primary-first; full list in sources.md)</summary>
+      <p class="cite"><a href="https://news.microsoft.com/build-2026/">Build 2026 official news hub (master index)</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://microsoft.ai/news/microsoft-build-2026-mai-keynote-transcript/">MAI keynote official transcript</a> · <a href="https://microsoft.ai/news/building-a-hillclimbing-machine-launching-seven-new-mai-models/">the 7 MAI models</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://devblogs.microsoft.com/foundry/whats-new-in-microsoft-foundry-build-2026/">What's new in Microsoft Foundry</a> · <a href="https://devblogs.microsoft.com/foundry/agent-service-build2026/">Foundry Agent Service</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://devblogs.microsoft.com/foundry/build-smarter-agents-faster-with-foundry-iq/">Foundry IQ</a> · <a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/improve-recall-by-up-to-54-using-knowledge-bases/4524852">+54% recall benchmark</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://devblogs.microsoft.com/foundry/build-2026-open-trust-stack-ai-agents/">Open trust stack (ASSERT/ACS)</a> · <a href="https://devblogs.microsoft.com/agent-framework/microsoft-agent-framework-at-build-2026-announce/">MAF (1.0 GA on 4/2)</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://devblogs.microsoft.com/microsoft365dev/work-iq-production-ready-intelligence-for-every-agent/">Work IQ + API</a> · <a href="https://blogs.bing.com/search/June-2026/Announcing-Microsoft-Web-IQ">Microsoft Web IQ</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://www.microsoft.com/en-us/microsoft-365/blog/2026/06/02/introducing-microsoft-scout-your-always-on-personal-agent/">Microsoft Scout</a> · <a href="https://github.blog/news-insights/product-news/github-copilot-app-the-agent-native-desktop-experience/">GitHub Copilot app</a> · <a href="https://www.microsoft.com/en-us/microsoft-365/blog/2026/03/09/powering-frontier-transformation-with-copilot-and-agents/">Copilot multi-model (before Build)</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://blogs.windows.com/windowsdeveloper/2026/06/02/windows-platform-security-for-ai-agents/">Windows platform security for AI agents</a> · <a href="https://commandline.microsoft.com/project-solara-build-2026/">Project Solara</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://azure.microsoft.com/en-us/blog/microsoft-build-2026-building-agentic-apps-with-microsoft-fabric-and-microsoft-databases/">Agentic apps with Fabric &amp; Databases</a> · <a href="https://azure.microsoft.com/en-us/blog/announcing-microsoft-discovery-general-availability-and-microsoft-discovery-app-preview/">Microsoft Discovery GA</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://www.youtube.com/watch?v=FFMm454fxNA">Build 2026 Satya Nadella Opening Keynote (official full video)</a> · <a href="https://build.microsoft.com/en-US/sessions">official session catalog</a> <span class="tier primary">primary</span></p>
+    </details>
+
+    <details>
+      <summary>⚠️ Limitations and open questions (research honesty)</summary>
+      <ul>
+        <li><strong>Whether Foundry Agent Service / hosted agents hit GA on schedule</strong> — "next 30 days" vs "end of June" conflict between two official sources; Learn still marked it preview on 6/19; revisit after July to see if it was delivered.</li>
+        <li><strong>The true status of MAI-Thinking-1</strong> — the transcript calls it private preview, the blog overview calls it GA; the in-source conflict is unresolved.</li>
+        <li><strong>The maturity and final naming of the Windows-specific agent stack</strong> — shipping with Windows 11 26H2; we won't know until the second half of 2026.</li>
+        <li>All vendor benchmarks (the various MAI figures / +54% recall / 10× savings / 7× warehouse / 3× HorizonDB) have <strong>no independent third-party reproduction</strong> and are presented only as "Microsoft's claims."</li>
+        <li>Images marked "© Microsoft" are externally linked official assets (the hero key visual and keynote stage photo, both from microsoft.ai, with source attribution, used for commentary/research); the rest, marked "drawn by 42-research," are self-drawn SVG diagrams (self-contained, vector, no external dependencies).</li>
+        <li>The official hub has 70+ announcements; this topic focuses on the ~25 on the AI main thread; non-AI-core items (Azure Cobalt 200 / Azure Linux 4.0 / quantum Majorana 2, etc.) are not included in the main body.</li>
+      </ul>
+    </details>
+
+    <footer class="topic">
+      42-research · This artifact is self-contained semantic HTML following <a href="https://schema.org/ScholarlyArticle">schema.org/ScholarlyArticle</a>.
+      The source of truth lives in git, the query index in D1; for methodology see <code>docs/methodology</code>. All text traces back to Microsoft's primary sources, collected 2026-06-22.
+    </footer>
+
+  </article>
+</body>
+</html>

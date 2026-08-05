@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<!--
+  42-research · 课题 03 产物 (Self-contained Research Artifact)
+  此 HTML 同时是「真相源 + 展示页 + AI 可读数据」(见 ADR-001)。
+  展示格式与来源实测报告 (ai-provider-ac issue 2026-08-04) 保持一致：
+  总览 bento → 能力矩阵 → 十场景 grid5 逐张对照；静态 HTML，无 JS 依赖。
+  构建时解析下方 JSON-LD 入 D1。
+-->
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MAI-Image-2.5 vs GPT-Image-2：微软自研生图追上 OpenAI 了吗？· 42-research</title>
+  <meta name="description" content="在 Azure AI Foundry 上以同一组 10 场景 prompt 实测 MAI-Image-2.5 三档与 GPT-Image-2 两档（50 请求、46 成功）。文字渲染归 GPT，人像摄影归 MAI，中间隔着一次内容过滤拦截和十倍延迟差。全部外部声明回到官方一手核实。" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "identifier": "03-mai-image-25-vs-gpt-image-2",
+    "headline": "MAI-Image-2.5 vs GPT-Image-2：微软自研生图追上 OpenAI 了吗？",
+    "abstract": "在 Azure AI Foundry 上以同一组 10 场景 prompt 实测 MAI-Image-2.5 三档与 GPT-Image-2 两档（50 请求、46 成功、4 个被内容过滤拦截），延迟与 token 用量取自逐请求台账并脱敏公开。结论按内容类型分化：文字渲染归 GPT，人像摄影归 MAI——后者在 Azure 默认内容过滤下是唯一可用选项。",
+    "datePublished": "2026-08-05",
+    "dateModified": "2026-08-05",
+    "author": { "@type": "Organization", "name": "42-research" },
+    "keywords": ["mai-image-2.5", "gpt-image-2", "azure-ai-foundry", "image-generation", "content-filter", "model-evaluation", "text-to-image"],
+    "researchStatus": "publish",
+    "hypothesis": "MAI-Image-2.5 系列的生图质量已足以在生产环境替代 GPT-Image-2 作为默认生图模型。判据：同 prompt 实测 10 场景中，MAI 至少半数场景不劣于 GPT-Image-2 medium，且不存在「整类需求不可用」的硬缺陷。",
+    "conclusion": "假设部分成立、按内容类型分化：人像/真人摄影场景 MAI 三款不仅达标，且在 Azure 默认内容过滤下是唯一可用选项（GPT 两档请求被拦截）；但中文/高密度文字渲染 GPT 两档近乎零错字、MAI 三款均有字形级错字，文字类需求 MAI 不能替代 GPT。通用配图与人像走 MAI-Image-2.5，文字海报/漫画走 GPT-Image-2 medium。结论仅在默认过滤配置、1024×1024、单次生成的边界内成立。",
+    "citation": [
+      { "@type": "Dataset", "url": "/topics/03-mai-image-25-vs-gpt-image-2/evidence/results.json", "name": "本研究实测台账（50 请求的延迟/token/错误逐条记录，脱敏公开）", "tier": "primary", "verified": true, "accessed": "2026-08-04" },
+      { "@type": "CreativeWork", "url": "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/how-to/use-foundry-models-mai-image", "name": "Microsoft Learn: Deploy and use MAI image models（/mai/v1 协议、7 区、分辨率与配额、Preview）", "tier": "primary", "verified": true, "accessed": "2026-08-05" },
+      { "@type": "CreativeWork", "url": "https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/new-mai-models-in-microsoft-foundry-across-text-image-voice-and-speech/4524632", "name": "MAI-Image-2.5 与 Flash 发布公告（2026-06-02，含 2.5 定价）", "tier": "primary", "verified": true, "accessed": "2026-08-05" },
+      { "@type": "CreativeWork", "url": "https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/introducing-mai-image-2-5-pro-and-mai-voice-2-flash-in-microsoft-foundry/4539446", "name": "MAI-Image-2.5-Pro 发布公告（2026-07-23，含 Pro 定价）", "tier": "primary", "verified": true, "accessed": "2026-08-05" },
+      { "@type": "CreativeWork", "url": "https://microsoft.ai/news/building-a-hillclimbing-machine-launching-seven-new-mai-models/", "name": "Microsoft AI 七模型发布（Mustafa Suleyman，2026-06-02）", "tier": "primary", "verified": true, "accessed": "2026-08-05" },
+      { "@type": "CreativeWork", "url": "https://labs.ai.azure.com/innovations/mai-image-2-5/", "name": "Microsoft Foundry Labs：MAI-Image-2.5 模型页（Arena 名次与公告口径冲突的另一方）", "tier": "primary", "verified": true, "accessed": "2026-08-05" },
+      { "@type": "CreativeWork", "url": "https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/introducing-openais-gpt-image-2-in-microsoft-foundry/4500571", "name": "GPT-image-2 GA 公告（2026-04-21，任意分辨率至 4K）", "tier": "primary", "verified": true, "accessed": "2026-08-05" },
+      { "@type": "CreativeWork", "url": "https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/dall-e", "name": "Microsoft Learn: OpenAI 图像模型用法（quality/n/格式/inpaint/contentFilter）", "tier": "primary", "verified": true, "accessed": "2026-08-05" },
+      { "@type": "CreativeWork", "url": "https://learn.microsoft.com/en-us/azure/foundry-classic/foundry-models/concepts/content-filter", "name": "Microsoft Learn: 内容过滤（被过滤 prompt 返回 400 + content_filter；阈值可配置）", "tier": "primary", "verified": true, "accessed": "2026-08-05" },
+      { "@type": "CreativeWork", "url": "https://wavespeed.ai/blog/posts/mai-image-2-5-api/", "name": "WaveSpeed：MAI-Image-2.5 API 解读（Flash 牌价转述，与内部口径冲突已标注）", "tier": "secondary", "verified": false, "accessed": "2026-08-05" },
+      { "@type": "CreativeWork", "url": "https://mer.vin/2026/06/mai-image-2-5-arena-2-image-editing-and-foundry-pricing-explained/", "name": "Mervin Praison：2.5 定价与 Arena 名次拆分（独立转述，与官方一致）", "tier": "secondary", "verified": true, "accessed": "2026-08-05" },
+      { "@type": "CreativeWork", "url": "https://www.getmaxim.ai/bifrost/llm-cost-calculator/provider/azure/model/gpt-image-2", "name": "gpt-image-2 每图成本参考（多计算器交叉一致：low $0.006 / medium $0.053 / high $0.211）", "tier": "secondary", "verified": false, "accessed": "2026-08-05" }
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #0a0a0f; --fg: #e8e8ed; --muted: #9090a0; --accent: #f6821f;
+      --accent2: #6b8cff; --card: #14141c; --card2: #1a1a24; --border: #26263a;
+      --border-soft: #1e1e2e; --ok: #3ecf8e; --warn: #ffb454; --bad: #ef6b6b;
+      --max: 1140px; --narrow: 820px; --radius: 12px;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--fg);
+      font: 16px/1.7 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased; }
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 4rem 1.5rem 6rem; }
+    .narrow { max-width: var(--narrow); }
+    header.topic { border-bottom: 1px solid var(--border); padding-bottom: 2rem; margin-bottom: 2.5rem; max-width: var(--narrow); }
+    .badge { display: inline-block; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: .2rem .7rem; }
+    h1 { font-size: clamp(1.9rem, 5vw, 2.6rem); line-height: 1.12; margin: 1rem 0 .5rem; letter-spacing: -.02em; }
+    .meta { color: var(--muted); font-size: .9rem; }
+    .abstract { font-size: 1.12rem; opacity: .92; margin-top: 1.5rem; }
+    h2 { font-size: 1.55rem; margin: 3.5rem 0 1rem; letter-spacing: -.01em; scroll-margin-top: 1rem; }
+    h3 { font-size: 1.12rem; margin: 2rem 0 .6rem; color: var(--accent2); }
+    a { color: var(--accent2); text-decoration: none; border-bottom: 1px solid transparent; }
+    a:hover { border-bottom-color: var(--accent2); }
+    p { margin: .9rem 0; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin: 1.5rem 0; }
+    .hypothesis { border-left: 3px solid var(--accent2); }
+    .conclusion { border-left: 3px solid var(--ok); }
+    .warn-box { border-left: 3px solid var(--warn); }
+    table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: .9rem; }
+    th, td { text-align: left; padding: .65rem .8rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { color: var(--muted); font-weight: 600; font-size: .76rem; text-transform: uppercase; letter-spacing: .05em; }
+    td strong.mai { color: var(--accent); } td strong.gpt { color: var(--accent2); }
+    details { border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; margin: 1rem 0; }
+    summary { cursor: pointer; font-weight: 600; color: var(--accent2); }
+    .tier { font-size: .7rem; padding: .05rem .4rem; border-radius: 4px; border: 1px solid var(--border); color: var(--muted); }
+    .tier.primary { color: var(--ok); border-color: var(--ok); }
+    .tier.secondary { color: var(--warn); border-color: var(--warn); }
+    .cite { font-size: .85rem; color: var(--muted); margin: .5rem 0; }
+    ul, ol { padding-left: 1.2rem; } li { margin: .4rem 0; }
+    footer.topic { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); color: var(--muted); font-size: .85rem; max-width: var(--narrow); }
+    .verdict { font-weight: 700; }
+    .verdict.mai { color: var(--accent); } .verdict.gpt { color: var(--accent2); } .verdict.split { color: var(--warn); }
+    .sec-lead { color: var(--muted); max-width: var(--narrow); margin-top: -0.4rem; }
+
+    /* ===== 总览 bento（对齐来源报告的 overview 版式）===== */
+    .bgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 1.8rem 0; }
+    .panel { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: clamp(18px, 2.4vw, 28px); }
+    .panel h3 { margin: 0; color: var(--fg); font-size: 1.08rem; }
+    .panel .lead { color: var(--muted); font-size: .92rem; margin: .55rem 0 0; }
+    .panel .foot { margin-top: 16px; font-size: .76rem; color: var(--muted); line-height: 1.6; }
+    .span-full { grid-column: 1 / -1; }
+    .span-half { grid-column: span 1; }
+    @media (max-width: 760px) { .bgrid { grid-template-columns: 1fr; } }
+    .bars { margin-top: 20px; display: flex; flex-direction: column; gap: 12px; }
+    .bar-row { display: grid; grid-template-columns: minmax(130px, 190px) 1fr auto; gap: 14px; align-items: center; }
+    .bar-name { font-size: .8rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .bar-track { height: 13px; border-radius: 999px; background: var(--card2); border: 1px solid var(--border-soft); overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--accent2), var(--ok)); }
+    .bar-fill.mid { background: linear-gradient(90deg, var(--accent2), var(--warn)); }
+    .bar-fill.slow { background: linear-gradient(90deg, var(--warn), var(--bad)); }
+    .bar-val { font-size: .85rem; font-variant-numeric: tabular-nums; min-width: 128px; text-align: right; font-weight: 600; }
+    .bar-val small { color: var(--muted); font-weight: 400; font-size: .68rem; margin-left: 6px; }
+    @media (max-width: 640px) {
+      .bar-row { grid-template-columns: 1fr auto; gap: 6px 10px; }
+      .bar-track { grid-column: 1 / -1; order: 3; }
+      .bar-val { min-width: 0; }
+    }
+    .cost-cards { margin-top: 20px; display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(165px, 1fr)); }
+    .cost-card { border: 1px solid var(--border); border-radius: 12px; background: var(--card2); padding: 15px 15px 13px; display: flex; flex-direction: column; gap: 7px; }
+    .cost-card.muted { opacity: .6; }
+    .cost-card .cc-name { font-size: .78rem; color: var(--muted); line-height: 1.35; }
+    .cost-card .cc-val { font-size: clamp(1.25rem, 2vw, 1.7rem); font-weight: 700; letter-spacing: -.02em; font-variant-numeric: tabular-nums; line-height: 1.1; }
+    .cost-card .cc-bar { height: 6px; border-radius: 999px; background: var(--border-soft); overflow: hidden; }
+    .cost-card .cc-bar i { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--accent2), var(--ok)); }
+    .cost-card .cc-bar i.hi { background: linear-gradient(90deg, var(--warn), var(--bad)); }
+    .cost-card .cc-note { font-size: .72rem; color: var(--muted); line-height: 1.5; }
+    .fold { margin-top: 18px; border: none; border-top: 1px solid var(--border-soft); border-radius: 0; padding: 4px 0 0; }
+    .fold summary { padding: 10px 2px; font-size: .85rem; color: var(--muted); font-weight: 500; }
+    .fold summary:hover { color: var(--fg); }
+    .tbl2 { overflow-x: auto; }
+    .tbl2 table { min-width: 480px; margin: .6rem 0; font-size: .82rem; }
+
+    /* ===== 能力对比矩阵 ===== */
+    .cap-group { margin-top: 26px; }
+    .cap-group h4 { font-size: .74rem; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin: 0 0 10px; }
+    .cap-scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: 14px; background: var(--card); max-width: 100%; }
+    .cap-table { width: 100%; border-collapse: collapse; margin: 0; min-width: 860px; }
+    .cap-table th, .cap-table td { padding: 12px 12px; border-bottom: 1px solid var(--border-soft); vertical-align: top; font-size: .8rem; text-transform: none; letter-spacing: 0; }
+    .cap-table thead th { background: var(--card2); font-size: .78rem; font-weight: 600; color: var(--fg); border-bottom: 1px solid var(--border); }
+    .cap-table thead th .vend { display: block; font-size: .64rem; color: var(--muted); font-weight: 400; margin-top: 3px; letter-spacing: .04em; }
+    .cap-table tbody tr:last-child td { border-bottom: none; }
+    .cap-row-label { color: var(--fg); font-weight: 600; white-space: nowrap; background: rgba(255,255,255,.02); }
+    .cap-val { color: var(--muted); line-height: 1.5; }
+    .cap-val b { display: block; color: var(--fg); font-weight: 600; font-size: .82rem; margin-bottom: 3px; }
+    .cap-val b.good { color: var(--ok); } .cap-val b.warn { color: var(--warn); } .cap-val b.bad { color: var(--bad); }
+    .cap-val span { display: block; font-size: .72rem; color: var(--muted); line-height: 1.5; }
+    .cap-foot { font-size: .8rem; color: var(--muted); margin-top: 18px; line-height: 1.7; }
+
+    /* ===== 场景逐张对照 ===== */
+    .scene-index { display: flex; flex-wrap: wrap; gap: 8px 10px; margin: 1.4rem 0 2.6rem; }
+    .scene-index a { display: inline-flex; align-items: baseline; gap: 7px; padding: 7px 13px; border-radius: 999px;
+      border: 1px solid var(--border); color: var(--muted); font-size: .8rem; white-space: nowrap; }
+    .scene-index a:hover { color: var(--fg); border-color: var(--muted); border-bottom-color: var(--muted); }
+    .scene-index .si-no { font-size: .64rem; color: var(--muted); font-variant-numeric: tabular-nums; letter-spacing: .06em; }
+    .scene { scroll-margin-top: 1rem; }
+    .scene + .scene { margin-top: 44px; padding-top: 44px; border-top: 1px solid var(--border-soft); }
+    .scene-head { margin-bottom: 22px; max-width: var(--narrow); }
+    .scene-no { font-size: .72rem; color: var(--muted); font-variant-numeric: tabular-nums; letter-spacing: .16em; margin-bottom: 8px; }
+    .scene-head h3 { font-size: clamp(1.25rem, 2.2vw, 1.6rem); letter-spacing: -.02em; margin: 0; color: var(--fg); }
+    .scene-head .focus { color: var(--muted); margin-top: 8px; line-height: 1.7; }
+    .prompt-box { margin-top: 14px; border: 1px solid var(--border); border-radius: 12px; background: var(--card2); padding: 0; overflow: hidden; }
+    .prompt-box summary { padding: 11px 16px; font-size: .78rem; color: var(--muted); font-weight: 500; }
+    .prompt-box .pbody { padding: 0 16px 14px; font-size: .78rem; line-height: 1.75; color: var(--muted);
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace; word-break: break-word; }
+    .grid-scroll { overflow-x: auto; overflow-y: hidden; padding-bottom: 6px; }
+    .grid5 { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 13px; align-items: start; }
+    @media (max-width: 1024px) { .grid5 { grid-template-columns: repeat(5, minmax(200px, 1fr)); min-width: 1060px; } }
+    .grid-hint { display: none; margin: 6px 0 0; font-size: .72rem; color: var(--muted); }
+    @media (max-width: 1024px) { .grid-hint { display: block; } }
+    .shot { background: var(--card); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; }
+    .shot-media { display: block; aspect-ratio: 1 / 1; overflow: hidden; background: var(--card2); border-bottom: 1px solid var(--border-soft); }
+    .shot-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .shot-media.miss { display: grid; place-items: center; }
+    .miss-ph { text-align: center; color: var(--bad); font-size: .85rem; line-height: 1.6; padding: 14px;
+      background: repeating-linear-gradient(135deg, transparent 0 9px, rgba(255,255,255,.03) 9px 10px);
+      width: 100%; height: 100%; display: grid; place-items: center; }
+    .miss-ph small { color: var(--muted); font-size: .68rem; }
+    .shot-body { padding: 12px 13px 14px; display: flex; flex-direction: column; gap: 7px; flex: 1; }
+    .shot-name { font-size: .84rem; font-weight: 600; letter-spacing: -.01em; line-height: 1.35; color: var(--fg); }
+    .shot-price { font-size: .68rem; color: var(--muted); }
+    .chips { display: flex; gap: 6px; flex-wrap: wrap; }
+    .chip { font-size: .68rem; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .chip.v-win { background: rgba(62,207,142,.14); border-color: rgba(62,207,142,.4); color: var(--ok); }
+    .chip.v-good { background: rgba(107,140,255,.13); border-color: rgba(107,140,255,.38); color: var(--accent2); }
+    .chip.v-ok { background: rgba(255,180,84,.13); border-color: rgba(255,180,84,.38); color: var(--warn); }
+    .chip.v-miss { background: rgba(239,107,107,.13); border-color: rgba(239,107,107,.38); color: var(--bad); }
+    .shot-note { font-size: .78rem; color: var(--muted); line-height: 1.6; }
+    .takeaway { margin-top: 18px; border-left: 3px solid var(--ok); background: var(--card); border-radius: 0 12px 12px 0;
+      padding: 13px 18px; font-size: .88rem; color: var(--muted); max-width: var(--narrow); }
+    @media (max-width: 600px) { .wrap { padding: 2.5rem 1.1rem 4rem; } table { font-size: .82rem; } }
+  </style>
+</head>
+<body>
+  <article class="wrap">
+    <header class="topic">
+      <span class="badge">Research · 课题 03 · Published</span>
+      <h1>MAI-Image-2.5 vs GPT-Image-2：微软自研生图追上 OpenAI 了吗？</h1>
+      <p class="meta">发布 2026-08-05 · 实测 2026-08-04 · 42-research · 逐请求台账脱敏公开，外部声明全部回到官方一手核实</p>
+      <p class="abstract">微软自研的 <strong>MAI-Image-2.5</strong> 系列（2.5 / Flash / Pro，均为 Preview）与 OpenAI 的 <strong>GPT-Image-2</strong>（medium / high 两档，GA），在 Azure AI Foundry 上用同一组 10 场景 prompt 各生成一次，共 50 次请求、46 张成功出图。答案不在「谁的画质更好」：<strong>文字归 GPT，人像归 MAI</strong>——中间隔着一次内容过滤拦截和十倍的出图时间差。</p>
+    </header>
+
+    <section class="narrow">
+      <div class="card hypothesis">
+        <h3 style="margin-top:0">🔬 假设 (Hypothesis)</h3>
+        <p>MAI-Image-2.5 系列的生图质量已足以在生产环境替代 GPT-Image-2 作为默认生图模型。</p>
+        <p><strong>判据</strong>：同 prompt 实测 10 场景中，MAI 至少半数场景不劣于 GPT-Image-2 medium，且不存在「某整类需求不可用」的硬缺陷。满足两者则假设成立；任一不满足则按场景分化。</p>
+      </div>
+    </section>
+
+    <section class="narrow">
+      <h2>0. 先厘清三个容易被误传的说法</h2>
+      <div class="card warn-box">
+        <p>本研究不附和厂商话术，也纠正我们自己内部速报里的不严谨表述：</p>
+        <ul>
+          <li><strong>「MAI-Image-2.5 是 Arena 第二名」</strong> — 口径混乱。微软发布公告写「No. 2」，自家 Foundry Labs 模型页写「debuting at #3（+74.5 ELO）」，官方博客又称「超过 Nano Banana Pro 的 Arena 分数」，第三方拆分口径为文生图 No.3 / 图编辑 No.2。同一厂商的三个页面给出两种名次——<strong>本研究不采信任何榜单名次作为结论依据</strong>，只使用自己的同题实测。<span class="tier primary">primary 核实（冲突已记录）</span></li>
+          <li><strong>「GPT-Image-2 只支持固定三档分辨率」</strong> — 不实（本课题的内部速报也曾如此记载，在此更正）。官方文档明确：GPT-Image-2 支持任意分辨率至 4K（各边 16 px 倍数，总像素 655,360–8,294,400）。反而是 MAI 系总像素上限约 1024×1024（各边最小 768）。<strong>分辨率自由度上 GPT 更强，不是更弱。</strong><span class="tier primary">primary 核实</span></li>
+          <li><strong>「MAI Flash 每图 $0.027」</strong> — 说满了。Flash 图像输出牌价存在 $26/M 与 $33/M 两种口径（后者出自对官方公告的转述，且注明有 $19.50–$33 区间），每图成本应表述为 <strong>$0.027–$0.034 区间</strong>，而非单点。<span class="tier secondary">secondary 冲突已标注</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="narrow">
+      <h2>1. 实验设计（可复现）</h2>
+      <table>
+        <thead><tr><th>项</th><th>设置</th></tr></thead>
+        <tbody>
+          <tr><td>平台</td><td>Azure AI Foundry（MAI 走专有 <code>/mai/v1/images/generations</code>，GPT 走 OpenAI images API，api-version 2025-04-01-preview）</td></tr>
+          <tr><td>被测模型</td><td>MAI-Image-2.5（2026-06-02）/ 2.5-Flash（2026-06-02）/ 2.5-Pro（2026-06-19），均 Preview、GlobalStandard、12 RPM 满配额；GPT-Image-2（2026-04-21，GA）medium 与 high 两档</td></tr>
+          <tr><td>规格</td><td>统一 1024×1024，每题每档生成 1 次，<strong>不重试、不挑选</strong>，全部原始输出</td></tr>
+          <tr><td>场景</td><td>10 组：简单主体 / 英文海报 / 复杂多对象 / 双人人像 / 真人写真 / 卡通细节指令 / F1 高速运动 / 中英高密度海报 / 四格漫画 / 儿童运动</td></tr>
+          <tr><td>产出</td><td>50 格 = 46 张成功 + 4 个请求返回 HTTP 400（详见场景 05 / 10）</td></tr>
+          <tr><td>台账</td><td>逐请求延迟、token 用量、错误码记录于 <a href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/results.json">results.json（脱敏公开）</a>；生成脚本幂等，跳过已成功格子</td></tr>
+        </tbody>
+      </table>
+      <p class="cite">质量裁决（最佳 / 达标 / 有偏离）为人工逐格核对 prompt 要求（文字逐字、指令逐项）。文字错字这类<strong>客观可数缺陷</strong>是本研究最强的证据；画质观感类判断的主观性在「对抗验证」中如实交代。页面附图均为实测原始输出的降采样副本，未经任何修饰；点击图片可查看大图。</p>
+    </section>
+
+    <section>
+      <h2>2. 总览：速度、价格与结论</h2>
+      <p class="sec-lead">先看三件决定选型的事：出图要等多久，每张多少钱，以及已经能下的判断。</p>
+      <div class="bgrid"><div class="panel span-full"><h3>出图延迟</h3><p class="lead">Flash 中位 15.8 秒，GPT-Image-2 high 中位 158.3 秒——两端正好十倍。</p><div class="bars"><div class="bar-row"><div class="bar-name">MAI-Image-2.5-Flash</div><div class="bar-track"><div class="bar-fill" style="width:10.0%"></div></div><div class="bar-val">15.8s<small>13.9–18.0 · n=10</small></div></div><div class="bar-row"><div class="bar-name">MAI-Image-2.5</div><div class="bar-track"><div class="bar-fill" style="width:17.6%"></div></div><div class="bar-val">27.9s<small>25.0–46.6 · n=10</small></div></div><div class="bar-row"><div class="bar-name">MAI-Image-2.5-Pro</div><div class="bar-track"><div class="bar-fill" style="width:20.1%"></div></div><div class="bar-val">31.8s<small>27.6–37.6 · n=10</small></div></div><div class="bar-row"><div class="bar-name">GPT-Image-2 (medium)</div><div class="bar-track"><div class="bar-fill mid" style="width:37.0%"></div></div><div class="bar-val">58.5s<small>46.1–65.6 · n=8</small></div></div><div class="bar-row"><div class="bar-name">GPT-Image-2 (high)</div><div class="bar-track"><div class="bar-fill slow" style="width:100.0%"></div></div><div class="bar-val">158.3s<small>132.3–170.7 · n=8</small></div></div></div><div class="foot">取各档全部成功样本的中位数（逐请求原始值见公开台账 results.json）；GPT 两档在真人写真与儿童运动两题被内容过滤，样本数为 8。单位：秒。</div></div><div class="panel span-full"><h3>每图成本 @1024×1024</h3><p class="lead">每图 token 数取自本次实测的 API usage 字段（一手）；MAI 恒定 1,024 tokens/图，GPT medium/high 分别为 1,756/7,024——四倍 token 差直接构成四倍价差。</p><div class="cost-cards"><div class="cost-card muted"><div class="cc-name">GPT-Image-2 (low)</div><div class="cc-val">$0.006</div><div class="cc-bar"><i style="width:3%"></i></div><div class="cc-note">未参与本次质量测试</div></div><div class="cost-card"><div class="cc-name">MAI-Image-2.5-Flash</div><div class="cc-val">$0.027–0.034</div><div class="cc-bar"><i style="width:16%"></i></div><div class="cc-note">牌价存在 $26 与 $33/M 两种口径</div></div><div class="cost-card"><div class="cc-name">MAI-Image-2.5</div><div class="cc-val">$0.048</div><div class="cc-bar"><i style="width:23%"></i></div><div class="cc-note">恒定 1024 tokens/图（实测）</div></div><div class="cost-card"><div class="cc-name">GPT-Image-2 (medium)</div><div class="cc-val">$0.053</div><div class="cc-bar"><i style="width:25%"></i></div><div class="cc-note">1,756 tokens/图（实测）</div></div><div class="cost-card"><div class="cc-name">MAI-Image-2.5-Pro</div><div class="cc-val">$0.109</div><div class="cc-bar"><i style="width:52%"></i></div><div class="cc-note">约为 2.5 的 2.3 倍</div></div><div class="cost-card"><div class="cc-name">GPT-Image-2 (high)</div><div class="cc-val">$0.211</div><div class="cc-bar"><i class="hi" style="width:100%"></i></div><div class="cc-note">7,024 tokens/图（实测）</div></div></div><details class="fold"><summary>token 单价明细（美元 / 1M tokens）</summary><div class="tbl2"><table><thead><tr><th>模型</th><th>文本入</th><th>图入</th><th>图出</th><th>每图 token</th></tr></thead><tbody><tr><td>MAI-Image-2.5</td><td>$5</td><td>$8</td><td>$47</td><td>1,024（恒定）</td></tr><tr><td>MAI-Image-2.5-Flash</td><td>$1.75–5*</td><td>$1.75–8*</td><td>$26–33*</td><td>1,024（恒定）</td></tr><tr><td>MAI-Image-2.5-Pro</td><td>$5</td><td>$8</td><td>$106</td><td>1,024（恒定）</td></tr><tr><td>GPT-Image-2 (medium)</td><td>$5</td><td>$8</td><td>$30</td><td>1,756（实测）</td></tr><tr><td>GPT-Image-2 (high)</td><td>$5</td><td>$8</td><td>$30</td><td>7,024（实测）</td></tr></tbody></table></div><div class="foot">* Flash 牌价存在口径分歧：内部速报按 $5/$8/$26，对官方公告的转述为 $1.75/$1.75/$33（并注明 $19.50–33 区间），故以区间表述。GPT 图出 $30/M 为多源二手一致 + 与实测 token 换算自洽，未能从官方定价页直接引用（动态渲染）；另有 Batch 半价与缓存输入优惠。文字复述：MAI-2.5 每图约 $0.048 与 GPT medium（$0.053）基本持平，约为 GPT high（$0.211）的四分之一。</div></details></div><div class="panel span-half"><h3>文字与细节指令：GPT-Image-2 明显占优</h3><p class="lead">英文海报、细节方位、中文高密度海报、四格漫画四场全胜。中文尤其拉开差距——GPT 近乎零错字，MAI 三款版面结构对但都有字形级错字。海报、漫画、任何带文字的需求直接选 GPT。</p></div><div class="panel span-half"><h3>人像与真人摄影：默认过滤下 MAI 是唯一可用选项</h3><p class="lead">双人陶艺题四手同框 MAI 三款全过、GPT medium 手部交缠；真人写真与儿童运动两题，GPT 两档请求均被内容过滤拦截（HTTP 400）。注意边界：Azure OpenAI 过滤阈值可配置（全关需审批），本结论仅在默认配置下成立。</p></div><div class="panel span-half"><h3>速度：两端相差十倍</h3><p class="lead">Flash 中位 15.8 秒，是 GPT high（158.3 秒）的十分之一。GPT 的高延迟与其思考/路由层设计一致，是档位特性而非故障——但对交互式场景就是硬约束。</p></div><div class="panel span-half"><h3>成本：同档基本持平，档位选择才是变量</h3><p class="lead">MAI-2.5 每图约 $0.048 ≈ GPT medium（$0.053），为 GPT high（$0.211）的约四分之一。未测质量的 GPT low 档仅 $0.006/图——若其质量满足业务底线，成本结论将反转。</p></div><div class="panel span-half"><h3>版权倾向：MAI 画虚构品牌，GPT 画真实涂装</h3><p class="lead">F1 题 GPT 两档直接画出真实车队涂装，MAI 倾向虚构品牌。商用素材合规角度 MAI 更稳，但这是单场景观察（n=1），不能外推为系统性策略差异。</p></div></div>
+    </section>
+
+    <section>
+      <h2>3. 价格与能力对比</h2>
+      <p class="sec-lead">同样是 Azure 上的生图模型，两家在分辨率自由度、协议、编辑能力和内容策略上是不同的产品形态——这些差异往往比画质更早决定选型。均为官方文档口径（2026-08-05 核实），并已修正内部速报中的两处失实。</p>
+      <div class="cap-group"><h4>输出规格</h4><div class="cap-scroll"><table class="cap-table"><thead><tr><th></th><th>MAI-Image-2.5<span class="vend">微软</span></th><th>MAI-Image-2.5-Flash<span class="vend">微软</span></th><th>MAI-Image-2.5-Pro<span class="vend">微软</span></th><th>GPT-Image-2 (medium)<span class="vend">OpenAI</span></th><th>GPT-Image-2 (high)<span class="vend">OpenAI</span></th></tr></thead><tbody><tr><td class="cap-row-label">分辨率</td><td class="cap-val"><b class="warn">自由 width×height</b><span>各边 ≥768，总像素 ≤1,048,576（约 1024² 封顶）</span></td><td class="cap-val"><b class="warn">自由 width×height</b><span>各边 ≥768，总像素 ≤1,048,576（约 1024² 封顶）</span></td><td class="cap-val"><b class="warn">自由 width×height</b><span>各边 ≥768，总像素 ≤1,048,576（约 1024² 封顶）</span></td><td class="cap-val"><b class="good">任意分辨率至 4K</b><span>各边 16px 倍数，总像素 655,360–8,294,400（官方文档）</span></td><td class="cap-val"><b class="good">任意分辨率至 4K</b><span>同左；本次测试统一 1024×1024</span></td></tr><tr><td class="cap-row-label">清晰度档位</td><td class="cap-val"><b>单一档</b><span>无 quality 参数</span></td><td class="cap-val"><b>单一档</b><span>无 quality 参数</span></td><td class="cap-val"><b>单一档</b><span>无 quality 参数</span></td><td class="cap-val"><b class="good">low / medium / high</b><span>本次测 medium</span></td><td class="cap-val"><b class="good">low / medium / high</b><span>本次测 high</span></td></tr><tr><td class="cap-row-label">输出格式</td><td class="cap-val"><b>PNG (b64)</b><span>恒定</span></td><td class="cap-val"><b>PNG (b64)</b><span>恒定</span></td><td class="cap-val"><b>PNG (b64)</b><span>恒定</span></td><td class="cap-val"><b>PNG (b64)</b><span>可选格式参数</span></td><td class="cap-val"><b>PNG (b64)</b><span>可选格式参数</span></td></tr><tr><td class="cap-row-label">单次出图数</td><td class="cap-val"><b>1 张</b><span>无 n 参数</span></td><td class="cap-val"><b>1 张</b><span>无 n 参数</span></td><td class="cap-val"><b>1 张</b><span>无 n 参数</span></td><td class="cap-val"><b class="good">n 张</b><span>支持批量</span></td><td class="cap-val"><b class="good">n 张</b><span>支持批量</span></td></tr></tbody></table></div></div><div class="cap-group"><h4>接口与能力</h4><div class="cap-scroll"><table class="cap-table"><thead><tr><th></th><th>MAI-Image-2.5<span class="vend">微软</span></th><th>MAI-Image-2.5-Flash<span class="vend">微软</span></th><th>MAI-Image-2.5-Pro<span class="vend">微软</span></th><th>GPT-Image-2 (medium)<span class="vend">OpenAI</span></th><th>GPT-Image-2 (high)<span class="vend">OpenAI</span></th></tr></thead><tbody><tr><td class="cap-row-label">协议</td><td class="cap-val"><b class="warn">专有 /mai/v1</b><span>非 OpenAI 兼容, 需单独适配</span></td><td class="cap-val"><b class="warn">专有 /mai/v1</b><span>非 OpenAI 兼容, 需单独适配</span></td><td class="cap-val"><b class="warn">专有 /mai/v1</b><span>非 OpenAI 兼容, 需单独适配</span></td><td class="cap-val"><b class="good">OpenAI images 兼容</b><span>现有 SDK 直接可用</span></td><td class="cap-val"><b class="good">OpenAI images 兼容</b><span>现有 SDK 直接可用</span></td></tr><tr><td class="cap-row-label">编辑能力</td><td class="cap-val"><b class="good">文生图 + 图生图</b><span>multipart edits API</span></td><td class="cap-val"><b class="good">文生图 + 图生图</b><span>multipart edits API</span></td><td class="cap-val"><b class="good">文生图 + 图生图</b><span>multipart edits API</span></td><td class="cap-val"><b class="good">编辑 + mask 局部重绘</b><span>支持 inpaint</span></td><td class="cap-val"><b class="good">编辑 + mask 局部重绘</b><span>支持 inpaint</span></td></tr><tr><td class="cap-row-label">prompt 上限</td><td class="cap-val"><b class="good">32K tokens</b></td><td class="cap-val"><b class="good">32K tokens</b></td><td class="cap-val"><b class="good">32K tokens</b></td><td class="cap-val"><b>按 images API 限制</b></td><td class="cap-val"><b>按 images API 限制</b></td></tr><tr><td class="cap-row-label">内容安全策略</td><td class="cap-val"><b class="good">人像题全放行</b><span>真人写真 / 儿童运动两题均正常出图</span></td><td class="cap-val"><b class="good">人像题全放行</b><span>真人写真 / 儿童运动两题均正常出图</span></td><td class="cap-val"><b class="good">人像题全放行</b><span>真人写真 / 儿童运动两题均正常出图</span></td><td class="cap-val"><b class="bad">人像题全被拦</b><span>真人写真/儿童运动两题在默认过滤配置下被拦截（HTTP 400）</span></td><td class="cap-val"><b class="bad">人像题全被拦</b><span>真人写真/儿童运动两题在默认过滤配置下被拦截（HTTP 400）</span></td></tr><tr><td class="cap-row-label">审核强度可调</td><td class="cap-val"><b>文档未提供配置面</b><span>官方建议自行叠加内容安全治理</span></td><td class="cap-val"><b>文档未提供配置面</b><span>同左</span></td><td class="cap-val"><b>文档未提供配置面</b><span>同左</span></td><td class="cap-val"><b class="good">阈值可配置</b><span>低/中/高三档可调；完全关闭需 Limited Access 审批</span></td><td class="cap-val"><b class="good">阈值可配置</b><span>同左；本次实测为默认配置</span></td></tr></tbody></table></div></div><div class="cap-group"><h4>价格与配额</h4><div class="cap-scroll"><table class="cap-table"><thead><tr><th></th><th>MAI-Image-2.5<span class="vend">微软</span></th><th>MAI-Image-2.5-Flash<span class="vend">微软</span></th><th>MAI-Image-2.5-Pro<span class="vend">微软</span></th><th>GPT-Image-2 (medium)<span class="vend">OpenAI</span></th><th>GPT-Image-2 (high)<span class="vend">OpenAI</span></th></tr></thead><tbody><tr><td class="cap-row-label">token 单价 / 1M</td><td class="cap-val"><b>$5 / $8 / $47</b><span>文本入 / 图入 / 图出</span></td><td class="cap-val"><b class="warn">牌价口径分歧</b><span>$5/$8/$26（内部速报）vs $1.75/$1.75/$33（官方公告转述）</span></td><td class="cap-val"><b class="warn">$5 / $8 / $106</b><span>最高质量档, 图出为 2.5 的 2.3 倍</span></td><td class="cap-val"><b class="good">$5 / $8 / $30</b><span>Batch 半价, 缓存输入 $2/M</span></td><td class="cap-val"><b class="good">$5 / $8 / $30</b><span>Batch 半价, 缓存输入 $2/M</span></td></tr><tr><td class="cap-row-label">每图成本</td><td class="cap-val"><b class="good">≈$0.05</b><span>恒定, 不随尺寸跳变</span></td><td class="cap-val"><b class="good">≈$0.027</b><span>全场最低价 (GPT low 除外)</span></td><td class="cap-val"><b class="warn">≈$0.109</b><span>约为 2.5 的 2.3 倍</span></td><td class="cap-val"><b>≈$0.053</b><span>@1024²; low 档仅 $0.006</span></td><td class="cap-val"><b class="warn">≈$0.211</b><span>@1024²; 约为 medium 四倍</span></td></tr><tr><td class="cap-row-label">调用频率上限</td><td class="cap-val"><b>每分钟 12 次</b><span>GlobalStandard 配额顶格（官方分 6 档，2.5 系最高 12 RPM/订阅/区）</span></td><td class="cap-val"><b>每分钟 12 次</b><span>GlobalStandard 配额顶格（官方分 6 档，2.5 系最高 12 RPM/订阅/区）</span></td><td class="cap-val"><b>每分钟 12 次</b><span>GlobalStandard 配额顶格（官方分 6 档，2.5 系最高 12 RPM/订阅/区）</span></td><td class="cap-val"><b>每分钟 12 次</b><span>本次测试环境</span></td><td class="cap-val"><b>每分钟 12 次</b><span>本次测试环境</span></td></tr></tbody></table></div></div><p class="cap-foot">MAI-Image-2.5 三款为 Preview（无 SLA，仅 7 个 region），定价为 2026-08-05 核实口径；表中每图成本按 1024×1024 计。矩阵复述：分辨率自由度、协议兼容性、批量与 mask 编辑、生产成熟度 GPT 占优；人像可用性（默认过滤下）与延迟 MAI 占优；同档成本基本持平。</p>
+    </section>
+
+    <section>
+      <h2>4. 十组场景，逐张对照</h2>
+      <p class="sec-lead">同一条 prompt 同时发给五个档位，1024×1024 单次生成不重试。每格标注实测延迟与裁决（最佳 / 达标 / 有偏离 / 未出图），点击图片查看大图。</p>
+      <nav class="scene-index" aria-label="场景目录"><a href="#s1-simple"><span class="si-no">01</span>简单场景 · 橘猫窗台</a><a href="#s2-medium"><span class="si-no">02</span>产品海报 · 英文文字</a><a href="#s3-complex"><span class="si-no">03</span>复杂场景 · 发明家工作室</a><a href="#s4-portrait"><span class="si-no">04</span>双人人像 · 陶艺工坊</a><a href="#s5-photoshoot"><span class="si-no">05</span>真人写真 · 时尚大片</a><a href="#s6-cartoon"><span class="si-no">06</span>卡通形象 · 狐狸宇航员</a><a href="#s7-f1-motion"><span class="si-no">07</span>F1 高速运动</a><a href="#s8-cjk-poster"><span class="si-no">08</span>中英混排高密度海报</a><a href="#s9-comic"><span class="si-no">09</span>四格漫画</a><a href="#s10-kid-sports"><span class="si-no">10</span>真人小孩 · 街头足球</a></nav><section class="scene" id="s1-simple"><div class="scene-head"><div class="scene-no">01</div><h3>简单场景 · 橘猫窗台</h3><p class="focus">基础质感与光影 — 单主体、无文字、无复杂指令时的底子如何。</p><details class="prompt-box"><summary>查看原始 prompt</summary><div class="pbody">A ginger cat sitting on a windowsill in warm afternoon sunlight, cozy interior background, photorealistic</div></details></div><div class="grid-scroll"><div class="grid5"><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s1-simple--mai-2.5.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s1-simple--mai-2.5.jpg" alt="简单场景 · 橘猫窗台 — MAI-Image-2.5" loading="lazy" /></a><div class="shot-body"><div class="shot-name">MAI-Image-2.5</div><div class="shot-price">≈$0.048/图</div><div class="chips"><span class="chip">25.0s</span><span class="chip v-win">最佳</span></div><div class="shot-note">暖调影调化处理, 毛发与逆光细节最丰富, 观感最讨喜。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s1-simple--mai-2.5-flash.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s1-simple--mai-2.5-flash.jpg" alt="简单场景 · 橘猫窗台 — MAI-Image-2.5-Flash" loading="lazy" /></a><div class="shot-body"><div class="shot-name">MAI-Image-2.5-Flash</div><div class="shot-price">≈$0.027–0.034/图</div><div class="chips"><span class="chip">15.5s</span><span class="chip v-good">达标</span></div><div class="shot-note">干净自然, 15.5 秒出图, 质量没有明显缩水。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s1-simple--mai-2.5-pro.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s1-simple--mai-2.5-pro.jpg" alt="简单场景 · 橘猫窗台 — MAI-Image-2.5-Pro" loading="lazy" /></a><div class="shot-body"><div class="shot-name">MAI-Image-2.5-Pro</div><div class="shot-price">≈$0.109/图</div><div class="chips"><span class="chip">29.8s</span><span class="chip v-ok">有偏离</span></div><div class="shot-note">质感极佳但把 sitting 画成了趴卧, 指令有小偏离。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s1-simple--gpt-image-2-medium.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s1-simple--gpt-image-2-medium.jpg" alt="简单场景 · 橘猫窗台 — GPT-Image-2 (medium)" loading="lazy" /></a><div class="shot-body"><div class="shot-name">GPT-Image-2 (medium)</div><div class="shot-price">≈$0.053/图</div><div class="chips"><span class="chip">52.6s</span><span class="chip v-good">达标</span></div><div class="shot-note">更像真实照片, 中性色调, 不做戏剧化加工。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s1-simple--gpt-image-2-high.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s1-simple--gpt-image-2-high.jpg" alt="简单场景 · 橘猫窗台 — GPT-Image-2 (high)" loading="lazy" /></a><div class="shot-body"><div class="shot-name">GPT-Image-2 (high)</div><div class="shot-price">≈$0.211/图</div><div class="chips"><span class="chip">157.8s</span><span class="chip v-good">达标</span></div><div class="shot-note">同为写实路线, 细节比 medium 更实, 但代价是 157.8 秒。</div></div></div></div></div><p class="grid-hint">窄屏下左右滑动查看五个档位</p></section><section class="scene" id="s2-medium"><div class="scene-head"><div class="scene-no">02</div><h3>产品海报 · 英文文字</h3><p class="focus">短英文文字渲染与商业设计感 — 标题 + 标语两段文字能否拼对。</p><details class="prompt-box"><summary>查看原始 prompt</summary><div class="pbody">Product poster for a smart speaker called &#x27;ECHOFOX&#x27;: a matte black cylinder speaker on a marble table, softbox studio lighting, large headline text &#x27;Hear Everything&#x27; at the top, small tagline text &#x27;ECHOFOX One - Sound Beyond Limits&#x27; at the bottom, minimalist commercial design</div></details></div><div class="grid-scroll"><div class="grid5"><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s2-medium--mai-2.5.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s2-medium--mai-2.5.jpg" alt="产品海报 · 英文文字 — MAI-Image-2.5" loading="lazy" /></a><div class="shot-body"><div class="shot-name">MAI-Image-2.5</div><div class="shot-price">≈$0.048/图</div><div class="chips"><span class="chip">46.6s</span><span class="chip v-good">达标</span></div><div class="shot-note">英文标题与标语全对, 金色字处理优雅。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s2-medium--mai-2.5-flash.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s2-medium--mai-2.5-flash.jpg" alt="产品海报 · 英文文字 — MAI-Image-2.5-Flash" loading="lazy" /></a><div class="shot-body"><div class="shot-name">MAI-Image-2.5-Flash</div><div class="shot-price">≈$0.027–0.034/图</div><div class="chips"><span class="chip">13.9s</span><span class="chip v-good">达标</span></div><div class="shot-note">文字正确, 版面干净, 13.9 秒是全场最快。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s2-medium--mai-2.5-pro.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s2-medium--mai-2.5-pro.jpg" alt="产品海报 · 英文文字 — MAI-Image-2.5-Pro" loading="lazy" /></a><div class="shot-body"><div class="shot-name">MAI-Image-2.5-Pro</div><div class="shot-price">≈$0.109/图</div><div class="chips"><span class="chip">28.5s</span><span class="chip v-good">达标</span></div><div class="shot-note">设计感最强, 但自作主张多加了一行 ECHOFOX。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s2-medium--gpt-image-2-medium.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s2-medium--gpt-image-2-medium.jpg" alt="产品海报 · 英文文字 — GPT-Image-2 (medium)" loading="lazy" /></a><div class="shot-body"><div class="shot-name">GPT-Image-2 (medium)</div><div class="shot-price">≈$0.053/图</div><div class="chips"><span class="chip">46.1s</span><span class="chip v-win">最佳</span></div><div class="shot-note">品牌感最强, 主动补了产品 logo 与机身刻字。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s2-medium--gpt-image-2-high.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s2-medium--gpt-image-2-high.jpg" alt="产品海报 · 英文文字 — GPT-Image-2 (high)" loading="lazy" /></a><div class="shot-body"><div class="shot-name">GPT-Image-2 (high)</div><div class="shot-price">≈$0.211/图</div><div class="chips"><span class="chip">138.2s</span><span class="chip v-win">最佳</span></div><div class="shot-note">同样自发加 logo 与刻字, 材质与打光更接近真实棚拍。</div></div></div></div></div><p class="grid-hint">窄屏下左右滑动查看五个档位</p><div class="takeaway">五档全部正确渲染了英文标题和标语 — 短英文文字对当代模型已不再是难点。</div></section><section class="scene" id="s3-complex"><div class="scene-head"><div class="scene-no">03</div><h3>复杂场景 · 发明家工作室</h3><p class="focus">多对象指令遵循、反射与空间推理 — 重点考三只猫是否各就各位。</p><details class="prompt-box"><summary>查看原始 prompt</summary><div class="pbody">A cluttered inventor&#x27;s workshop at dusk: a glass chess set mid-game on a wooden bench reflecting an orange neon sign that reads &#x27;OPEN 24H&#x27;, a brass telescope pointing out of a rain-streaked window, three cats - one sleeping on a stack of leather books, one sitting inside a cardboard box, one batting a rolling brass gear on the floor - warm tungsten lamp light mixing with cool blue twilight, photorealistic, high detail</div></details></div><div class="grid-scroll"><div class="grid5"><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s3-complex--mai-2.5.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s3-complex--mai-2.5.jpg" alt="复杂场景 · 发明家工作室 — MAI-Image-2.5" loading="lazy" /></a><div class="shot-body"><div class="shot-name">MAI-Image-2.5</div><div class="shot-price">≈$0.048/图</div><div class="chips"><span class="chip">28.9s</span><span class="chip v-ok">有偏离</span></div><div class="shot-note">漏了「猫在纸箱里」这一条, 三猫指令只做对两项。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s3-complex--mai-2.5-flash.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s3-complex--mai-2.5-flash.jpg" alt="复杂场景 · 发明家工作室 — MAI-Image-2.5-Flash" loading="lazy" /></a><div class="shot-body"><div class="shot-name">MAI-Image-2.5-Flash</div><div class="shot-price">≈$0.027–0.034/图</div><div class="chips"><span class="chip">17.3s</span><span class="chip v-good">达标</span></div><div class="shot-note">三只猫位置全对, 快档没在指令上打折。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s3-complex--mai-2.5-pro.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s3-complex--mai-2.5-pro.jpg" alt="复杂场景 · 发明家工作室 — MAI-Image-2.5-Pro" loading="lazy" /></a><div class="shot-body"><div class="shot-name">MAI-Image-2.5-Pro</div><div class="shot-price">≈$0.109/图</div><div class="chips"><span class="chip">32.1s</span><span class="chip v-win">最佳</span></div><div class="shot-note">三猫全对, 信息密度最高, 还把霓虹反射画进了窗玻璃。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s3-complex--gpt-image-2-medium.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s3-complex--gpt-image-2-medium.jpg" alt="复杂场景 · 发明家工作室 — GPT-Image-2 (medium)" loading="lazy" /></a><div class="shot-body"><div class="shot-name">GPT-Image-2 (medium)</div><div class="shot-price">≈$0.053/图</div><div class="chips"><span class="chip">61.3s</span><span class="chip v-good">达标</span></div><div class="shot-note">三猫全对, 且是唯一把霓虹反射画在玻璃棋盘上的 — 那正是 prompt 的原始要求。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s3-complex--gpt-image-2-high.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s3-complex--gpt-image-2-high.jpg" alt="复杂场景 · 发明家工作室 — GPT-Image-2 (high)" loading="lazy" /></a><div class="shot-body"><div class="shot-name">GPT-Image-2 (high)</div><div class="shot-price">≈$0.211/图</div><div class="chips"><span class="chip">170.7s</span><span class="chip v-good">达标</span></div><div class="shot-note">三猫全对, 钨丝暖光与冷蓝暮色的混合层次最准。</div></div></div></div></div><p class="grid-hint">窄屏下左右滑动查看五个档位</p><div class="takeaway">指令遵循的分水岭: 除 MAI-Image-2.5 漏了纸箱猫, 其余四档全对; 「反射画在棋盘上」这条只有 GPT medium 真正做到。</div></section><section class="scene" id="s4-portrait"><div class="scene-head"><div class="scene-no">04</div><h3>双人人像 · 陶艺工坊</h3><p class="focus">人脸、手部与皮肤质感 — 四只手同时出现在画面是经典失败点。</p><details class="prompt-box"><summary>查看原始 prompt</summary><div class="pbody">Candid portrait of an elderly male craftsman with a weathered, wrinkled face laughing together with a young female apprentice in a sunlit pottery studio, all four hands visible and shaping wet clay on a spinning wheel, shallow depth of field, 85mm lens, natural window light, photorealistic skin texture</div></details></div><div class="grid-scroll"><div class="grid5"><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s4-portrait--mai-2.5.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s4-portrait--mai-2.5.jpg" alt="双人人像 · 陶艺工坊 — MAI-Image-2.5" loading="lazy" /></a><div class="shot-body"><div class="shot-name">MAI-Image-2.5</div><div class="shot-price">≈$0.048/图</div><div class="chips"><span class="chip">31.7s</span><span class="chip v-win">最佳</span></div><div class="shot-note">双人四手全对, 老人皱纹与皮肤纹理是本场最佳。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s4-portrait--mai-2.5-flash.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s4-portrait--mai-2.5-flash.jpg" alt="双人人像 · 陶艺工坊 — MAI-Image-2.5-Flash" loading="lazy" /></a><div class="shot-body"><div class="shot-name">MAI-Image-2.5-Flash</div><div class="shot-price">≈$0.027–0.034/图</div><div class="chips"><span class="chip">16.0s</span><span class="chip v-good">达标</span></div><div class="shot-note">手部同样全对, 整体更柔和。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s4-portrait--mai-2.5-pro.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s4-portrait--mai-2.5-pro.jpg" alt="双人人像 · 陶艺工坊 — MAI-Image-2.5-Pro" loading="lazy" /></a><div class="shot-body"><div class="shot-name">MAI-Image-2.5-Pro</div><div class="shot-price">≈$0.109/图</div><div class="chips"><span class="chip">29.8s</span><span class="chip v-good">达标</span></div><div class="shot-note">四手到位, 景深与陶土质感扎实。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s4-portrait--gpt-image-2-medium.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s4-portrait--gpt-image-2-medium.jpg" alt="双人人像 · 陶艺工坊 — GPT-Image-2 (medium)" loading="lazy" /></a><div class="shot-body"><div class="shot-name">GPT-Image-2 (medium)</div><div class="shot-price">≈$0.053/图</div><div class="chips"><span class="chip">58.6s</span><span class="chip v-ok">有偏离</span></div><div class="shot-note">手部出现交缠瑕疵 — 经典的多手失败点在这一档复现。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s4-portrait--gpt-image-2-high.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s4-portrait--gpt-image-2-high.jpg" alt="双人人像 · 陶艺工坊 — GPT-Image-2 (high)" loading="lazy" /></a><div class="shot-body"><div class="shot-name">GPT-Image-2 (high)</div><div class="shot-price">≈$0.211/图</div><div class="chips"><span class="chip">160.0s</span><span class="chip v-good">达标</span></div><div class="shot-note">面部表现极佳, 手部关系也理顺了。</div></div></div></div></div><p class="grid-hint">窄屏下左右滑动查看五个档位</p><div class="takeaway">四手同框仍是分水岭: MAI 三款全部过关, GPT medium 在手部交缠上翻车, 要到 high 档才修正。</div></section><section class="scene" id="s5-photoshoot"><div class="scene-head"><div class="scene-no">05</div><h3>真人写真 · 时尚大片</h3><p class="focus">全身人像、织物与景深 — 同时也是平台内容安全策略的分水岭。</p><details class="prompt-box"><summary>查看原始 prompt</summary><div class="pbody">Full-body fashion editorial photograph of a young East Asian woman in a flowing emerald silk dress, seated on a vintage leather chair in a sunlit loft, soft rim lighting, backlit hair strands, visible skin pores and natural makeup, elegant pose with hands resting on the armrest, Vogue magazine style, shot on medium format camera at f/2.8</div></details></div><div class="grid-scroll"><div class="grid5"><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s5-photoshoot--mai-2.5.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s5-photoshoot--mai-2.5.jpg" alt="真人写真 · 时尚大片 — MAI-Image-2.5" loading="lazy" /></a><div class="shot-body"><div class="shot-name">MAI-Image-2.5</div><div class="shot-price">≈$0.048/图</div><div class="chips"><span class="chip">27.4s</span><span class="chip v-win">最佳</span></div><div class="shot-note">摄影级大片, 道具叙事 (VOGUE 杂志) 与光影俱佳, 本场最佳。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s5-photoshoot--mai-2.5-flash.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s5-photoshoot--mai-2.5-flash.jpg" alt="真人写真 · 时尚大片 — MAI-Image-2.5-Flash" loading="lazy" /></a><div class="shot-body"><div class="shot-name">MAI-Image-2.5-Flash</div><div class="shot-price">≈$0.027–0.034/图</div><div class="chips"><span class="chip">15.6s</span><span class="chip v-good">达标</span></div><div class="shot-note">正常出图, 丝绸垂坠与逆光发丝到位, 15.6 秒。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s5-photoshoot--mai-2.5-pro.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s5-photoshoot--mai-2.5-pro.jpg" alt="真人写真 · 时尚大片 — MAI-Image-2.5-Pro" loading="lazy" /></a><div class="shot-body"><div class="shot-name">MAI-Image-2.5-Pro</div><div class="shot-price">≈$0.109/图</div><div class="chips"><span class="chip">32.9s</span><span class="chip v-good">达标</span></div><div class="shot-note">正常出图, 景深与肤质层次最细。</div></div></div><div class="shot"><div class="shot-media miss"><div class="miss-ph">未出图<br/><small>请求被内容过滤拦截（HTTP 400）</small></div></div><div class="shot-body"><div class="shot-name">GPT-Image-2 (medium)</div><div class="shot-price">≈$0.053/图</div><div class="chips"><span class="chip">—</span><span class="chip v-miss">未出图</span></div><div class="shot-note">请求被平台安全策略拦截, 没有生成图片 (重试两次结果相同)。</div></div></div><div class="shot"><div class="shot-media miss"><div class="miss-ph">未出图<br/><small>请求被内容过滤拦截（HTTP 400）</small></div></div><div class="shot-body"><div class="shot-name">GPT-Image-2 (high)</div><div class="shot-price">≈$0.211/图</div><div class="chips"><span class="chip">—</span><span class="chip v-miss">未出图</span></div><div class="shot-note">同样被平台安全策略拦截, 没有生成图片 (重试两次结果相同)。</div></div></div></div></div><p class="grid-hint">窄屏下左右滑动查看五个档位</p><div class="takeaway">本次测试最关键的发现: 同一条真人时尚写真描述, GPT-Image-2 两档的请求都被平台安全策略拦下 (重试两次都一样), MAI 三款则正常产出摄影级大片。这不是画质偏好而是能不能用的问题 — 人像与写真类需求, MAI 是这里唯一可用的选择。</div></section><section class="scene" id="s6-cartoon"><div class="scene-head"><div class="scene-no">06</div><h3>卡通形象 · 狐狸宇航员</h3><p class="focus">细节指令遵循与贴纸风 — 金钥匙、胸口星星补丁、右耳创可贴逐项核对。</p><details class="prompt-box"><summary>查看原始 prompt</summary><div class="pbody">A cute cartoon mascot design: an orange fox astronaut wearing a transparent bubble helmet, holding a golden key in its right paw and waving with its left paw, standing on a crescent moon, a star-shaped patch on its chest pocket and a small band-aid on its right ear, thick clean outlines, flat cel shading, three-quarter view, sticker style on a plain white background</div></details></div><div class="grid-scroll"><div class="grid5"><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s6-cartoon--mai-2.5.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s6-cartoon--mai-2.5.jpg" alt="卡通形象 · 狐狸宇航员 — MAI-Image-2.5" loading="lazy" /></a><div class="shot-body"><div class="shot-name">MAI-Image-2.5</div><div class="shot-price">≈$0.048/图</div><div class="chips"><span class="chip">26.8s</span><span class="chip v-good">达标</span></div><div class="shot-note">整体到位, 但 band-aid 画在了左耳 — 左右方位镜像画反。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s6-cartoon--mai-2.5-flash.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s6-cartoon--mai-2.5-flash.jpg" alt="卡通形象 · 狐狸宇航员 — MAI-Image-2.5-Flash" loading="lazy" /></a><div class="shot-body"><div class="shot-name">MAI-Image-2.5-Flash</div><div class="shot-price">≈$0.027–0.034/图</div><div class="chips"><span class="chip">14.3s</span><span class="chip v-ok">有偏离</span></div><div class="shot-note">把一把钥匙画成两把, 还漏了挥手动作, 细节丢失最多。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s6-cartoon--mai-2.5-pro.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s6-cartoon--mai-2.5-pro.jpg" alt="卡通形象 · 狐狸宇航员 — MAI-Image-2.5-Pro" loading="lazy" /></a><div class="shot-body"><div class="shot-name">MAI-Image-2.5-Pro</div><div class="shot-price">≈$0.109/图</div><div class="chips"><span class="chip">27.6s</span><span class="chip v-good">达标</span></div><div class="shot-note">造型最精致, 同样栽在 band-aid 的左右方位上。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s6-cartoon--gpt-image-2-medium.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s6-cartoon--gpt-image-2-medium.jpg" alt="卡通形象 · 狐狸宇航员 — GPT-Image-2 (medium)" loading="lazy" /></a><div class="shot-body"><div class="shot-name">GPT-Image-2 (medium)</div><div class="shot-price">≈$0.053/图</div><div class="chips"><span class="chip">48.0s</span><span class="chip v-win">最佳</span></div><div class="shot-note">逐项全对, 含「右耳 band-aid」这个左右方位判断。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s6-cartoon--gpt-image-2-high.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s6-cartoon--gpt-image-2-high.jpg" alt="卡通形象 · 狐狸宇航员 — GPT-Image-2 (high)" loading="lazy" /></a><div class="shot-body"><div class="shot-name">GPT-Image-2 (high)</div><div class="shot-price">≈$0.211/图</div><div class="chips"><span class="chip">132.3s</span><span class="chip v-win">最佳</span></div><div class="shot-note">同样逐项全对, 线条与配色更干净。</div></div></div></div></div><p class="grid-hint">窄屏下左右滑动查看五个档位</p><div class="takeaway">细节指令大考: 「右耳」这类左右方位判断 GPT 两档全对, MAI 2.5/Pro 一致镜像画反, Flash 还额外丢了钥匙数量和挥手动作。</div></section><section class="scene" id="s7-f1-motion"><div class="scene-head"><div class="scene-no">07</div><h3>F1 高速运动</h3><p class="focus">动态模糊与复杂机械 — 追焦、水雾与前翼结构同时成立的难度。</p><details class="prompt-box"><summary>查看原始 prompt</summary><div class="pbody">Panning shot of two Formula 1 cars battling wheel-to-wheel through a rain-soaked corner at 300 km/h, spray and mist trailing behind, motion-blurred grandstand and sponsor boards in the background, sharp focus locked on the leading car&#x27;s front wing, water droplets frozen mid-air, dramatic overcast light, professional motorsport photography</div></details></div><div class="grid-scroll"><div class="grid5"><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s7-f1-motion--mai-2.5.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s7-f1-motion--mai-2.5.jpg" alt="F1 高速运动 — MAI-Image-2.5" loading="lazy" /></a><div class="shot-body"><div class="shot-name">MAI-Image-2.5</div><div class="shot-price">≈$0.048/图</div><div class="chips"><span class="chip">26.8s</span><span class="chip v-ok">有偏离</span></div><div class="shot-note">倾向虚构车队品牌 (CROWISTRK), 动感偏静态, 摇摄感最弱。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s7-f1-motion--mai-2.5-flash.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s7-f1-motion--mai-2.5-flash.jpg" alt="F1 高速运动 — MAI-Image-2.5-Flash" loading="lazy" /></a><div class="shot-body"><div class="shot-name">MAI-Image-2.5-Flash</div><div class="shot-price">≈$0.027–0.034/图</div><div class="chips"><span class="chip">15.6s</span><span class="chip v-good">达标</span></div><div class="shot-note">MAI 侧摇摄模糊表现最好, 水雾拖尾到位。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s7-f1-motion--mai-2.5-pro.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s7-f1-motion--mai-2.5-pro.jpg" alt="F1 高速运动 — MAI-Image-2.5-Pro" loading="lazy" /></a><div class="shot-body"><div class="shot-name">MAI-Image-2.5-Pro</div><div class="shot-price">≈$0.109/图</div><div class="chips"><span class="chip">31.5s</span><span class="chip v-good">达标</span></div><div class="shot-note">机械结构扎实, 品牌仍走虚构路线。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s7-f1-motion--gpt-image-2-medium.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s7-f1-motion--gpt-image-2-medium.jpg" alt="F1 高速运动 — GPT-Image-2 (medium)" loading="lazy" /></a><div class="shot-body"><div class="shot-name">GPT-Image-2 (medium)</div><div class="shot-price">≈$0.053/图</div><div class="chips"><span class="chip">58.3s</span><span class="chip v-win">最佳</span></div><div class="shot-note">直接画出真实车队涂装 (McLaren / Mercedes PETRONAS), 摇摄动感最强。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s7-f1-motion--gpt-image-2-high.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s7-f1-motion--gpt-image-2-high.jpg" alt="F1 高速运动 — GPT-Image-2 (high)" loading="lazy" /></a><div class="shot-body"><div class="shot-name">GPT-Image-2 (high)</div><div class="shot-price">≈$0.211/图</div><div class="chips"><span class="chip">158.8s</span><span class="chip v-win">最佳</span></div><div class="shot-note">同样是真实涂装, 水珠凝滞与前翼细节最实。</div></div></div></div></div><p class="grid-hint">窄屏下左右滑动查看五个档位</p><div class="takeaway">除了动感强弱, 这场暴露出版权倾向差异: GPT 直接画真实车队涂装, MAI 倾向虚构品牌 — 商用素材合规角度 MAI 反而更稳。</div></section><section class="scene" id="s8-cjk-poster"><div class="scene-head"><div class="scene-no">08</div><h3>中英混排高密度海报</h3><p class="focus">CJK 文字渲染 — 议程、嘉宾、票务多段中英文字全部要可读且正确。</p><details class="prompt-box"><summary>查看原始 prompt</summary><div class="pbody">Modern tech conference poster packed with dense bilingual Chinese and English text… 主标题 &#x27;2026 智能云峰会&#x27; / &#x27;AI Cloud Summit 2026&#x27;, 议程四行、嘉宾三人、票务与话题标签, 要求全部文字准确可读。</div></details></div><div class="grid-scroll"><div class="grid5"><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s8-cjk-poster--mai-2.5.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s8-cjk-poster--mai-2.5.jpg" alt="中英混排高密度海报 — MAI-Image-2.5" loading="lazy" /></a><div class="shot-body"><div class="shot-name">MAI-Image-2.5</div><div class="shot-price">≈$0.048/图</div><div class="chips"><span class="chip">28.3s</span><span class="chip v-good">达标</span></div><div class="shot-note">版面结构正确, 但有字形级错字 (圆卓对适 / 特邀熹宾 / 峰缝2026)。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s8-cjk-poster--mai-2.5-flash.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s8-cjk-poster--mai-2.5-flash.jpg" alt="中英混排高密度海报 — MAI-Image-2.5-Flash" loading="lazy" /></a><div class="shot-body"><div class="shot-name">MAI-Image-2.5-Flash</div><div class="shot-price">≈$0.027–0.034/图</div><div class="chips"><span class="chip">17.9s</span><span class="chip v-ok">有偏离</span></div><div class="shot-note">错字最多, 议程行还出现重复。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s8-cjk-poster--mai-2.5-pro.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s8-cjk-poster--mai-2.5-pro.jpg" alt="中英混排高密度海报 — MAI-Image-2.5-Pro" loading="lazy" /></a><div class="shot-body"><div class="shot-name">MAI-Image-2.5-Pro</div><div class="shot-price">≈$0.109/图</div><div class="chips"><span class="chip">37.6s</span><span class="chip v-good">达标</span></div><div class="shot-note">结构与设计感最好, 同样存在字形级错字。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s8-cjk-poster--gpt-image-2-medium.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s8-cjk-poster--gpt-image-2-medium.jpg" alt="中英混排高密度海报 — GPT-Image-2 (medium)" loading="lazy" /></a><div class="shot-body"><div class="shot-name">GPT-Image-2 (medium)</div><div class="shot-price">≈$0.053/图</div><div class="chips"><span class="chip">62.3s</span><span class="chip v-win">最佳</span></div><div class="shot-note">近乎零错字, 议程 / 嘉宾 / 票务全对, 还自发加了上海天际线。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s8-cjk-poster--gpt-image-2-high.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s8-cjk-poster--gpt-image-2-high.jpg" alt="中英混排高密度海报 — GPT-Image-2 (high)" loading="lazy" /></a><div class="shot-body"><div class="shot-name">GPT-Image-2 (high)</div><div class="shot-price">≈$0.211/图</div><div class="chips"><span class="chip">155.4s</span><span class="chip v-win">最佳</span></div><div class="shot-note">同样近乎零错字, 排版层级最接近真实会议海报。</div></div></div></div></div><p class="grid-hint">窄屏下左右滑动查看五个档位</p><div class="takeaway">中文高密度文字是本次差距最大的一场: GPT 两档近乎零错字, MAI 三款结构对但都有字形级错字 — 中文海报类需求应直接选 GPT-Image-2。</div></section><section class="scene" id="s9-comic"><div class="scene-head"><div class="scene-no">09</div><h3>四格漫画</h3><p class="focus">分镜、角色一致性与中英对白气泡 — 四格里同两个角色要保持同一人。</p><details class="prompt-box"><summary>查看原始 prompt</summary><div class="pbody">A four-panel comic strip in manga style… 四格分别为深夜敲代码、猫扑键盘、部署失败红字、猫睡笔记本, 每格含中英双语对白气泡, 两个角色四格保持一致。</div></details></div><div class="grid-scroll"><div class="grid5"><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s9-comic--mai-2.5.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s9-comic--mai-2.5.jpg" alt="四格漫画 — MAI-Image-2.5" loading="lazy" /></a><div class="shot-body"><div class="shot-name">MAI-Image-2.5</div><div class="shot-price">≈$0.048/图</div><div class="chips"><span class="chip">28.9s</span><span class="chip v-good">达标</span></div><div class="shot-note">近乎全对, 仅「马以」一处错字, MAI 侧最佳。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s9-comic--mai-2.5-flash.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s9-comic--mai-2.5-flash.jpg" alt="四格漫画 — MAI-Image-2.5-Flash" loading="lazy" /></a><div class="shot-body"><div class="shot-name">MAI-Image-2.5-Flash</div><div class="shot-price">≈$0.027–0.034/图</div><div class="chips"><span class="chip">18.0s</span><span class="chip v-ok">有偏离</span></div><div class="shot-note">多个对白气泡出现乱码。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s9-comic--mai-2.5-pro.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s9-comic--mai-2.5-pro.jpg" alt="四格漫画 — MAI-Image-2.5-Pro" loading="lazy" /></a><div class="shot-body"><div class="shot-name">MAI-Image-2.5-Pro</div><div class="shot-price">≈$0.109/图</div><div class="chips"><span class="chip">33.0s</span><span class="chip v-ok">有偏离</span></div><div class="shot-note">改用四条横幅代替分镜格, 另有 2 处错字。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s9-comic--gpt-image-2-medium.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s9-comic--gpt-image-2-medium.jpg" alt="四格漫画 — GPT-Image-2 (medium)" loading="lazy" /></a><div class="shot-body"><div class="shot-name">GPT-Image-2 (medium)</div><div class="shot-price">≈$0.053/图</div><div class="chips"><span class="chip">65.6s</span><span class="chip v-win">最佳</span></div><div class="shot-note">分镜编号清晰、零错字, 报错屏是真实的 PostgreSQL 错误行, 还自发加了事故复盘白板。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s9-comic--gpt-image-2-high.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s9-comic--gpt-image-2-high.jpg" alt="四格漫画 — GPT-Image-2 (high)" loading="lazy" /></a><div class="shot-body"><div class="shot-name">GPT-Image-2 (high)</div><div class="shot-price">≈$0.211/图</div><div class="chips"><span class="chip">161.7s</span><span class="chip v-win">最佳</span></div><div class="shot-note">同样零错字, 彩蛋更多 (加油程序员纸巾盒), 角色四格一致。</div></div></div></div></div><p class="grid-hint">窄屏下左右滑动查看五个档位</p><div class="takeaway">GPT 两档不只文字正确, 还会补真实感细节 (PostgreSQL 报错行、事故复盘白板) — 叙事类多格内容的完成度明显高一档。</div></section><section class="scene" id="s10-kid-sports"><div class="scene-head"><div class="scene-no">10</div><h3>真人小孩 · 街头足球</h3><p class="focus">儿童写实人像 + 高速运动瞬间 — 面部真实感、肢体正确性、动作凝固与背景摇摄, 同时检验平台安全策略对儿童写实照的差异。</p><details class="prompt-box"><summary>查看原始 prompt</summary><div class="pbody">Photorealistic action portrait of an 8-year-old boy playing street soccer at golden hour… 凌空抽射瞬间凝固、鞋边扬尘、背景操场与铁丝网摇摄模糊、额头汗珠, 135mm 运动摄影。</div></details></div><div class="grid-scroll"><div class="grid5"><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s10-kid-sports--mai-2.5.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s10-kid-sports--mai-2.5.jpg" alt="真人小孩 · 街头足球 — MAI-Image-2.5" loading="lazy" /></a><div class="shot-body"><div class="shot-name">MAI-Image-2.5</div><div class="shot-price">≈$0.048/图</div><div class="chips"><span class="chip">26.5s</span><span class="chip v-good">达标</span></div><div class="shot-note">抽射瞬间干净利落, 球衣队徽、鞋边扬尘、金色光线俱全, 面部自然。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s10-kid-sports--mai-2.5-flash.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s10-kid-sports--mai-2.5-flash.jpg" alt="真人小孩 · 街头足球 — MAI-Image-2.5-Flash" loading="lazy" /></a><div class="shot-body"><div class="shot-name">MAI-Image-2.5-Flash</div><div class="shot-price">≈$0.027–0.034/图</div><div class="chips"><span class="chip">16.8s</span><span class="chip v-good">达标</span></div><div class="shot-note">动感姿态最舒展, 背景摇摄模糊到位, 细节略柔。</div></div></div><div class="shot"><a class="shot-media" href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s10-kid-sports--mai-2.5-pro.jpg" target="_blank" rel="noreferrer"><img src="/topics/03-mai-image-25-vs-gpt-image-2/evidence/s10-kid-sports--mai-2.5-pro.jpg" alt="真人小孩 · 街头足球 — MAI-Image-2.5-Pro" loading="lazy" /></a><div class="shot-body"><div class="shot-name">MAI-Image-2.5-Pro</div><div class="shot-price">≈$0.109/图</div><div class="chips"><span class="chip">37.2s</span><span class="chip v-win">最佳</span></div><div class="shot-note">最具冲击力: 满身泥点的球衣、飞溅的沙土、汗珠特写, 纪实感最强。</div></div></div><div class="shot"><div class="shot-media miss"><div class="miss-ph">未出图<br/><small>请求被内容过滤拦截（HTTP 400）</small></div></div><div class="shot-body"><div class="shot-name">GPT-Image-2 (medium)</div><div class="shot-price">≈$0.053/图</div><div class="chips"><span class="chip">—</span><span class="chip v-miss">未出图</span></div><div class="shot-note">平台安全策略拦截了该请求 (写实儿童照), 未能出图。</div></div></div><div class="shot"><div class="shot-media miss"><div class="miss-ph">未出图<br/><small>请求被内容过滤拦截（HTTP 400）</small></div></div><div class="shot-body"><div class="shot-name">GPT-Image-2 (high)</div><div class="shot-price">≈$0.211/图</div><div class="chips"><span class="chip">—</span><span class="chip v-miss">未出图</span></div><div class="shot-note">同样被平台安全策略拦截, 未能出图。</div></div></div></div></div><p class="grid-hint">窄屏下左右滑动查看五个档位</p><div class="takeaway">继真人写真之后, 儿童写实照再次坐实安全策略差异: GPT 两档全部被拦, MAI 三款全部放行且质量在线 — 人像类业务在 Azure 上 MAI 是唯一选项。</div></section>
+    </section>
+
+    <section class="narrow">
+      <h2>5. 决策矩阵</h2>
+      <table>
+        <thead><tr><th>评估维度</th><th>MAI-Image-2.5 系</th><th>GPT-Image-2</th><th>倾向</th></tr></thead>
+        <tbody>
+          <tr><td>中文/高密度文字渲染</td><td>弱（字形级错字，三款皆有）</td><td>强（两档近乎零错字）</td><td class="verdict gpt">GPT</td></tr>
+          <tr><td>细节指令遵循（方位等）</td><td>中（镜像/漏项）</td><td>强（逐项全对）</td><td class="verdict gpt">GPT</td></tr>
+          <tr><td>人像/真人摄影（默认过滤下）</td><td>强（全放行且质量佳）</td><td>不可用（请求被拦截）</td><td class="verdict mai">MAI（唯一选项）</td></tr>
+          <tr><td>出图延迟</td><td>强（15.8–31.8 s 中位）</td><td>弱（58.5–158.3 s 中位）</td><td class="verdict mai">MAI</td></tr>
+          <tr><td>每图成本 @1024²</td><td>$0.027–$0.109</td><td>$0.006（low，未测质量）–$0.211</td><td class="verdict split">同档位基本持平</td></tr>
+          <tr><td>分辨率自由度</td><td>弱（≈1024² 封顶）</td><td>强（任意至 4K）</td><td class="verdict gpt">GPT</td></tr>
+          <tr><td>接入成本（协议/SDK）</td><td>弱（专有 /mai/v1 需适配）</td><td>强（OpenAI 兼容）</td><td class="verdict gpt">GPT</td></tr>
+          <tr><td>生产成熟度（SLA/配额/区域）</td><td>弱（Preview、7 区、12 RPM）</td><td>强（GA）</td><td class="verdict gpt">GPT</td></tr>
+          <tr><td>商用品牌合规倾向</td><td>倾向虚构品牌（n=1 观察）</td><td>会画真实涂装（n=1 观察）</td><td class="verdict split">证据不足，倾向 MAI</td></tr>
+        </tbody>
+      </table>
+      <p>矩阵复述：文字、指令细节、分辨率、接入与成熟度五个维度 GPT 占优；人像可用性与延迟两个维度 MAI 占优且前者是硬门槛；成本同档位基本持平。<strong>没有全场胜者，分流是唯一理性解。</strong></p>
+    </section>
+
+    <section class="narrow">
+      <h2>6. 对抗验证：这些结论可能错在哪</h2>
+      <p>按方法论要求，综合前主动找反例。以下每一条都实际收窄了结论的适用边界：</p>
+      <ol>
+        <li><strong>「GPT 人像不可用」依赖默认过滤配置</strong>。Azure OpenAI 内容过滤阈值可配置，完全关闭需 Limited Access 审批。获批调低阈值后 s5/s10 是否放行，本次未实测——对能走审批流程的企业，这条「唯一选项」结论可能不成立。另外 4 个失败请求的响应体未存档（台账只有状态码），「内容过滤」的判定依据是：失败仅集中在两个写实人像题、当日复测 2/2 复现、且与官方文档规定的 400 + content_filter 行为一致。</li>
+        <li><strong>样本量薄</strong>：每题每档 n=1、单评审裁决。文字错字是客观可数缺陷，支撑最强；「毛发质感更好」这类观感判断在 n=1 下不具统计力，本研究刻意不把此类判断写进结论。</li>
+        <li><strong>成本结论可被 low 档反转</strong>：GPT low 档约 $0.006/图，若其质量满足业务底线，成本维度将彻底倒向 GPT——low 档未参与本次质量测试，是明确的未验证分支。</li>
+        <li><strong>延迟未做多时段/多区采样</strong>：单日单区（GPT 与 MAI 还不同区）测得，绝对值会随负载波动；但 10 倍量级差与两家档位设计（Flash 优化吞吐 vs GPT 思考/路由层）方向一致，量级结论稳健、精确值不稳健。</li>
+        <li><strong>时效性</strong>：MAI 系为 Preview（版本迭代快，2026 年内已发 5 个图像模型），定价与配额均可能变动；本文所有外部事实核实日期为 2026-08-05，超过一个季度后应视为待复核。</li>
+      </ol>
+    </section>
+
+    <section class="narrow">
+      <div class="card conclusion">
+        <h3 style="margin-top:0">✅ 结论 (Conclusion)</h3>
+        <p><strong>假设部分成立，按内容类型分化。</strong>「MAI 半数场景不劣于 GPT medium」成立（人像、写实、延迟、成本侧全面达标或占优）；但「无整类需求硬缺陷」不成立——中文/高密度文字渲染 MAI 三款均有字形级错字，文字类需求上 MAI 不能替代 GPT。</p>
+        <p>落地建议：<strong>通用配图与人像写真走 MAI-Image-2.5</strong>（大批量低延迟场景用 Flash，但文字最弱；Pro 主要贵在画面信息密度，指令遵循无优势且同样有中文错字，性价比首选 2.5 本体）；<strong>文字海报、漫画、细节指令严格的需求走 GPT-Image-2 medium</strong>；high 档约三倍延迟、四倍价格，仅在文字密度极高时值得。</p>
+        <p><strong>适用边界</strong>：以上结论在 Azure 默认内容过滤、1024×1024、单次生成、2026-08 版本与牌价下成立。若你能通过审批调整过滤配置、或 GPT low 档质量满足业务底线、或需要 4K/高分辨率输出，结论需按「对抗验证」一节重新评估。</p>
+      </div>
+    </section>
+
+    <details class="narrow">
+      <summary>📚 引用与来源（一手优先，标注核实日期 2026-08-05）</summary>
+      <p class="cite"><a href="/topics/03-mai-image-25-vs-gpt-image-2/evidence/results.json">本研究实测台账 results.json（50 请求逐条延迟/token/错误，脱敏公开）</a> <span class="tier primary">primary · 自有实验</span></p>
+      <p class="cite"><a href="https://learn.microsoft.com/en-us/azure/foundry/foundry-models/how-to/use-foundry-models-mai-image">Microsoft Learn: MAI image models（协议/区域/分辨率/配额/Preview）</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/new-mai-models-in-microsoft-foundry-across-text-image-voice-and-speech/4524632">MAI-Image-2.5 + Flash 发布公告（2026-06-02，2.5 定价 $5/$8/$47）</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/introducing-mai-image-2-5-pro-and-mai-voice-2-flash-in-microsoft-foundry/4539446">MAI-Image-2.5-Pro 发布公告（2026-07-23，Pro 定价 $106/M 图出）</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://microsoft.ai/news/building-a-hillclimbing-machine-launching-seven-new-mai-models/">Microsoft AI：七模型发布（厂商榜单宣称，未独立验证）</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://labs.ai.azure.com/innovations/mai-image-2-5/">Foundry Labs：MAI-Image-2.5（Arena #3 口径，与公告 No.2 冲突）</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/introducing-openais-gpt-image-2-in-microsoft-foundry/4500571">GPT-image-2 GA 公告（2026-04-21，任意分辨率至 4K）</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/dall-e">Microsoft Learn: OpenAI 图像模型用法（quality/n/inpaint/contentFilter）</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://learn.microsoft.com/en-us/azure/foundry-classic/foundry-models/concepts/content-filter">Microsoft Learn: 内容过滤（400 + content_filter；阈值可配置）</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://wavespeed.ai/blog/posts/mai-image-2-5-api/">WaveSpeed：Flash 牌价转述（$1.75 入 / $33 出，含区间说明）</a> <span class="tier secondary">secondary</span></p>
+      <p class="cite"><a href="https://mer.vin/2026/06/mai-image-2-5-arena-2-image-editing-and-foundry-pricing-explained/">Mervin Praison：2.5 定价独立转述与 Arena 口径拆分</a> <span class="tier secondary">secondary</span></p>
+      <p class="cite"><a href="https://www.getmaxim.ai/bifrost/llm-cost-calculator/provider/azure/model/gpt-image-2">gpt-image-2 每图成本参考（与 futureagi/cloudprice 交叉一致）</a> <span class="tier secondary">secondary</span></p>
+    </details>
+
+    <details class="narrow">
+      <summary>⚠️ 局限与存疑（research 诚实性）</summary>
+      <ul>
+        <li>4 个失败请求仅存 HTTP 状态码，响应体未存档；「内容过滤」为推断（依据见对抗验证第 1 条），非直接证据。</li>
+        <li>Flash 图像输出牌价存在 $26/M 与 $33/M 口径分歧，每图成本以区间表述；GPT 图出 $30/M 未能从官方定价页直接引用（动态渲染），为多源二手一致 + 实测 token 换算自洽。</li>
+        <li>每题每档单次生成（n=1）、单评审主观裁决，未做多评审一致性检验；观感类差异不作为结论依据。</li>
+        <li>GPT low 档、4K 分辨率、图生图 edits 质量均未测试；版权倾向为单场景观察。</li>
+        <li>MAI 系为 Preview，版本/牌价/配额变动快；本文外部事实核实日期 2026-08-05。</li>
+        <li>所有厂商 benchmark（Arena 名次、ELO 提升、「超过 Nano Banana Pro」）均未独立验证，本研究不采信为结论依据。</li>
+      </ul>
+    </details>
+
+    <footer class="topic">
+      42-research · 本产物为自包含语义化 HTML，遵循 <a href="https://schema.org/ScholarlyArticle">schema.org/ScholarlyArticle</a>。
+      真相源在 git，查询索引在 D1，方法论见 <code>docs/methodology</code>。附图均为实测原始输出的降采样副本，未经任何修饰。
+    </footer>
+  </article>
+
+  <!-- Lightbox：与来源报告一致的看图交互（点击放大 / 左右键与滑动切换同场景五档 / Esc 关闭）。
+       仅在原始产物页生效；SSR 详情页不执行内联脚本，点击图片降级为打开原图链接。 -->
+  <style>
+    .lb { position: fixed; inset: 0; z-index: 100; display: none;
+      background: rgba(4,5,10,.93); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+    .lb.open { display: grid; grid-template-rows: auto minmax(0,1fr) auto; gap: 14px; padding: 20px clamp(14px,3vw,28px) 22px; }
+    .lb-bar { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; color: #f2f4f8; }
+    .lb-title { font-size: .9rem; font-weight: 600; line-height: 1.4; }
+    .lb-sub { font-size: .76rem; color: #9aa2b4; margin-top: 3px; }
+    .lb-close { flex: 0 0 auto; border: 1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.06);
+      color: #f2f4f8; width: 36px; height: 36px; border-radius: 999px; cursor: pointer; font-size: 18px; line-height: 1; }
+    .lb-close:hover { background: rgba(255,255,255,.14); }
+    .lb-stage { display: grid; place-items: center; min-height: 0; position: relative; touch-action: pan-y;
+      padding: 0 clamp(52px,7vw,66px); }
+    .lb-stage img { max-width: min(92vw, 1024px); max-height: calc(100vh - 200px); width: auto; height: auto;
+      object-fit: contain; border-radius: 12px; display: block; }
+    .lb-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 46px; height: 46px; border-radius: 999px;
+      cursor: pointer; border: 1px solid rgba(255,255,255,.18); background: rgba(10,12,18,.62); color: #f2f4f8;
+      font-size: 20px; line-height: 1; display: grid; place-items: center; }
+    .lb-nav:hover { background: rgba(30,34,48,.85); }
+    .lb-prev { left: 2px; } .lb-next { right: 2px; }
+    .lb-foot { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center;
+      color: #9aa2b4; font-size: .78rem; line-height: 1.6; }
+    .lb-foot .lb-note { color: #d6dae4; max-width: 820px; }
+    .lb-count { display: flex; gap: 7px; padding: 7px 12px; border-radius: 999px;
+      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); }
+    .lb-count i { width: 7px; height: 7px; border-radius: 999px; background: rgba(255,255,255,.3); }
+    .lb-count i.on { background: #f2f4f8; transform: scale(1.25); }
+    .lb-count i.gone { background: rgba(239,107,107,.45); }
+    @media (max-width: 640px) {
+      .lb.open { gap: 10px; padding: 12px 8px 16px; }
+      .lb-stage { padding: 0 42px; }
+      .lb-nav { width: 38px; height: 38px; font-size: 17px; }
+      .lb-prev { left: 0; } .lb-next { right: 0; }
+      .lb-stage img { max-width: calc(100vw - 96px); max-height: calc(100vh - 188px); }
+    }
+  </style>
+  <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="图片放大">
+    <div class="lb-bar">
+      <div>
+        <div class="lb-title" id="lbTitle"></div>
+        <div class="lb-sub" id="lbSub"></div>
+      </div>
+      <button class="lb-close" id="lbClose" type="button" aria-label="关闭">×</button>
+    </div>
+    <div class="lb-stage">
+      <button class="lb-nav lb-prev" id="lbPrev" type="button" aria-label="上一张">‹</button>
+      <img id="lbImg" alt="" />
+      <button class="lb-nav lb-next" id="lbNext" type="button" aria-label="下一张">›</button>
+    </div>
+    <div class="lb-foot">
+      <div class="lb-count" id="lbCount"></div>
+      <span class="lb-note" id="lbNote"></span>
+      <span>← → 或左右滑动切换模型 · Esc 关闭</span>
+    </div>
+  </div>
+  <script>
+  (function () {
+    "use strict";
+    var lb = document.getElementById("lb");
+    if (!lb) return;
+    var $ = function (id) { return document.getElementById(id); };
+    var scenes = Array.prototype.slice.call(document.querySelectorAll("section.scene"));
+    // 从 DOM 收集每个场景的五档卡片（含未出图占位，切换时跳过）
+    var data = scenes.map(function (sec) {
+      var label = (sec.querySelector(".scene-head h3") || {}).textContent || "";
+      var shots = Array.prototype.slice.call(sec.querySelectorAll(".shot")).map(function (card) {
+        var img = card.querySelector(".shot-media img");
+        return {
+          src: img ? img.getAttribute("src") : null,
+          name: (card.querySelector(".shot-name") || {}).textContent || "",
+          note: (card.querySelector(".shot-note") || {}).textContent || "",
+        };
+      });
+      return { label: label, shots: shots };
+    });
+    var cur = { s: 0, m: 0 };
+    function render() {
+      var sc = data[cur.s], shot = sc.shots[cur.m];
+      $("lbTitle").textContent = sc.label;
+      $("lbSub").textContent = shot.name;
+      $("lbImg").src = shot.src;
+      $("lbImg").alt = sc.label + " — " + shot.name;
+      $("lbNote").textContent = shot.note;
+      var count = $("lbCount");
+      count.innerHTML = "";
+      sc.shots.forEach(function (s, i) {
+        var dot = document.createElement("i");
+        if (!s.src) dot.className = "gone";
+        else if (i === cur.m) dot.className = "on";
+        count.appendChild(dot);
+      });
+    }
+    function step(dir) {
+      var shots = data[cur.s].shots, m = cur.m;
+      for (var k = 0; k < shots.length; k++) {
+        m = (m + dir + shots.length) % shots.length;
+        if (shots[m].src) { cur.m = m; render(); return; }
+      }
+    }
+    function open(s, m) { cur = { s: s, m: m }; render(); lb.classList.add("open"); document.body.style.overflow = "hidden"; }
+    function close() { lb.classList.remove("open"); document.body.style.overflow = ""; }
+    scenes.forEach(function (sec, si) {
+      Array.prototype.slice.call(sec.querySelectorAll(".shot")).forEach(function (card, mi) {
+        var a = card.querySelector("a.shot-media");
+        if (!a) return;
+        a.addEventListener("click", function (e) { e.preventDefault(); open(si, mi); });
+      });
+    });
+    $("lbClose").addEventListener("click", close);
+    $("lbPrev").addEventListener("click", function () { step(-1); });
+    $("lbNext").addEventListener("click", function () { step(1); });
+    lb.addEventListener("click", function (e) { if (e.target === lb) close(); });
+    document.addEventListener("keydown", function (e) {
+      if (!lb.classList.contains("open")) return;
+      if (e.key === "Escape") close();
+      else if (e.key === "ArrowLeft") step(-1);
+      else if (e.key === "ArrowRight") step(1);
+    });
+    var tx = null;
+    lb.addEventListener("touchstart", function (e) { tx = e.changedTouches[0].clientX; }, { passive: true });
+    lb.addEventListener("touchend", function (e) {
+      if (tx == null) return;
+      var dx = e.changedTouches[0].clientX - tx;
+      if (Math.abs(dx) > 40) step(dx > 0 ? -1 : 1);
+      tx = null;
+    }, { passive: true });
+  })();
+  </script>
+</body>
+</html>

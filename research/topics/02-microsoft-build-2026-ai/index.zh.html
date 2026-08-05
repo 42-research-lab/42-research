@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<!--
+  42-research · 课题 02 产物 (Self-contained Research Artifact)
+  此 HTML 同时是「真相源 + 展示页 + AI 可读数据」(见 ADR-001)。
+  构建时解析下方 JSON-LD 入 D1。
+  主题: Microsoft Build 2026 的 AI 主线，科技社论深度报道版面。
+-->
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Microsoft Build 2026：AI Agent 全栈时间线 · 42-research</title>
+  <meta name="description" content="Microsoft Build 2026（2026-06-02~03，San Francisco）AI 公告时间线：从 7 个 MAI 模型、Foundry agent 运行时、Microsoft IQ 知识底座，到 Windows agent OS 与治理栈。全部官方一手来源、可点击、可复核。" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "identifier": "02-microsoft-build-2026-ai",
+    "headline": "Microsoft Build 2026：AI Agent 全栈时间线",
+    "abstract": "Microsoft Build 2026(2026-06-02~03,San Francisco Fort Mason)的 AI 主线,以时间线组织:从自有 MAI 模型层、Foundry agent 运行时、Microsoft IQ 知识底座,到 Windows agent OS 与治理栈。全部基于官方一手来源、可点击、可复核。",
+    "datePublished": "2026-06-22",
+    "dateModified": "2026-06-22",
+    "author": { "@type": "Organization", "name": "42-research" },
+    "keywords": ["microsoft-build-2026", "ai-agents", "copilot", "foundry", "microsoft-iq", "mai-models", "windows-agent", "agentic-ai"],
+    "researchStatus": "publish",
+    "hypothesis": "Build 2026 的 AI 公告不是离散的产品堆叠,而是一条可被还原的主线:Microsoft 在自下而上地把『可治理、能交付真实工作的 agent 系统』做成全栈基础设施。能否仅凭官方一手来源,可点击、可复核地把它组织成一条时间线?",
+    "conclusion": "可以。Satya Nadella 的开场论点『AI 不会改变你的业务,运行它的系统会』贯穿全部公告:模型层(7 个 MAI,由 Suleyman 领衔,首次向第三方分发权重)→运行时(Foundry Agent Service)→知识层(Microsoft IQ)→应用层(Scout/协作 agent)→操作系统层(Windows agent 运行时/Project Solara)→治理层(open trust stack/Agent 365)。但要给热度降温:多数能力处于 preview 而非 GA;关键 benchmark 为厂商自测未独立验证;两个流行说法经对抗验证被纠正——『Copilot 跨 OpenAI/Anthropic/开源』把 Copilot 与 Foundry 混淆且早于 Build,『Windows Agent Framework 已 GA』被证伪(GA 的是跨平台 MAF 且 4 月就 GA)。主线清晰,落地待验。",
+    "citation": [
+      { "@type": "CreativeWork", "url": "https://news.microsoft.com/build-2026/", "name": "Microsoft Build 2026 官方新闻 hub", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://microsoft.ai/news/microsoft-build-2026-mai-keynote-transcript/", "name": "MAI Build 2026 keynote 官方文字稿", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://microsoft.ai/news/building-a-hillclimbing-machine-launching-seven-new-mai-models/", "name": "Building a hill-climbing machine: 7 个新 MAI 模型", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://devblogs.microsoft.com/foundry/whats-new-in-microsoft-foundry-build-2026/", "name": "What's new in Microsoft Foundry (Build 2026)", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://devblogs.microsoft.com/foundry/agent-service-build2026/", "name": "Foundry Agent Service — agents at scale", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://devblogs.microsoft.com/foundry/build-smarter-agents-faster-with-foundry-iq/", "name": "Foundry IQ — unified knowledge plane", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/improve-recall-by-up-to-54-using-knowledge-bases/4524852", "name": "Foundry IQ +54% recall 评测(精确口径)", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://devblogs.microsoft.com/foundry/build-2026-open-trust-stack-ai-agents/", "name": "Open trust stack for AI agents (ASSERT/ACS)", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://devblogs.microsoft.com/agent-framework/microsoft-agent-framework-at-build-2026-announce/", "name": "Microsoft Agent Framework (MAF) at Build 2026 — 1.0 GA 早于 Build", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://devblogs.microsoft.com/microsoft365dev/work-iq-production-ready-intelligence-for-every-agent/", "name": "Work IQ + Work IQ API", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://blogs.bing.com/search/June-2026/Announcing-Microsoft-Web-IQ", "name": "Announcing Microsoft Web IQ", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://www.microsoft.com/en-us/microsoft-365/blog/2026/06/02/introducing-microsoft-scout-your-always-on-personal-agent/", "name": "Introducing Microsoft Scout", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://github.blog/news-insights/product-news/github-copilot-app-the-agent-native-desktop-experience/", "name": "GitHub Copilot app — agent-native desktop", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://www.microsoft.com/en-us/microsoft-365/blog/2026/03/09/powering-frontier-transformation-with-copilot-and-agents/", "name": "Copilot 多模型(2026-03 Wave 3, 早于 Build)", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://blogs.windows.com/windowsdeveloper/2026/06/02/windows-platform-security-for-ai-agents/", "name": "Windows platform security for AI agents", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://commandline.microsoft.com/project-solara-build-2026/", "name": "Project Solara — agent-first device platform", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://azure.microsoft.com/en-us/blog/microsoft-build-2026-building-agentic-apps-with-microsoft-fabric-and-microsoft-databases/", "name": "Agentic apps with Fabric & Databases (Fabric IQ)", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://azure.microsoft.com/en-us/blog/announcing-microsoft-discovery-general-availability-and-microsoft-discovery-app-preview/", "name": "Microsoft Discovery GA", "tier": "primary", "verified": true, "accessed": "2026-06-22" },
+      { "@type": "CreativeWork", "url": "https://www.youtube.com/watch?v=FFMm454fxNA", "name": "Build 2026 Satya Nadella Opening Keynote (官方完整视频)", "tier": "primary", "verified": true, "accessed": "2026-06-22" }
+    ]
+  }
+  </script>
+
+  <style>
+    /*
+      主题自适应：产物用自有前缀变量 --a-*，其值继承「外层站点」的同名站点变量
+      (--bg/--fg/--card/...)，站点不存在时（独立打开原始产物）回退到 fallback 暗色。
+      用不同变量名（--a-bg vs 站点 --bg）避免 scope 后 :root→.artifact-embed 的自引用循环。
+      详情页处于 html.light/.dark 之下，var(--a-bg) 命中站点主题值，自动 light/dark 自适应。
+    */
+    :root {
+      --a-bg: var(--bg, #0a0a0f);
+      --a-fg: var(--fg, #e8e8ed);
+      --a-fg-soft: var(--fg-soft, #c8c8d4);
+      --a-muted: var(--muted, #9090a0);
+      --a-accent: var(--accent, #f6821f);
+      --a-accent2: var(--accent-2, #6b8cff);
+      --a-card: var(--card, #14141c);
+      --a-card-hi: var(--card-hi, #1a1a26);
+      --a-border: var(--border, #26263a);
+      --a-border-hi: var(--border-hi, #36364e);
+      --a-ok: var(--ok, #3ecf8e);
+      --a-warn: var(--warn, #ffb454);
+      --read: 760px;
+      --wide: 1180px;
+      --radius: 14px;
+      /* 卡片层次：阴影 + 卡面底色。默认（暗色）阴影深、卡面比 bg 略亮 */
+      --a-shadow: 0 1px 3px rgba(0,0,0,.4), 0 6px 18px rgba(0,0,0,.22);
+      --a-surface: var(--a-card);
+    }
+    /* light 主题下：卡面用纯白拉开与米白背景的层次，阴影更轻盈柔和 */
+    html.light .artifact-embed, .artifact-embed.is-light {
+      --a-surface: #ffffff;
+      --a-shadow: 0 1px 2px rgba(60,50,30,.06), 0 8px 24px rgba(60,50,30,.10);
+    }
+    * { box-sizing: border-box; }
+    body, .artifact-embed { margin: 0; background: var(--a-bg); color: var(--a-fg);
+      font: 17px/1.75 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased; }
+    a { color: var(--a-accent2); text-decoration: none; border-bottom: 1px solid transparent; }
+    a:hover { border-bottom-color: var(--a-accent2); }
+    img { max-width: 100%; display: block; }
+
+    /* ── 栏宽节奏：正文窄栏居中，图文/hero 可出血到宽栏 ── */
+    .read { max-width: var(--read); margin-inline: auto; padding-inline: 1.5rem; }
+    .wide { max-width: var(--wide); margin-inline: auto; padding-inline: 1.5rem; }
+
+    /* ── 通用排版 ── */
+    p { margin: 1rem 0; }
+    .read h2 { font-size: clamp(1.7rem, 4vw, 2.3rem); letter-spacing: -.02em; margin: 0 0 1rem;
+      line-height: 1.12; }
+    h3 { font-size: 1.15rem; color: var(--a-accent2); margin: 1.8rem 0 .5rem; }
+    ul, ol { padding-left: 1.2rem; } li { margin: .45rem 0; }
+    strong { color: var(--a-fg); }
+    em { color: var(--a-muted); }
+
+    /* ══════ HERO（官方大图 + 毛玻璃文字面板）══════ */
+    .hero { position: relative; min-height: 80vh; display: flex; align-items: flex-end;
+      overflow: hidden; border-bottom: 1px solid var(--a-border); }
+    .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+      filter: saturate(1.05); }
+    /* 轻量整体压暗（仅压底部，保留图像观感），毛玻璃面板负责文字承载 */
+    .hero-shade { position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(8,8,12,.25) 0%, rgba(8,8,12,.05) 30%, rgba(8,8,12,.55) 100%); }
+    .hero-wrap { position: relative; max-width: var(--wide); margin-inline: auto; width: 100%;
+      padding: 0 1.5rem 3rem; }
+    /* 毛玻璃文字面板：半透明深底 + 背景模糊 + 细边，让文字从图像里「浮」出来 */
+    .hero-inner { max-width: 48rem; padding: 1.8rem 2.2rem 1.9rem; border-radius: 18px;
+      background: rgba(14,14,22,.55);
+      -webkit-backdrop-filter: blur(20px) saturate(1.3); backdrop-filter: blur(20px) saturate(1.3);
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow: 0 16px 50px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.08); }
+    .eyebrow { display: inline-flex; align-items: center; gap: .6rem; font-size: .75rem;
+      letter-spacing: .16em; text-transform: uppercase; color: #ffb877; font-weight: 700; }
+    .eyebrow::before { content: ""; width: 1.8rem; height: 1px; background: #ffb877; }
+    /* 面板内文字恒定浅色（面板深底之上），不随主题 */
+    .hero h1 { font-size: clamp(2rem, 5vw, 3.6rem); line-height: 1.06; letter-spacing: -.035em;
+      margin: 1rem 0 .8rem; font-weight: 800; max-width: none; color: #fff; }
+    .hero h1 .ms { color: #9db4ff; }
+    .hero h1 .l2 { white-space: nowrap; }  /* 第二行整体不换行（宽屏）*/
+    .hero .dek { font-size: clamp(1.02rem, 2vw, 1.3rem); color: rgba(255,255,255,.86); max-width: 44ch;
+      line-height: 1.5; margin: 0; }
+    .hero .byline { margin: 1.3rem 0 0; font-size: .82rem; color: rgba(255,255,255,.62);
+      font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+    .hero .credit { position: absolute; right: 1rem; bottom: .5rem; font-size: .68rem;
+      color: rgba(255,255,255,.4); }
+    @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+      /* 不支持背景模糊的浏览器：加深面板底色保证可读 */
+      .hero-inner { background: rgba(10,10,16,.82); }
+    }
+
+    /* ── lede 引子段（hero 后第一段大字，跟随主题）── */
+    .lede { font-size: clamp(1.2rem, 2.6vw, 1.55rem); line-height: 1.6; color: var(--a-fg-soft);
+      margin: 3rem auto 0; font-weight: 400; }
+    .lede strong { color: var(--a-fg); }
+
+    /* ── 「这份报告适合谁看」导读区 ── */
+    .audience { max-width: var(--wide); margin: 2.5rem auto 0; padding-inline: 1.5rem; }
+    .audience h3 { font-size: 1.05rem; color: var(--a-fg); margin: 0 0 1rem; }
+    .aud-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+    .aud-card { background: var(--a-surface); box-shadow: var(--a-shadow); border: 1px solid var(--a-border); border-radius: var(--radius);
+      border-top: 3px solid var(--a-accent); padding: 1rem 1.1rem; }
+    .aud-card .who { font-weight: 700; color: var(--a-fg); font-size: .98rem; margin-bottom: .3rem; }
+    .aud-card .what { font-size: .88rem; color: var(--a-fg-soft); line-height: 1.55; margin: 0; }
+    .aud-card .jump { font-size: .8rem; color: var(--a-accent); margin-top: .5rem; }
+
+    /* ── 「不同人群视角」小栏（模块末尾，取代旧 .why 的拓展）── */
+    .persona { margin-top: 1.6rem; border: 1px solid var(--a-border); border-radius: var(--radius);
+      background: var(--a-surface); box-shadow: var(--a-shadow); overflow: hidden; }
+    .persona-title { font-size: .82rem; font-weight: 700; letter-spacing: .04em; color: var(--a-muted);
+      padding: .7rem 1.1rem; border-bottom: 1px solid var(--a-border); text-transform: uppercase; }
+    .persona-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    .persona-cell { padding: .9rem 1.1rem; border-top: 1px solid var(--a-border); }
+    .persona-cell:not(:last-child) { border-right: 1px solid var(--a-border); }
+    .persona-cell .p-who { font-size: .8rem; font-weight: 700; color: var(--a-accent2); margin-bottom: .3rem; }
+    .persona-cell .p-txt { font-size: .88rem; color: var(--a-fg-soft); line-height: 1.55; margin: 0; }
+
+    /* ── pull quote 金句（居中：顶部短竖线 + 大字居中 + cite 居中限宽分两行）── */
+    .pull { margin: 3.5rem auto; max-width: 880px; padding: 0 1.5rem; text-align: center; }
+    .pull::before { content: ""; display: block; width: 3rem; height: 4px; border-radius: 2px;
+      background: var(--a-accent); margin: 0 auto 1.4rem; }
+    .pull blockquote { margin: 0; padding: 0;
+      font-size: clamp(1.5rem, 3.2vw, 2.1rem); line-height: 1.32; font-weight: 700; letter-spacing: -.015em;
+      color: var(--a-fg); text-wrap: balance; }
+    .pull blockquote .q-accent { color: var(--a-accent); }
+    .pull cite { display: block; margin: 1.2rem auto 0; font-style: normal; font-size: .92rem;
+      color: var(--a-muted); max-width: 52ch; line-height: 1.6; }
+
+    /* ── 卡片块（假设/纠错/结论）── */
+    .card { background: var(--a-surface); box-shadow: var(--a-shadow); border: 1px solid var(--a-border); border-radius: var(--radius);
+      padding: 1.4rem 1.6rem; margin: 1.8rem auto; }
+    .card.hypothesis { border-left: 4px solid var(--a-accent2); }
+    .card.conclusion { border-left: 4px solid var(--a-ok); }
+    .card.warn-box { border-left: 4px solid var(--a-warn); }
+    .card h3 { margin-top: 0; }
+    /* 纠错双卡并排（窄屏堆叠）*/
+    .myth-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; max-width: var(--wide); margin: 1.5rem auto 0; }
+    .myth-grid .card { margin: 0; }
+    .myth-grid ul { padding-left: 1.1rem; margin: .6rem 0 0; }
+    .myth-grid li { margin: .4rem 0; font-size: .95rem; }
+
+    /* ── 视频嵌入（16:9，iframe 不被 SSR strip）── */
+    .video-embed { position: relative; width: 100%; padding-top: 56.25%; margin: 1.5rem auto;
+      border-radius: var(--radius); overflow: hidden; border: 1px solid var(--a-border); background: #000; }
+    .video-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+    /* ══════ 编辑式模块（图文交替）══════ */
+    .feature { max-width: var(--wide); margin: 4rem auto 0; padding-inline: 1.5rem;
+      padding-top: 2.2rem; border-top: 1px solid var(--a-border); }
+    .feature-head { margin-bottom: 1.4rem; }
+    /* 编号行：实心徽章 + kicker，清晰传达「第几个模块 · 什么层」 */
+    .feature-kicker { display: flex; align-items: center; gap: .7rem; font-size: .82rem;
+      letter-spacing: .04em; color: var(--a-muted); font-weight: 600; margin: 0 0 .5rem; }
+    .feature-no { flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
+      width: 2rem; height: 2rem; border-radius: 8px; background: var(--a-accent); color: #1a0e02;
+      font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .95rem; font-weight: 800; }
+    .feature.blue .feature-no { background: var(--a-accent2); color: #060912; }
+    .feature h2 { font-size: clamp(1.55rem, 3.6vw, 2.1rem); letter-spacing: -.02em; line-height: 1.14;
+      margin: 0 0 .5rem; }
+    .feature-dek { color: var(--a-muted); font-size: 1.02rem; line-height: 1.6; max-width: 56ch; margin: 0; }
+
+    /*
+      模块布局（解决「左侧填不满就留大空白」+「卡片整齐对齐」）：
+      放弃刚性左右两栏。媒体区（图 + 数据块）置顶横向铺开；公告卡在下方用
+      响应式网格 auto-fill 铺满全宽、等宽对齐。无侧栏 → 无空白；卡片天然整齐。
+    */
+    .split { margin-top: 1.6rem; }
+    /*
+      媒体区：单张图居中横铺（克制最大宽度），不与数据块并排——避免右侧失衡留空。
+      图作为模块的视觉引导，宽度收敛，下方接公告卡网格。
+    */
+    .split .col-media { display: block; margin-bottom: 1.6rem; }
+    .split .col-media > figure.shot { max-width: 720px; margin-inline: auto; }
+    /* 仅照片限高（避免超大图）；SVG 信息图保持自然高度，绝不裁剪（裁剪会导致溢出重叠） */
+    .split .col-media > figure.shot:not(.svg) img { max-height: 360px; object-fit: cover; }
+    .split .col-media > figure.shot.svg .svgbox { max-width: 520px; margin-inline: auto; }
+    /*
+      公告卡 + 数据卡：固定最多 2 列——2 卡正好铺满两列（不留空栏），3 卡为 2+1。
+      比 auto-fit 更可控，杜绝宽屏下 2 卡却排成 3 列、空一列的问题。
+    */
+    .split .col-body { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.1rem; align-items: stretch; }
+    /* stats 作为网格首项时跨整行做横幅，内容居中 */
+    .split .col-body > .stats { grid-column: 1 / -1; flex-direction: row; justify-content: center;
+      gap: 1.5rem 3rem; }
+
+    /* 模块配图 */
+    figure.shot { margin: 0; }
+    figure.shot img { width: 100%; border-radius: var(--radius); border: 1px solid var(--a-border); }
+    /*
+      自绘 SVG 图块：主题自适应。结构色（底/卡/边/文字）走 --svg-* 变量随主题切换，
+      强调色（橙/蓝/绿）在 SVG 内保留。light 下浅底深字、dark 下深底浅字，与页面统一。
+    */
+    figure.shot.svg .svgbox {
+      --svg-bg: var(--a-surface);      /* 图块底 = 卡面（白/暗，与背景拉开） */
+      --svg-card: var(--a-card-hi);    /* 图内方块底（比图块底略沉，制造层次） */
+      --svg-border: var(--a-border-hi);/* 图内描边/连接线（加重，看得清） */
+      --svg-fg: var(--a-fg);           /* 图内主文字 */
+      --svg-muted: var(--a-muted);     /* 图内次要文字 */
+      background: var(--svg-bg); box-shadow: var(--a-shadow);
+      border-radius: var(--radius); border: 1px solid var(--a-border); padding: 1.2rem;
+      display: flex; align-items: center; justify-content: center; }
+    figure.shot figcaption { font-size: .78rem; color: var(--a-muted); margin-top: .55rem; line-height: 1.5;
+      text-align: center; }
+    figure.shot figcaption a { color: var(--a-muted); border-bottom: 1px dotted var(--a-border); }
+
+    /* 数据高亮块在 light 下也要有底色对比 */
+    .stats { background: var(--a-surface); box-shadow: var(--a-shadow); border-color: var(--a-border); }
+
+    /*
+      公告条目 → 独立卡片（每条带边框/背景/hover）。
+      解决「右侧没卡片、左空白、留白失衡」：卡片自适应高度，内容多寡都成块。
+    */
+    .ann { background: var(--a-surface); box-shadow: var(--a-shadow); border: 1px solid var(--a-border); border-radius: var(--radius);
+      padding: 1rem 1.2rem; transition: border-color .2s, transform .2s, box-shadow .2s; }
+    .ann:hover { border-color: var(--a-border-hi); transform: translateY(-2px);
+      box-shadow: 0 6px 22px rgba(0,0,0,.18); }
+    .ann-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .45rem .7rem; margin-bottom: .5rem; }
+    .ann-head .name { font-weight: 700; font-size: 1.02rem; color: var(--a-fg); }
+    .ann ul { margin: .5rem 0; }
+    .ann .meta-row { display: flex; flex-wrap: wrap; gap: .4rem .9rem; font-size: .8rem; color: var(--a-muted); margin: .2rem 0 .5rem; }
+    .ann .meta-row b { color: var(--a-fg-soft); font-weight: 600; }
+    .ann .src { font-size: .76rem; color: var(--a-muted); margin-top: .6rem;
+      padding-top: .5rem; border-top: 1px dashed var(--a-border); }
+    .ann .src a { color: var(--a-muted); }
+    /* 模块内来源行的 primary 标签是重复噪音——统一隐藏，文末已声明全部一手来源 */
+    .ann .src .tier { display: none; }
+
+    /* 状态徽章 */
+    .st { display: inline-block; font-size: .66rem; letter-spacing: .04em; text-transform: uppercase;
+      padding: .14rem .55rem; border-radius: 999px; border: 1px solid var(--a-border); color: var(--a-muted); font-weight: 700; }
+    .st.ga { color: var(--a-ok); border-color: var(--a-ok); }
+    .st.preview { color: var(--a-accent2); border-color: var(--a-accent2); }
+    .st.announced { color: var(--a-warn); border-color: var(--a-warn); }
+
+    /* 关键数字高亮 + 厂商自测标注 */
+    .kpi { display: inline-block; font-size: .78rem; padding: .12rem .5rem; border-radius: 6px;
+      background: rgba(107,140,255,.12); border: 1px solid var(--a-border); color: var(--a-accent2); margin: .15rem .3rem .15rem 0; }
+    .vendor { color: var(--a-warn); white-space: nowrap; }
+    .num { color: var(--a-accent); font-weight: 700; }
+
+    /* 数据高亮块（大数字 + 标签）*/
+    .stats { display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; margin: 1.2rem 0; padding: 1rem 1.2rem;
+      background: rgba(255,255,255,.02); border: 1px solid var(--a-border); border-radius: var(--radius); }
+    .stat { min-width: 0; text-align: center; }
+    .stat .big { font-size: 1.7rem; font-weight: 800; letter-spacing: -.02em; color: var(--a-accent); line-height: 1.1;
+      font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+    .stat .big.blue { color: var(--a-accent2); }
+    .stat .lbl { font-size: .76rem; color: var(--a-muted); margin-top: .15rem; }
+
+    /* 模块收尾「为什么重要」拉条 */
+    .why { margin-top: 1.6rem; padding: .9rem 1.2rem; border-left: 3px solid var(--a-accent2);
+      background: rgba(107,140,255,.07); border-radius: 0 10px 10px 0; font-size: .95rem; color: var(--a-fg-soft); }
+    .why b { color: var(--a-accent2); }
+
+    /* 全栈速览图：可 hover（整图轻微抬升 + 描边），呼应卡片交互语言 */
+    figure.overview .svgbox { transition: border-color .2s, transform .2s, box-shadow .2s; cursor: default; }
+    figure.overview .svgbox:hover { border-color: var(--a-accent); transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(0,0,0,.22); }
+
+    /* 标签 / 引用：柔和的填充式 chip（不用亮色描边，避免 light 下晃眼）*/
+    .tier { display: inline-block; white-space: nowrap; font-size: .7rem; padding: .12rem .5rem;
+      border-radius: 999px; border: 1px solid transparent; color: var(--a-muted);
+      background: var(--a-card-hi); vertical-align: middle; font-weight: 600; }
+    .tier.primary { color: var(--a-ok); background: color-mix(in srgb, var(--a-ok) 14%, transparent); }
+    .tier.secondary { color: var(--a-warn); background: color-mix(in srgb, var(--a-warn) 16%, transparent); }
+    .cite { font-size: .82rem; color: var(--a-muted); margin: .6rem 0; line-height: 1.9; }
+    .cite a { display: inline-block; margin-right: .2rem; }
+    /* keynote 来源行的 primary 标签是重复噪音，隐藏（文末统一声明一手来源）*/
+    .cite .tier { display: none; }
+
+    /* 对抗验证卡片网格（第10条重排）*/
+    .verify-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.1rem; max-width: var(--wide); margin: 1.6rem auto 0; }
+    .vcard { background: var(--a-surface); box-shadow: var(--a-shadow); border: 1px solid var(--a-border); border-radius: var(--radius);
+      border-left: 3px solid var(--a-warn); padding: 1rem 1.2rem; transition: border-color .2s, transform .2s; }
+    .vcard:hover { transform: translateY(-2px); border-left-color: var(--a-accent); }
+    .vcard-head { display: flex; align-items: flex-start; justify-content: space-between; gap: .6rem; margin-bottom: .5rem; }
+    .vcard .vclaim { font-weight: 700; color: var(--a-fg); font-size: .96rem; line-height: 1.35; }
+    .vcard p { margin: 0; font-size: .9rem; color: var(--a-fg-soft); line-height: 1.55; }
+
+    hr.rule { border: 0; border-top: 1px solid var(--a-border); max-width: var(--read); margin: 4rem auto 0; }
+    details { border: 1px solid var(--a-border); border-radius: var(--radius); padding: 1rem 1.25rem; margin: 1rem auto; max-width: var(--read); }
+    summary { cursor: pointer; font-weight: 600; color: var(--a-accent2); }
+    footer.topic { max-width: var(--read); margin: 3rem auto 0; padding: 2rem 1.5rem 5rem;
+      border-top: 1px solid var(--a-border); color: var(--a-muted); font-size: .85rem; }
+    section { scroll-margin-top: 1rem; }
+
+    /* ── 平板 ── */
+    @media (max-width: 860px) {
+      .myth-grid { grid-template-columns: 1fr; }
+      .split .col-media { grid-template-columns: 1fr; }
+      .split .col-media .stats { flex-direction: row; }
+    }
+    /* ── 移动端小屏（全面适配 + 统一呼吸边距）── */
+    @media (max-width: 600px) {
+      body, .artifact-embed { font-size: 15.5px; }
+      /* 所有顶层容器统一 1.15rem 左右边距，卡片不再贴边 */
+      .read, .wide, .audience, .feature, .pull { padding-inline: 1.15rem; }
+      details, footer.topic { margin-inline: 1.15rem; }
+      .hero { min-height: 68vh; }
+      .hero-wrap { padding: 0 1.15rem 2rem; }
+      .hero-inner { max-width: 100%; padding: 1.3rem 1.3rem 1.4rem; border-radius: 14px; }
+      .hero h1 { font-size: clamp(1.8rem, 8vw, 2.4rem); }
+      .hero h1 .l2 { white-space: normal; }
+      .pull blockquote { font-size: 1.3rem; }
+      .feature { margin-top: 3rem; padding-top: 1.8rem; }
+      .split .col-body { grid-template-columns: 1fr; }   /* 公告卡单列 */
+      .stats { gap: .8rem 1.2rem; padding: .9rem 1rem; }
+      .stat .big { font-size: 1.4rem; }
+      .feature h2 { font-size: clamp(1.4rem, 6vw, 1.7rem); }
+      .ann { padding: .95rem 1.1rem; }
+      figure.shot.svg .svgbox { padding: .9rem; }
+      /* persona 三栏在小屏堆叠为单列，cell 右边框改下边框 */
+      .persona-cell:not(:last-child) { border-right: 0; }
+      /* 全栈速览图：移动端横向滚动，避免字被压到看不清 */
+      figure.overview .svgbox { overflow-x: auto; justify-content: flex-start; }
+      figure.overview svg { min-width: 560px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════ HERO ══════════ -->
+  <header class="hero">
+    <img class="hero-img" src="https://microsoft.ai/wp-content/uploads/2026/05/HeroCollageBuild3-copy-1-1.jpg" alt="Microsoft Build 2026 主视觉拼贴" loading="eager" />
+    <div class="hero-shade"></div>
+    <div class="hero-wrap">
+      <div class="hero-inner">
+        <span class="eyebrow">42-research · 课题 02 · 大会观察</span>
+        <h1><span class="ms">Microsoft Build 2026</span><br><span class="l2">AI Agent 全栈，自下而上</span></h1>
+        <p class="dek">两天，70+ 公告。剥开热度，它其实是一条主线：把「能交付真实工作的 agent」做成可治理的全栈基础设施。</p>
+        <p class="byline">2026-06-02 ~ 06-03 · San Francisco · Fort Mason &nbsp;|&nbsp; 全部来源回到官方一手</p>
+      </div>
+    </div>
+    <span class="credit">主视觉 © Microsoft（microsoft.ai，引用标注）</span>
+  </header>
+
+  <article>
+
+    <!-- ── 引子 ── -->
+    <p class="lede read">微软一年一度的开发者大会 Build，2026 年回到了旧金山的线下现场。两天里它一口气发了 70 多条公告，听起来像一堆零散的产品名词。但如果你把它们排一排会发现：<strong>这些东西其实是一条完整的链子——微软想把「能替你干活的 AI 助手」从演示视频，变成真正能在公司里跑起来、还管得住的基础设施。</strong>这篇报告就帮你把这条链子理清楚，而且每个说法都能点开看到微软官方的原文。</p>
+
+    <!-- ── 假设 ── -->
+    <div class="card hypothesis read">
+      <h3>🔬 我们想验证的一句话</h3>
+      <p>Build 2026 上的 AI 公告不是各玩各的，而是<strong>同一件事的不同零件</strong>：微软在<strong>从最底层的「模型」一路往上，搭一整套让 AI 助手（agent）能可靠干活、又能被企业管住的系统</strong>。我们要验证：这条链子是不是真的成立，以及哪些已经能用、哪些还只是 PPT。</p>
+    </div>
+
+    <!-- ── 这份报告适合谁看 ── -->
+    <section class="audience">
+      <h3>👥 这份报告适合谁看</h3>
+      <div class="aud-grid">
+        <div class="aud-card">
+          <p class="who">用 AI 干活的人</p>
+          <p class="what">开发者、产品、运营——想知道微软给了哪些新工具、哪些今天就能上手、哪些还要等。</p>
+          <p class="jump">重点看 → 模型层 · 应用层</p>
+        </div>
+        <div class="aud-card">
+          <p class="who">做 AI 模型 / 工具的人</p>
+          <p class="what">模型厂商、开源社区、工具创业者——看微软把自家模型摆在什么位置、又给第三方留了哪些接口。</p>
+          <p class="jump">重点看 → 模型层 · 运行时 · 治理层</p>
+        </div>
+        <div class="aud-card">
+          <p class="who">微软 Azure 合作伙伴 / 销售</p>
+          <p class="what">想拿这些新东西去跟客户讲故事——哪些是已经 GA（正式可卖）的、哪些还在预览、怎么组合成方案。</p>
+          <p class="jump">重点看 → 运行时 · 知识层 · 治理层</p>
+        </div>
+        <div class="aud-card">
+          <p class="who">关心 AI 走向的人</p>
+          <p class="what">投资人、行业观察者——看微软这盘棋的整体意图，以及哪些热度需要降温。</p>
+          <p class="jump">重点看 → 主线 · 对抗验证 · 结论</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 先纠正两个流行说法（拆成两张独立卡片）── -->
+    <section class="wide">
+      <h2>先帮你避开两个正在流传的误解</h2>
+      <p style="color:var(--a-fg-soft);max-width:62ch;">大会一开完，网上和媒体就传开了一些说法。我们逐条去核对了官方原文，发现下面这两个<strong>要么说错了、要么被夸大了</strong>。先讲清楚，免得你被带偏：</p>
+      <div class="myth-grid">
+        <div class="card warn-box">
+          <p class="myth-tag"><span class="tier secondary">① 说法不准确</span></p>
+          <h3 style="margin:.5rem 0 0;font-size:1.05rem;line-height:1.3;">"Copilot 被重做成了能同时用 OpenAI、Anthropic、开源模型的平台"</h3>
+          <ul>
+            <li><strong>能自由换开源模型的，是给开发者用的 Foundry，不是普通人用的 Copilot</strong>——这两个被说混了。</li>
+            <li>"重做"是媒体的说法，微软自己只说是"多给了几个模型选项"，没那么夸张。</li>
+            <li><strong>而且 Copilot 能换模型这件事是今年 3 月就有的，不是这次 6 月大会的新闻</strong>；用 Anthropic 的模型还得管理员开开关、且只限部分地区。</li>
+          </ul>
+        </div>
+        <div class="card warn-box">
+          <p class="myth-tag"><span class="tier secondary">② 说法被证伪</span></p>
+          <h3 style="margin:.5rem 0 0;font-size:1.05rem;line-height:1.3;">"Windows 的 AI 助手框架在这次大会正式发布了"</h3>
+          <ul>
+            <li>真正"正式发布"的，是<strong>能跨平台用的 Microsoft Agent Framework</strong>，而且它<strong>早在今年 4 月就发布了</strong>，不是这次大会。</li>
+            <li>这次大会上 Windows <em>自己专属</em>的那套（Windows Agent Runtime 等）还只是<strong>内测 / 预览</strong>，要等到 Windows 11 下半年的更新才陆续推出。</li>
+            <li>换句话说：没有一个叫"Windows AI 助手框架"的东西在这次大会正式落地。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 主线金句 pull quote ── -->
+    <div class="pull">
+      <blockquote>「AI 不会改变你的业务，<span class="q-accent">运行它的系统</span>才会。」</blockquote>
+      <cite>—— 微软 CEO 萨提亚·纳德拉，在 Build 2026 开场。他想说的是：<strong>光有一个聪明的 AI 没用，真正能改变工作的，是「让 AI 稳定干活的整套系统」</strong>——模型、它要懂的上下文、它能用的工具，缺一不可。</cite>
+    </div>
+
+    <!-- ── keynote 视频 ── -->
+    <section class="read">
+      <div class="video-embed">
+        <iframe src="https://www.youtube.com/embed/FFMm454fxNA"
+          title="Microsoft Build 2026 | Satya Nadella Opening Keynote"
+          loading="lazy" allowfullscreen
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      </div>
+      <p class="cite">来源：<a href="https://www.youtube.com/watch?v=FFMm454fxNA">Satya Nadella Opening Keynote（Microsoft Developer 官方）</a> <span class="tier primary">primary</span> · <a href="https://microsoft.ai/news/microsoft-build-2026-mai-keynote-transcript/">官方文字稿</a> <span class="tier primary">primary</span> · 精华版 <a href="https://www.youtube.com/watch?v=ZhZqeo7SD0Y">Highlights</a> · <a href="https://build.microsoft.com/en-US/sessions">全部 session 点播</a></p>
+    </section>
+
+    <!-- ── 全栈一图速览 ── -->
+    <section class="wide">
+      <figure class="shot svg overview">
+        <div class="svgbox">
+          <svg viewBox="0 0 900 230" width="100%" font-family="-apple-system, system-ui, sans-serif" role="img" aria-label="自下而上的 AI Agent 全栈：模型→运行时→知识→应用→操作系统→治理">
+            <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#f6821f"/><stop offset="1" stop-color="#6b8cff"/></linearGradient></defs>
+            <text x="20" y="26" fill="var(--svg-fg)" font-size="15" font-weight="700">自下而上的 AI Agent 全栈</text>
+            <g font-size="12.5" font-weight="600">
+              <rect x="20" y="44" width="860" height="24" rx="5" fill="var(--svg-card)" stroke="var(--svg-border)"/><rect x="20" y="44" width="4" height="24" fill="#f6821f"/><text x="36" y="60" fill="var(--svg-fg)">06 · 治理 — Open trust stack · ASSERT(开源) · 跨框架可观测(GA)</text>
+              <rect x="20" y="72" width="860" height="24" rx="5" fill="var(--svg-card)" stroke="var(--svg-border)"/><rect x="20" y="72" width="4" height="24" fill="#6b8cff"/><text x="36" y="88" fill="var(--svg-fg)">05 · 操作系统 — Windows agent 运行时 · Project Solara（多为预览）</text>
+              <rect x="20" y="100" width="860" height="24" rx="5" fill="var(--svg-card)" stroke="var(--svg-border)"/><rect x="20" y="100" width="4" height="24" fill="#f6821f"/><text x="36" y="116" fill="var(--svg-fg)">04 · 应用 — Scout · 协作 agent · GitHub Copilot app</text>
+              <rect x="20" y="128" width="860" height="24" rx="5" fill="var(--svg-card)" stroke="var(--svg-border)"/><rect x="20" y="128" width="4" height="24" fill="#6b8cff"/><text x="36" y="144" fill="var(--svg-fg)">03 · 知识 — Microsoft IQ：Work / Fabric / Foundry(KB GA) / Web IQ</text>
+              <rect x="20" y="156" width="860" height="24" rx="5" fill="var(--svg-card)" stroke="var(--svg-border)"/><rect x="20" y="156" width="4" height="24" fill="#f6821f"/><text x="36" y="172" fill="var(--svg-fg)">02 · 运行时 — Microsoft Foundry · Agent Service · Model Router(GA)</text>
+              <rect x="20" y="184" width="860" height="24" rx="5" fill="var(--svg-card)" stroke="url(#g)"/><rect x="20" y="184" width="4" height="24" fill="#f6821f"/><text x="36" y="200" fill="#f6821f">01 · 模型 — 7 个 MAI 模型 · 由 Suleyman 领衔 · 首次分发权重（地基）</text>
+            </g>
+          </svg>
+        </div>
+        <figcaption>这条「AI 助手全栈」从下往上分六层（42-research 据官方公告绘制）。橙色 = 已有正式可用的部分 / 蓝色 = 大多还在预览。下面一层层拆给你看。</figcaption>
+      </figure>
+    </section>
+
+    <!-- ══════════ 模块 01 · 模型层 ══════════ -->
+    <section class="feature" id="m1">
+      <div class="feature-head">
+        <p class="feature-kicker"><span class="feature-no">01</span> 模型层 · 最底下的「大脑」</p>
+        <h2>微软自己造了 7 个 AI 模型</h2>
+        <p class="feature-dek">过去微软的 AI 很大程度上是转卖 OpenAI 的。这次，微软自己的 AI 团队（MAI，负责人 Mustafa Suleyman）一口气拿出 7 个自研模型，涵盖画图、语音、转写、推理、写代码。<strong>说白了：微软想把"AI 的大脑"攥在自己手里，不再处处看别人脸色。</strong>这是整套系统的地基。</p>
+      </div>
+      <div class="split">
+        <div class="col-media">
+          <figure class="shot">
+            <img src="https://microsoft.ai/wp-content/uploads/2026/05/Group-2147234751-2.jpg" alt="Build 2026 keynote 舞台上展示的七个 MAI 模型" loading="lazy" />
+            <figcaption>七个 MAI 模型在 Build 2026 keynote 舞台亮相。图 © Microsoft，引自 <a href="https://microsoft.ai/news/building-a-hillclimbing-machine-launching-seven-new-mai-models/">microsoft.ai</a>。</figcaption>
+          </figure>
+        </div>
+        <div class="col-body">
+          <div class="stats">
+            <div class="stat"><div class="big">7</div><div class="lbl">新模型（5 基础 + 2 Flash）</div></div>
+            <div class="stat"><div class="big blue">5</div><div class="lbl">模态：图像/语音/转录/思考/编码</div></div>
+            <div class="stat"><div class="big blue">3</div><div class="lbl">第三方分发渠道</div></div>
+          </div>
+          <div class="ann">
+            <div class="ann-head"><span class="name">MAI 七模型家族（hill-climbing machine）</span> <span class="st announced">Announced · 多为 preview</span></div>
+            <div class="meta-row"><span><b>领队</b> Mustafa Suleyman / MAI</span><span><b>愿景</b> "humanist super intelligence"</span><span><b>训练</b> Maia 200 芯片</span></div>
+            <ul>
+              <li>官方以 <strong>"hill-climbing machine"</strong>（迭代式自我改进，而非一次性巨型发布）框定战略，跨 <strong>图像 / 语音 / 转录 / 思考 / 编码</strong> 五类。</li>
+              <li><strong>完整七模型名单</strong>：MAI-Image-2.5、MAI-Image-2.5-Flash、MAI-Transcribe-1.5、MAI-Voice-2、MAI-Voice-2-Flash、MAI-Thinking-1、MAI-Code-1-Flash。</li>
+              <li><span class="num">★</span> <strong>首次向第三方分发权重</strong>：除 Foundry 外登陆 <strong>Open Router / Fireworks / Baseten</strong>，客户可"自行调权重"——减少对 OpenAI 依赖的重大信号。语音模型防克隆、<strong>全程水印</strong>；官方称 <span class="kpi">1.4× 性能/瓦</span> on Maia 200 <span class="vendor">⚠ 未独立验证</span>。</li>
+            </ul>
+            <p class="src">来源：<a href="https://microsoft.ai/news/building-a-hillclimbing-machine-launching-seven-new-mai-models/">Building a hill-climbing machine</a> · <a href="https://microsoft.ai/news/microsoft-build-2026-mai-keynote-transcript/">MAI keynote 文字稿</a> <span class="tier primary">primary</span></p>
+          </div>
+          <div class="ann">
+            <div class="ann-head"><span class="name">MAI-Thinking-1（会"推理"的模型）</span> <span class="st preview">还在小范围预览</span></div>
+            <div class="meta-row"><span><b>规模</b> 中等（35B 参数级）</span><span><b>能记多长</b> 约 25 万字上下文</span><span><b>训练</b> 没抄别人模型</span></div>
+            <ul>
+              <li>这是微软第一个主打"会思考、会写代码"的模型。官方称它在<strong>最难的编程评测里答对约一半（<span class="kpi">SWE-Bench Pro 53%</span>），和顶尖模型 Opus 4.6 一个水平</strong>，数学竞赛题也几乎全对 <span class="vendor">⚠ 都是微软自己测的</span>。</li>
+              <li>不过它现在<strong>只小范围开放预览</strong>——而且微软自己两份材料一处说预览、一处说已正式可用，我们以更具体的那份（预览）为准。</li>
+            </ul>
+            <p class="src">来源：<a href="https://microsoft.ai/news/microsoft-build-2026-mai-keynote-transcript/">MAI keynote 文字稿</a> <span class="tier primary">primary</span></p>
+          </div>
+          <div class="ann">
+            <div class="ann-head"><span class="name">其余几个：写代码 / 画图 / 转写 / 语音</span> <span class="st ga">部分已能用，陆续上线</span></div>
+            <ul>
+              <li><strong>写代码的 MAI-Code-1-Flash</strong>：<span class="kpi">体积很小（5B 参数）</span>，却号称编程评测答对一半（51%）、比同级更便宜 <span class="vendor">⚠ 微软自测</span>；已进 VS Code 等开发工具。</li>
+              <li><strong>画图的 MAI-Image-2.5</strong>：官方称图像编辑排名第 2、超过谷歌 Nano Banana 2 <span class="vendor">⚠</span>，已经能在 PowerPoint 里用。<strong>转写的 MAI-Transcribe-1.5</strong>：支持 43 种语言、号称快 5 倍 <span class="vendor">⚠</span>。<strong>语音合成 MAI-Voice-2</strong>：15 种语言。</li>
+            </ul>
+            <p class="src">来源：<a href="https://microsoft.ai/news/building-a-hillclimbing-machine-launching-seven-new-mai-models/">Building a hill-climbing machine</a> <span class="tier primary">primary</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="persona">
+        <div class="persona-title">这对你意味着什么</div>
+        <div class="persona-row">
+          <div class="persona-cell"><p class="p-who">用 AI 的人</p><p class="p-txt">多了几个能选的模型，尤其写代码的 MAI-Code 很小、便宜，适合塞进日常开发工具里。</p></div>
+          <div class="persona-cell"><p class="p-who">做模型 / 工具的人</p><p class="p-txt">注意这条：微软第一次把自家模型权重放到 Fireworks、OpenRouter 等第三方平台——它在抢"模型分发"的地盘。</p></div>
+          <div class="persona-cell"><p class="p-who">Azure 合作伙伴</p><p class="p-txt">手里多了"微软自研、成本可控"这张牌，但多数还在预览，别急着承诺客户上线时间。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 模块 02 · 运行时层 ══════════ -->
+    <section class="feature blue flip" id="m2">
+      <div class="feature-head">
+        <p class="feature-kicker"><span class="feature-no">02</span> 运行时层 · 让 AI 真正「跑起来」的地方</p>
+        <h2>Foundry：把 AI 助手送进生产的"工厂"</h2>
+        <p class="feature-dek">很多 AI 助手能演示、却不敢真上线，因为不稳、不安全、出了问题查不到。Foundry 就是微软给出的答案：<strong>一个能让 AI 助手稳定运行、还能监控和管控的"生产车间"。</strong>这是整场大会最实打实的产品核心。</p>
+      </div>
+      <div class="split">
+        <div class="col-media">
+          <figure class="shot svg">
+            <div class="svgbox">
+              <svg viewBox="0 0 320 250" width="100%" role="img" aria-label="Microsoft Agent Platform 三层：Build / Deploy / Operate">
+                <text x="160" y="22" text-anchor="middle" fill="var(--svg-muted)" font-size="10" font-family="system-ui">Microsoft Agent Platform</text>
+                <g font-family="system-ui">
+                  <rect x="40" y="38" width="240" height="56" rx="11" fill="var(--svg-card)" stroke="#6b8cff"/>
+                  <text x="58" y="60" fill="#6b8cff" font-size="13" font-weight="800">Build</text>
+                  <text x="58" y="80" fill="var(--svg-muted)" font-size="10">Foundry · Toolkit · Agent Framework</text>
+                  <rect x="40" y="100" width="240" height="56" rx="11" fill="var(--svg-card)" stroke="#f6821f"/>
+                  <text x="58" y="122" fill="#f6821f" font-size="13" font-weight="800">Deploy</text>
+                  <text x="58" y="142" fill="var(--svg-muted)" font-size="10">Agent Service · 独立 sandbox · 托管算力</text>
+                  <rect x="40" y="162" width="240" height="56" rx="11" fill="var(--svg-card)" stroke="#3ecf8e"/>
+                  <text x="58" y="184" fill="#3ecf8e" font-size="13" font-weight="800">Operate</text>
+                  <text x="58" y="204" fill="var(--svg-muted)" font-size="10">可观测(GA) · 评估 · ROI · 护栏</text>
+                </g>
+                <g stroke="var(--svg-border)" stroke-width="1.5"><line x1="160" y1="94" x2="160" y2="100"/><line x1="160" y1="156" x2="160" y2="162"/></g>
+              </svg>
+            </div>
+            <figcaption>Microsoft Agent Platform 的 Build / Deploy / Operate 三层（42-research 据 <a href="https://devblogs.microsoft.com/foundry/agent-service-build2026/">Foundry devblog</a> 绘制）。</figcaption>
+          </figure>
+        </div>
+        <div class="col-body">
+          <div class="stats">
+            <div class="stat"><div class="big">11,000+</div><div class="lbl">模型目录（官方宣称）</div></div>
+            <div class="stat"><div class="big blue">GA</div><div class="lbl">Model Router · Fireworks</div></div>
+            <div class="stat"><div class="big blue">1:1</div><div class="lbl">每 session 独立 sandbox</div></div>
+          </div>
+          <div class="ann">
+            <div class="ann-head"><span class="name">Foundry：一个能用任何模型的平台</span> <span class="st preview">预览中</span></div>
+            <div class="meta-row"><span><b>能用的模型</b> OpenAI · Anthropic · 开源 · 微软自家</span></div>
+            <ul>
+              <li>它原来叫 Azure AI Foundry，这次升级成统一平台；上周刚把 OpenAI 的实时语音和 <strong>Claude Opus 4.8</strong> 也接了进来。</li>
+              <li><strong>"模型路由"</strong>（已正式可用）能<strong>按你的需求和预算自动挑最合适的模型</strong>——所以 Foundry 不绑死某一家，谁好用调谁；还能按需弹性分配 GPU 算力。</li>
+              <li>开源模型托管服务 <strong>Fireworks</strong> 也正式接入；官方称预览期已处理 <span class="kpi">1760 亿次调用、17 家世界 500 强在用</span> <span class="vendor">⚠ 微软自测</span>。</li>
+            </ul>
+            <p class="src">来源：<a href="https://devblogs.microsoft.com/foundry/whats-new-in-microsoft-foundry-build-2026/">What's new in Foundry</a> · <a href="https://devblogs.microsoft.com/foundry/build-2026-foundry-models/">Foundry Models</a> <span class="tier primary">primary</span></p>
+          </div>
+          <div class="ann">
+            <div class="ann-head"><span class="name">Agent Service：托管 AI 助手的"运行环境"</span> <span class="st preview">预览，GA 时间存疑</span></div>
+            <div class="meta-row"><span><b>不挑工具</b> 微软/GitHub/LangGraph 等都能接</span></div>
+            <ul>
+              <li>每个 AI 助手都跑在<strong>独立的"隔离小房间"里</strong>（有专属算力、内存、文件空间，互不干扰），能撑住那种<strong>过夜长跑、自己干活</strong>的任务。</li>
+              <li>还能让 AI 助手<strong>像员工一样有"身份"</strong>——发工牌、给邮箱、出现在 Teams、排进组织架构；也能<strong>定时自动跑</strong>、或<strong>几个 AI 互相调用</strong>（都还在预览）。</li>
+              <li>给 AI 加了<strong>"记忆力"</strong>：能记住做事的方法、记住你的偏好、记住当前对话（其中"方法记忆"官方称让任务成功率 <span class="kpi">+7~14%</span> <span class="vendor">⚠ 微软自测</span>）。</li>
+              <li><span class="num">⚠</span> <strong>什么时候正式可用，微软自己两份材料说法打架</strong>（一处"30 天内"、一处"6 月底"），且官方文档 6/19 仍标"预览"。截至我们核对时还没正式发布。</li>
+            </ul>
+            <p class="src">来源：<a href="https://devblogs.microsoft.com/foundry/agent-service-build2026/">Build and run agents at scale with Foundry</a> <span class="tier primary">primary</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="persona">
+        <div class="persona-title">这对你意味着什么</div>
+        <div class="persona-row">
+          <div class="persona-cell"><p class="p-who">用 AI 的人</p><p class="p-txt">想做"能自己干活、过夜跑任务"的 AI 助手，现在有了官方的托管环境，不用自己搭服务器。</p></div>
+          <div class="persona-cell"><p class="p-who">做模型 / 工具的人</p><p class="p-txt">它"不挑框架"——LangGraph 等你也能接。但也意味着微软想当那个"所有人都来接入"的中枢。</p></div>
+          <div class="persona-cell"><p class="p-who">Azure 合作伙伴</p><p class="p-txt">这是最能讲给客户的"可落地"故事；Model Router、Fireworks 已正式可用，托管 agent 还在赶 GA。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 模块 03 · 知识层 ══════════ -->
+    <section class="feature" id="m3">
+      <div class="feature-head">
+        <p class="feature-kicker"><span class="feature-no">03</span> 知识层 · 让 AI「懂你的事」</p>
+        <h2>Microsoft IQ：喂给 AI 的四种"知识"</h2>
+        <p class="feature-dek">模型再聪明，也不知道你公司内部的事。微软用四个"IQ"把不同知识喂给 AI：<strong>Work IQ</strong>（你的邮件/会议/文件）、<strong>Fabric IQ</strong>（公司的业务逻辑）、<strong>Foundry IQ</strong>（可复用的知识库）、<strong>Web IQ</strong>（实时网页）。合起来，AI 才答得到点子上。</p>
+      </div>
+      <div class="split">
+        <div class="col-media">
+          <figure class="shot svg">
+            <div class="svgbox">
+              <svg viewBox="0 0 320 300" width="100%" role="img" aria-label="Microsoft IQ 四条腿汇入 agent">
+                <defs><radialGradient id="iqc"><stop offset="0" stop-color="var(--svg-bg)"/><stop offset="1" stop-color="var(--svg-card)"/></radialGradient></defs>
+                <circle cx="160" cy="150" r="46" fill="url(#iqc)" stroke="#f6821f" stroke-width="2"/>
+                <text x="160" y="146" text-anchor="middle" fill="#f6821f" font-size="15" font-weight="800" font-family="system-ui">Agent</text>
+                <text x="160" y="164" text-anchor="middle" fill="var(--svg-muted)" font-size="10" font-family="system-ui">grounded</text>
+                <g font-family="system-ui" font-size="12" font-weight="700">
+                  <g><line x1="160" y1="104" x2="160" y2="46" stroke="var(--svg-border)" stroke-width="1.5"/><rect x="108" y="20" width="104" height="28" rx="6" fill="var(--svg-card)" stroke="#6b8cff"/><text x="160" y="38" text-anchor="middle" fill="#6b8cff">Work IQ</text></g>
+                  <g><line x1="206" y1="150" x2="270" y2="150" stroke="var(--svg-border)" stroke-width="1.5"/><rect x="252" y="136" width="60" height="28" rx="6" fill="var(--svg-card)" stroke="#6b8cff"/><text x="282" y="154" text-anchor="middle" fill="#6b8cff">Fabric</text></g>
+                  <g><line x1="160" y1="196" x2="160" y2="254" stroke="var(--svg-border)" stroke-width="1.5"/><rect x="104" y="252" width="112" height="28" rx="6" fill="var(--svg-card)" stroke="#3ecf8e"/><text x="160" y="270" text-anchor="middle" fill="#3ecf8e">Foundry IQ · GA</text></g>
+                  <g><line x1="114" y1="150" x2="50" y2="150" stroke="var(--svg-border)" stroke-width="1.5"/><rect x="8" y="136" width="60" height="28" rx="6" fill="var(--svg-card)" stroke="#6b8cff"/><text x="38" y="154" text-anchor="middle" fill="#6b8cff">Web IQ</text></g>
+                </g>
+              </svg>
+            </div>
+            <figcaption>四条 IQ 腿汇入同一个被 grounding 的 agent（42-research 绘制）。</figcaption>
+          </figure>
+        </div>
+        <div class="col-body">
+          <div class="stats">
+            <div class="stat"><div class="big">+54%</div><div class="lbl">recall（组合，厂商自测 ⚠）</div></div>
+            <div class="stat"><div class="big blue">6-16</div><div class="lbl">Work IQ API 端点 GA</div></div>
+            <div class="stat"><div class="big blue">&lt;165ms</div><div class="lbl">Web IQ 延迟（官方 ⚠）</div></div>
+          </div>
+          <div class="ann">
+            <div class="ann-head"><span class="name">Foundry IQ（统一知识平面）</span> <span class="st ga">Knowledge Bases GA · Serverless Preview</span></div>
+            <div class="meta-row"><span><b>知识源</b> Work · Fabric · Azure SQL · File · MCP</span><span><b>Serverless</b> $0.24/CU-hour · scale-to-zero</span></div>
+            <ul>
+              <li>"知识库"功能<strong>已正式可用</strong>，而且<strong>不限自家——Claude、ChatGPT 等也能直接接来用</strong>。它把"让 AI 查资料再回答"（业内叫 RAG）这套以前要自己搭的麻烦活，做成了开箱即用的服务。</li>
+              <li><span class="num">⚠</span> 被广泛引用的 <strong>"+54% recall"需校正口径</strong>：指 "evidence recall"；<strong>纯 knowledge base 只 +46%</strong>，<span class="kpi">+54% 需"小模型 + agentic retrieval"组合</span>；基准 BrowseComp-Plus + 自家 gpt-5.4 <span class="vendor">⚠ 厂商自测，"up to"为上界</span>。</li>
+            </ul>
+            <p class="src">来源：<a href="https://devblogs.microsoft.com/foundry/build-smarter-agents-faster-with-foundry-iq/">Foundry IQ</a> · <a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/improve-recall-by-up-to-54-using-knowledge-bases/4524852">+54% recall 评测原文</a> <span class="tier primary">primary</span></p>
+          </div>
+          <div class="ann">
+            <div class="ann-head"><span class="name">Work IQ + Work IQ API</span> <span class="st preview">Preview · API GA 6-16</span></div>
+            <ul>
+              <li>捕捉工作如何真正发生（M365 邮件/会议/文件/Teams 信号），为所有 agent 提供共享智能层。</li>
+              <li><strong>Work IQ API</strong>（端点 <span class="kpi">GA 定于 2026-06-16</span>）三面暴露：A2A、远程 MCP server、REST；<strong>10 个通用工具</strong>收敛数百操作，独立于 Copilot 许可、按用量计费。</li>
+            </ul>
+            <p class="src">来源：<a href="https://devblogs.microsoft.com/microsoft365dev/work-iq-production-ready-intelligence-for-every-agent/">Work IQ + API</a> <span class="tier primary">primary</span></p>
+          </div>
+          <div class="ann">
+            <div class="ann-head"><span class="name">Microsoft Web IQ</span> <span class="st preview">Limited-access Preview</span></div>
+            <ul>
+              <li>基于 Bing / Microsoft 网页索引（官方称已服务 10 亿+ 用户），跨 <strong>web / news / images / video / shopping</strong> 提供实时、带引用的 grounding；model-agnostic、MCP-native；官方称 <span class="kpi">sub-165ms · 零数据保留</span> <span class="vendor">⚠</span>。</li>
+            </ul>
+            <p class="src">来源：<a href="https://blogs.bing.com/search/June-2026/Announcing-Microsoft-Web-IQ">Announcing Microsoft Web IQ</a> <span class="tier primary">primary</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="persona">
+        <div class="persona-title">这对你意味着什么</div>
+        <div class="persona-row">
+          <div class="persona-cell"><p class="p-who">用 AI 的人</p><p class="p-txt">AI 终于能"懂你公司的事"了——读你的邮件、文件、会议，回答才靠谱，不再是聪明的陌生人。</p></div>
+          <div class="persona-cell"><p class="p-who">做模型 / 工具的人</p><p class="p-txt">微软把"喂数据给 AI"做成了标准服务（还兼容 Claude/ChatGPT 接入）——自建 RAG 的活儿被它收编了一部分。</p></div>
+          <div class="persona-cell"><p class="p-who">Azure 合作伙伴</p><p class="p-txt">知识库已正式可用，是企业落地的关键卖点；但那个"+54%"要讲清楚是特定组合下的、官方自测数字。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 模块 04 · 应用层 ══════════ -->
+    <section class="feature blue flip" id="m4">
+      <div class="feature-head">
+        <p class="feature-kicker"><span class="feature-no">04</span> 应用层 · 你真正会用到的 AI</p>
+        <h2>看得见摸得着的 AI 助手</h2>
+        <p class="feature-dek">前面几层都是底子，这一层才是你天天会打开的：<strong>Scout</strong>（帮你盯任务、备会的随身助手）、能在 Teams 里协作的 AI、以及给程序员派活的 <strong>GitHub Copilot 桌面应用</strong>。</p>
+      </div>
+      <div class="split">
+        <div class="col-media">
+          <figure class="shot svg">
+            <div class="svgbox">
+              <svg viewBox="0 0 320 220" width="100%" role="img" aria-label="个人 agent 主动浮现任务">
+                <rect x="40" y="24" width="240" height="172" rx="14" fill="var(--svg-card)" stroke="var(--svg-border)"/>
+                <circle cx="70" cy="54" r="12" fill="#6b8cff" opacity=".25"/><circle cx="70" cy="54" r="5" fill="#6b8cff"/>
+                <text x="92" y="50" fill="var(--svg-fg)" font-size="12" font-weight="700" font-family="system-ui">Scout</text>
+                <text x="92" y="64" fill="var(--svg-muted)" font-size="9.5" font-family="system-ui">always-on · 主动</text>
+                <g font-family="system-ui" font-size="10">
+                  <rect x="62" y="86" width="196" height="26" rx="6" fill="var(--svg-card)" stroke="var(--svg-border)"/><text x="74" y="103" fill="var(--svg-muted)">↑ 浮现今日任务</text>
+                  <rect x="62" y="118" width="196" height="26" rx="6" fill="var(--svg-card)" stroke="var(--svg-border)"/><text x="74" y="135" fill="var(--svg-muted)">↑ 准备 10:00 会议</text>
+                  <rect x="62" y="150" width="196" height="26" rx="6" fill="var(--svg-card)" stroke="#f6821f"/><text x="74" y="167" fill="#f6821f">↑ 起草回复草稿</text>
+                </g>
+              </svg>
+            </div>
+            <figcaption>Scout 主动浮现任务的交互示意（42-research 绘制）。</figcaption>
+          </figure>
+        </div>
+        <div class="col-body">
+          <div class="ann">
+            <div class="ann-head"><span class="name">Microsoft Scout（always-on 个人 agent）</span> <span class="st announced">Announced</span></div>
+            <ul>
+              <li>M365 中常驻个人 agent，<strong>主动</strong>浮现任务、准备会议、起草工作，跨 app/data 运作（Work IQ grounding）。</li>
+              <li>这是 Microsoft agent 平台最"看得见的脸"——把前面三层的能力收束成一个用户每天打开的入口。</li>
+            </ul>
+            <p class="src">来源：<a href="https://www.microsoft.com/en-us/microsoft-365/blog/2026/06/02/introducing-microsoft-scout-your-always-on-personal-agent/">Introducing Microsoft Scout</a> <span class="tier primary">primary</span></p>
+          </div>
+          <div class="ann">
+            <div class="ann-head"><span class="name">协作 agent + Frontier Tuning + RLEs</span> <span class="st preview">Preview / Announced</span></div>
+            <ul>
+              <li><strong>协作 agent</strong>：在工作发生处（Teams / M365）做 multi-agent 编排，agent 间与人协调，基于 M365 Agents SDK。</li>
+              <li><strong>Frontier Tuning</strong>：通过 <strong>强化学习环境（RLEs）</strong>——官方称"AI 训练健身房"——在自有数据上定制 MAI 模型；官方称 Excel/McKinsey/Land O'Lakes 任务对标或超过 <span class="kpi">GPT-5.4/5.5 且省 10×</span> <span class="vendor">⚠</span>。</li>
+            </ul>
+            <p class="src">来源：<a href="https://devblogs.microsoft.com/microsoft365dev/build-collaborative-agents-where-work-happens/">协作 agent</a> · <a href="https://devblogs.microsoft.com/microsoft365dev/frontier-tuning-teaching-ai-to-work-the-way-you-do/">Frontier Tuning</a> <span class="tier primary">primary</span></p>
+          </div>
+          <div class="ann">
+            <div class="ann-head"><span class="name">GitHub Copilot app（agent-native 桌面）</span> <span class="st announced">Announced</span></div>
+            <ul>
+              <li>全新桌面 app，<strong>agent-native</strong>：从桌面把编码任务委派给 agent；keynote 把 <strong>GitHub 定位为"所有 agent 的控制平面"</strong>。</li>
+            </ul>
+            <p class="src">来源：<a href="https://github.blog/news-insights/product-news/github-copilot-app-the-agent-native-desktop-experience/">GitHub Copilot app</a> <span class="tier primary">primary</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="persona">
+        <div class="persona-title">这对你意味着什么</div>
+        <div class="persona-row">
+          <div class="persona-cell"><p class="p-who">用 AI 的人</p><p class="p-txt">这是你真正会天天打开的东西：Scout 帮你盯任务、备会议、起草；开发者则多了个专门派活给 AI 的桌面工具。</p></div>
+          <div class="persona-cell"><p class="p-who">做模型 / 工具的人</p><p class="p-txt">"Frontier Tuning"让企业能用自己的数据调出专属模型——定制化是这层的机会，也是竞争点。</p></div>
+          <div class="persona-cell"><p class="p-who">Azure 合作伙伴</p><p class="p-txt">Scout、协作 agent 是最好讲给业务部门的故事；多为"已宣布"，落地时间要跟客户说清楚。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 模块 05 · 操作系统 / 设备层 ══════════ -->
+    <section class="feature" id="m5">
+      <div class="feature-head">
+        <p class="feature-kicker"><span class="feature-no">05</span> 操作系统层 · AI 住进你的电脑</p>
+        <h2>Windows 给 AI 助手划一道"安全围栏"</h2>
+        <p class="feature-dek">如果 AI 助手要在你自己的电脑上跑，系统得先管住它——不能让它乱翻文件、乱动设置。Windows 这次就是在做这道"围栏"。提醒：<strong>这一层也是被媒体夸大最多的地方</strong>，多数还没真正落地。</p>
+      </div>
+      <div class="split">
+        <div class="col-media">
+          <figure class="shot svg">
+            <div class="svgbox">
+              <svg viewBox="0 0 320 220" width="100%" role="img" aria-label="Windows 给 agent 一道权限边界">
+                <rect x="30" y="30" width="260" height="160" rx="12" fill="var(--svg-card)" stroke="var(--svg-border)"/>
+                <text x="46" y="52" fill="var(--svg-muted)" font-size="10" font-family="system-ui">Windows · 信任边界</text>
+                <rect x="54" y="66" width="100" height="108" rx="10" fill="var(--svg-card)" stroke="#f6821f" stroke-dasharray="4 3"/>
+                <text x="104" y="92" text-anchor="middle" fill="#f6821f" font-size="11" font-weight="700" font-family="system-ui">Agent</text>
+                <text x="104" y="108" text-anchor="middle" fill="var(--svg-muted)" font-size="9" font-family="system-ui">作用域身份</text>
+                <text x="104" y="122" text-anchor="middle" fill="var(--svg-muted)" font-size="9" font-family="system-ui">权限 · 审计</text>
+                <text x="104" y="136" text-anchor="middle" fill="var(--svg-muted)" font-size="9" font-family="system-ui">隔离沙箱</text>
+                <g font-family="system-ui" font-size="9">
+                  <rect x="174" y="70" width="92" height="22" rx="6" fill="var(--svg-card)" stroke="var(--svg-border)"/><text x="220" y="85" text-anchor="middle" fill="var(--svg-muted)">文件（受限）</text>
+                  <rect x="174" y="100" width="92" height="22" rx="6" fill="var(--svg-card)" stroke="var(--svg-border)"/><text x="220" y="115" text-anchor="middle" fill="var(--svg-muted)">系统（受限）</text>
+                  <rect x="174" y="130" width="92" height="22" rx="6" fill="var(--svg-card)" stroke="var(--svg-border)"/><text x="220" y="145" text-anchor="middle" fill="var(--svg-muted)">网络（受限）</text>
+                </g>
+                <line x1="154" y1="120" x2="174" y2="81" stroke="#f6821f" stroke-width="1"/><line x1="154" y1="120" x2="174" y2="111" stroke="#f6821f" stroke-width="1"/><line x1="154" y1="120" x2="174" y2="141" stroke="#f6821f" stroke-width="1"/>
+              </svg>
+            </div>
+            <figcaption>Windows 给 agent 一道权限边界，不能自由访问全系统（42-research 绘制）。</figcaption>
+          </figure>
+        </div>
+        <div class="col-body">
+          <div class="ann">
+            <div class="ann-head"><span class="name">Windows platform security for AI agents</span> <span class="st announced">Announced · 专属栈为 alpha/preview</span></div>
+            <ul>
+              <li>为 OS 上运行的 agent 引入安全模型：<strong>作用域身份 / 权限 / 审计 / 隔离</strong>，agent 不能自由访问全系统。</li>
+              <li><span class="num">⚠</span> <strong>厘清两个被混淆的东西</strong>：达 GA 的是<strong>跨平台的 Microsoft Agent Framework (MAF)</strong>（.NET/Python SDK，<strong>2026-04-02 就 1.0 GA、先于 Build</strong>）；Build 上的 Windows <em>专属</em> 栈（Windows Agent Runtime / MXC / OpenClaw on Windows）是 <strong>alpha / preview</strong>，随 Windows 11 <strong>26H2（2026 下半年）</strong>推出。"Windows Agent Framework 已 GA"<strong>不成立</strong>。</li>
+            </ul>
+            <p class="src">来源：<a href="https://blogs.windows.com/windowsdeveloper/2026/06/02/windows-platform-security-for-ai-agents/">Windows platform security for AI agents</a> · <a href="https://devblogs.microsoft.com/agent-framework/microsoft-agent-framework-at-build-2026-announce/">MAF（4/2 已 1.0 GA）</a> <span class="tier primary">primary</span></p>
+          </div>
+          <div class="ann">
+            <div class="ann-head"><span class="name">Project Solara + Surface RTX Spark Dev Box</span> <span class="st announced">Announced</span></div>
+            <ul>
+              <li><strong>Project Solara</strong>：面向 <em>agent-first</em> 设备的新平台，围绕"agent 作为主要执行者"重构设备/OS 栈——长周期愿景。</li>
+              <li><strong>Surface RTX Spark Dev Box</strong>：专用本地 AI 开发硬件，借 NVIDIA RTX 在本地跑模型/agent——云端 Foundry 的"本地对位"。MAI 模型也将"几个月内"登陆 Windows 上的 N1X。</li>
+            </ul>
+            <p class="src">来源：<a href="https://commandline.microsoft.com/project-solara-build-2026/">Project Solara</a> · <a href="https://blogs.windows.com/devices/2026/06/02/building-the-next-generation-of-devices-for-developers-surface-rtx-spark-dev-box/">Surface RTX Spark Dev Box</a> <span class="tier primary">primary</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="persona">
+        <div class="persona-title">这对你意味着什么</div>
+        <div class="persona-row">
+          <div class="persona-cell"><p class="p-who">用 AI 的人</p><p class="p-txt">未来 AI 助手能在你自己的电脑上跑，且被关进"安全笼子"——不能乱翻你的文件和系统。但这些大多要等 Windows 下半年更新。</p></div>
+          <div class="persona-cell"><p class="p-who">做模型 / 工具的人</p><p class="p-txt">本地跑 AI 的硬件（Surface Spark）和设备平台（Project Solara）是新战场，但目前都还早。</p></div>
+          <div class="persona-cell"><p class="p-who">Azure 合作伙伴</p><p class="p-txt">⚠ 这层最容易被媒体夸大——除了一道安全模型，专属栈基本是预览/愿景，别当成现成方案卖。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 模块 06 · 治理层 ══════════ -->
+    <section class="feature blue flip" id="m6">
+      <div class="feature-head">
+        <p class="feature-kicker"><span class="feature-no">06</span> 治理层 · 让老板敢用 AI</p>
+        <h2>怎么管住 AI，让它能进公司</h2>
+        <p class="feature-dek">企业让 AI 干活，最怕的是"出错谁担责、会不会泄密、值不值这个钱"。这一层就是回答这些：<strong>给 AI 立规矩、全程留痕、能评估、算得清回报</strong>。而且微软把这套工具开源、还不绑自家平台——它想当行业的"安全标准"。</p>
+      </div>
+      <div class="split">
+        <div class="col-media">
+          <figure class="shot svg">
+            <div class="svgbox">
+              <svg viewBox="0 0 320 230" width="100%" role="img" aria-label="ACS 在 agent 循环 5 个检查点施加护栏">
+                <text x="160" y="24" text-anchor="middle" fill="var(--svg-muted)" font-size="10" font-family="system-ui">ACS · agent 循环 5 检查点</text>
+                <g font-family="system-ui" font-size="10" font-weight="700">
+                  <rect x="120" y="36" width="80" height="26" rx="13" fill="var(--svg-card)" stroke="#6b8cff"/><text x="160" y="53" text-anchor="middle" fill="#6b8cff">input</text>
+                  <rect x="120" y="76" width="80" height="26" rx="13" fill="var(--svg-card)" stroke="#6b8cff"/><text x="160" y="93" text-anchor="middle" fill="#6b8cff">LLM</text>
+                  <rect x="120" y="116" width="80" height="26" rx="13" fill="var(--svg-card)" stroke="#6b8cff"/><text x="160" y="133" text-anchor="middle" fill="#6b8cff">state</text>
+                  <rect x="120" y="156" width="80" height="26" rx="13" fill="var(--svg-card)" stroke="#6b8cff"/><text x="160" y="173" text-anchor="middle" fill="#6b8cff">tool</text>
+                  <rect x="120" y="196" width="80" height="26" rx="13" fill="var(--svg-card)" stroke="#3ecf8e"/><text x="160" y="213" text-anchor="middle" fill="#3ecf8e">output</text>
+                </g>
+                <g stroke="var(--svg-border)" stroke-width="1.5"><line x1="160" y1="62" x2="160" y2="76"/><line x1="160" y1="102" x2="160" y2="116"/><line x1="160" y1="142" x2="160" y2="156"/><line x1="160" y1="182" x2="160" y2="196"/></g>
+                <g font-family="system-ui" font-size="9" fill="#f6821f"><text x="214" y="53">🛡</text><text x="214" y="93">🛡</text><text x="214" y="133">🛡</text><text x="214" y="173">🛡</text><text x="214" y="213">🛡</text></g>
+              </svg>
+            </div>
+            <figcaption>Agent Control Spec 在循环 5 个检查点施加确定性护栏（42-research 绘制）。</figcaption>
+          </figure>
+        </div>
+        <div class="col-body">
+          <div class="ann">
+            <div class="ann-head"><span class="name">两套开放的"AI 管控标准"：ASSERT 和 ACS</span> <span class="st ga">ASSERT 已开源</span></div>
+            <div class="meta-row"><span><b>谁能用</b> 不限微软，各家工具都能接</span><span><b>已采用</b> KPMG · Zscaler · IBM 等</span></div>
+            <ul>
+              <li><strong>ASSERT</strong>（已开源）：帮你<strong>把公司的规矩翻译成"自动检查项"</strong>，再拿这些项去考 AI、挑它的毛病。微软明说它<strong>不绑自家平台</strong>，是想给全行业的 AI 开发者用。</li>
+              <li><strong>ACS</strong>：一套<strong>给 AI 立规矩的通用标准</strong>——在 AI 干活的<strong>5 个关键环节</strong>（收到指令、调用模型、改状态、动用工具、输出结果）各设一道关卡，规则还能在不同平台之间搬。</li>
+            </ul>
+            <p class="src">来源：<a href="https://devblogs.microsoft.com/foundry/build-2026-open-trust-stack-ai-agents/">Open trust stack（ASSERT/ACS）</a> <span class="tier primary">primary</span></p>
+          </div>
+          <div class="ann">
+            <div class="ann-head"><span class="name">跨框架可观测（GA）+ Foundry 内护栏 + Agent ROI</span> <span class="st ga">Tracing&Eval GA · 其余 Preview</span></div>
+            <ul>
+              <li><strong>Tracing & Evaluations 达 GA</strong>（6/3，基于 OpenTelemetry，支持 LangChain/LangGraph/OpenAI SDK/MAF），端到端追踪 prompt/模型/工具/子 agent。</li>
+              <li>Foundry 内：Guided Guardrail Setup、Rubric Evaluator、Runtime DLP（均 Preview）、<strong>Purview Insights 达 GA</strong>；<strong>Agent Optimizer</strong>（私有预览→本月公开）；<strong>ROI for Agents</strong>（私有预览）跟踪完成率/省时/成本。</li>
+            </ul>
+            <p class="src">来源：<a href="https://devblogs.microsoft.com/foundry/build-2026-from-observability-to-roi-for-ai-agents-on-any-framework/">Observability to ROI</a> <span class="tier primary">primary</span></p>
+          </div>
+          <div class="ann">
+            <div class="ann-head"><span class="name">跨 SDLC 安全（Agent 365 式治理）</span> <span class="st preview">Preview</span></div>
+            <ul>
+              <li><strong>保护 code / agents / models</strong>（Defender + Entra Agent ID + Purview）；每个 agent 有身份并受治理，含态势管理与 AI workload 威胁防护。</li>
+            </ul>
+            <p class="src">来源：<a href="https://www.microsoft.com/en-us/security/blog/2026/06/02/microsoft-build-2026-securing-code-agents-and-models-across-the-development-lifecycle/">Securing code, agents & models across the SDLC</a> <span class="tier primary">primary</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="persona">
+        <div class="persona-title">这对你意味着什么</div>
+        <div class="persona-row">
+          <div class="persona-cell"><p class="p-who">用 AI 的人</p><p class="p-txt">让 AI 进公司，老板最担心的是"出了错谁负责、会不会泄密"。这层就是回答这个——可追溯、能管控、算得清账。</p></div>
+          <div class="persona-cell"><p class="p-who">做模型 / 工具的人</p><p class="p-txt">微软把这套（ASSERT、ACS）开源、且不绑自家平台——它想定行业的"安全标准"，值得关注能否跟进。</p></div>
+          <div class="persona-cell"><p class="p-who">Azure 合作伙伴</p><p class="p-txt">"安全可治理"是说服大企业的关键筹码，跨框架可观测已正式可用，可以直接讲。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 模块 07 · 数据与科学 ══════════ -->
+    <section class="feature" id="m7">
+      <div class="feature-head">
+        <p class="feature-kicker"><span class="feature-no">07</span> 数据与科学 · 已经在落地</p>
+        <h2>连数据库都开始"为 AI 改造"，科研已用上</h2>
+        <p class="feature-dek">主线之外还有个值得看的信号：<strong>连数据库都在为 AI 优化</strong>（更好地存记忆、做检索）。更实在的是 <strong>Microsoft Discovery</strong>——它是全场少数"已经正式可用"的，而且已经在帮 Mayo Clinic 做医疗科研，不只是演示。</p>
+      </div>
+      <div class="split">
+        <div class="col-media">
+          <figure class="shot svg">
+            <div class="svgbox">
+              <svg viewBox="0 0 320 200" width="100%" role="img" aria-label="数据库变得 agent-aware；Discovery 已 GA">
+                <g font-family="system-ui">
+                  <ellipse cx="90" cy="56" rx="52" ry="16" fill="var(--svg-card)" stroke="#6b8cff"/>
+                  <path d="M38 56 v60 a52 16 0 0 0 104 0 v-60" fill="none" stroke="#6b8cff"/>
+                  <path d="M38 86 a52 16 0 0 0 104 0 M38 116 a52 16 0 0 0 104 0" fill="none" stroke="var(--svg-border)"/>
+                  <text x="90" y="150" text-anchor="middle" fill="var(--svg-muted)" font-size="10" font-weight="700">HorizonDB · Cosmos</text>
+                  <text x="90" y="164" text-anchor="middle" fill="var(--svg-muted)" font-size="9">agent memory · 检索</text>
+                  <rect x="186" y="44" width="118" height="56" rx="12" fill="var(--svg-card)" stroke="#3ecf8e"/>
+                  <text x="245" y="68" text-anchor="middle" fill="#3ecf8e" font-size="12" font-weight="800">Discovery</text>
+                  <text x="245" y="86" text-anchor="middle" fill="#3ecf8e" font-size="11" font-weight="700">GA</text>
+                  <text x="245" y="128" text-anchor="middle" fill="var(--svg-muted)" font-size="9.5">科研 · Mayo Clinic</text>
+                  <line x1="142" y1="64" x2="186" y2="68" stroke="var(--svg-border)" stroke-width="1.5"/>
+                </g>
+              </svg>
+            </div>
+            <figcaption>数据库变得 agent-aware；Discovery 率先 GA（42-research 绘制）。</figcaption>
+          </figure>
+        </div>
+        <div class="col-body">
+          <div class="ann">
+            <div class="ann-head"><span class="name">Fabric IQ + Cosmos DB + Azure HorizonDB</span> <span class="st preview">Preview</span></div>
+            <ul>
+              <li><strong>Fabric IQ</strong> 建模业务如何运作（语义/本体层，即 Microsoft IQ 的"业务"那条腿）；GPU 加速 Fabric 数仓官方称 <span class="kpi">7× 性能</span> <span class="vendor">⚠</span>。</li>
+              <li>Cosmos DB 加 agent memory toolkit / agentic retrieval / semantic reranking；<strong>Azure HorizonDB</strong>（托管 PostgreSQL）：zone-redundant、自动故障转移、<span class="kpi">128TB/集群 · 15 读副本 · 3× 吞吐</span> <span class="vendor">⚠</span>。</li>
+            </ul>
+            <p class="src">来源：<a href="https://azure.microsoft.com/en-us/blog/microsoft-build-2026-building-agentic-apps-with-microsoft-fabric-and-microsoft-databases/">Agentic apps with Fabric & Databases</a> <span class="tier primary">primary</span></p>
+          </div>
+          <div class="ann">
+            <div class="ann-head"><span class="name">Microsoft Discovery</span> <span class="st ga">GA</span></div>
+            <ul>
+              <li>面向科研 R&D 的 agentic AI 平台<strong>达 GA</strong>（全场少数非 preview 公告之一），Discovery app 进入 preview。</li>
+              <li>用于 <strong>Mayo Clinic</strong> 前沿医疗 AI 合作（其平台称覆盖约 1 亿人/四大洲）——agentic AI 真正落到科学与医疗。</li>
+            </ul>
+            <p class="src">来源：<a href="https://azure.microsoft.com/en-us/blog/announcing-microsoft-discovery-general-availability-and-microsoft-discovery-app-preview/">Microsoft Discovery GA</a> <span class="tier primary">primary</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="persona">
+        <div class="persona-title">这对你意味着什么</div>
+        <div class="persona-row">
+          <div class="persona-cell"><p class="p-who">用 AI 的人</p><p class="p-txt">连数据库都开始"为 AI 优化"了——存记忆、做检索更顺手。普通人更直观的信号是：Discovery 已经在帮医院做科研。</p></div>
+          <div class="persona-cell"><p class="p-who">做模型 / 工具的人</p><p class="p-txt">数据层（Fabric、HorizonDB）是 AI 应用的底座，微软在这里也下重注，是上下游机会。</p></div>
+          <div class="persona-cell"><p class="p-who">Azure 合作伙伴</p><p class="p-txt">Discovery 是全场少数"已正式可用"的，且有 Mayo Clinic 这样的标杆案例——最好拿去讲的成熟方案。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="rule" />
+
+    <!-- ── 对抗验证 ── -->
+    <section class="read">
+      <h2 style="max-width:var(--read);margin-inline:auto;">我们专门去挑了 5 个刺</h2>
+      <p style="max-width:var(--read);margin-inline:auto;color:var(--a-fg-soft);">为了不被宣传带节奏，我们专门反着来——挑 5 个最响亮的说法，逐个去查官方原文能不能站得住。结论：<strong>大方向是真的，但有些"亮点"经不起"是不是已经能用了"的追问</strong>——一个被直接证伪，其余多是"还在预览"或"厂商自己测的数字"。</p>
+      <div class="verify-grid">
+        <div class="vcard">
+          <div class="vcard-head"><span class="vclaim">恰好 7 个 MAI 模型</span><span class="tier secondary">需注意</span></div>
+          <p>"seven"被两个一手源逐字确认，但 <strong>= 5 基础 + 2 Flash 变体</strong>；"announced"准确，<strong>"launched / 已 GA"夸大</strong>。</p>
+        </div>
+        <div class="vcard">
+          <div class="vcard-head"><span class="vclaim">Copilot 跨 OpenAI/Anthropic/开源多模型</span><span class="tier secondary">需校正</span></div>
+          <p><strong>开源模型是 Foundry 能力、不在 Copilot 产品里</strong>；"重建"是记者措辞；<strong>且这是 2026-03 的事、早于 Build</strong>。</p>
+        </div>
+        <div class="vcard">
+          <div class="vcard-head"><span class="vclaim">Foundry Agent Service 7 月初 GA</span><span class="tier secondary">时效敏感</span></div>
+          <p><strong>两官方源时间冲突</strong>（"next 30 days" vs "end of June"），Learn 6/19 仍标 preview。</p>
+        </div>
+        <div class="vcard">
+          <div class="vcard-head"><span class="vclaim">Windows Agent Framework 已 GA</span><span class="tier secondary">已证伪</span></div>
+          <p>达 GA 的是<strong>跨平台 MAF、且 4/2 就 GA</strong>；Windows 专属栈是 alpha / preview。</p>
+        </div>
+        <div class="vcard">
+          <div class="vcard-head"><span class="vclaim">Foundry IQ recall +54%</span><span class="tier secondary">vendor benchmark</span></div>
+          <p><strong>纯 knowledge base 只 +46%</strong>，+54% 需"小模型 + agentic retrieval"组合；厂商自测未独立验证。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 结论 ── -->
+    <section class="read">
+      <div class="card conclusion">
+        <h3>✅ 一句话总结</h3>
+        <p>我们想验证的那条主线<strong>是真的</strong>：Build 2026 的一堆公告，确实能串成一条从下到上的完整链子——<strong>模型 → 运行车间 → 知识 → 应用 → 操作系统 → 管控</strong>，而且每一环都能在微软官方原文里找到出处。纳德拉那句"光有聪明 AI 没用，要有让它干活的整套系统"，就是这条链子的设计思路。</p>
+        <p><strong>但别被热度冲昏头</strong>：这条链子里<strong>大部分还在"预览"阶段，不是马上能用</strong>（真正已正式可用的只有少数几个：Microsoft Discovery、Foundry 知识库、模型路由、跨框架监控）；那些亮眼的数字（+54%、省 10 倍等）<strong>都是微软自己测的，没有第三方验证</strong>；还有两个流行说法被我们纠正了。<strong>蓝图很清晰，但能不能落地还得等。</strong>给你最实在的一句：愿景是"一整套 AI 助手基础设施"，但今天真能押上去用的，还只是其中少数已经正式发布的部分。</p>
+      </div>
+    </section>
+
+    <details>
+      <summary>📚 引用与来源（一手优先，完整清单见 sources.md）</summary>
+      <p class="cite"><a href="https://news.microsoft.com/build-2026/">Build 2026 官方新闻 hub（主索引）</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://microsoft.ai/news/microsoft-build-2026-mai-keynote-transcript/">MAI keynote 官方文字稿</a> · <a href="https://microsoft.ai/news/building-a-hillclimbing-machine-launching-seven-new-mai-models/">7 个 MAI 模型</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://devblogs.microsoft.com/foundry/whats-new-in-microsoft-foundry-build-2026/">What's new in Microsoft Foundry</a> · <a href="https://devblogs.microsoft.com/foundry/agent-service-build2026/">Foundry Agent Service</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://devblogs.microsoft.com/foundry/build-smarter-agents-faster-with-foundry-iq/">Foundry IQ</a> · <a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/improve-recall-by-up-to-54-using-knowledge-bases/4524852">+54% recall 评测</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://devblogs.microsoft.com/foundry/build-2026-open-trust-stack-ai-agents/">Open trust stack（ASSERT/ACS）</a> · <a href="https://devblogs.microsoft.com/agent-framework/microsoft-agent-framework-at-build-2026-announce/">MAF（4/2 已 1.0 GA）</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://devblogs.microsoft.com/microsoft365dev/work-iq-production-ready-intelligence-for-every-agent/">Work IQ + API</a> · <a href="https://blogs.bing.com/search/June-2026/Announcing-Microsoft-Web-IQ">Microsoft Web IQ</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://www.microsoft.com/en-us/microsoft-365/blog/2026/06/02/introducing-microsoft-scout-your-always-on-personal-agent/">Microsoft Scout</a> · <a href="https://github.blog/news-insights/product-news/github-copilot-app-the-agent-native-desktop-experience/">GitHub Copilot app</a> · <a href="https://www.microsoft.com/en-us/microsoft-365/blog/2026/03/09/powering-frontier-transformation-with-copilot-and-agents/">Copilot 多模型（早于 Build）</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://blogs.windows.com/windowsdeveloper/2026/06/02/windows-platform-security-for-ai-agents/">Windows platform security for AI agents</a> · <a href="https://commandline.microsoft.com/project-solara-build-2026/">Project Solara</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://azure.microsoft.com/en-us/blog/microsoft-build-2026-building-agentic-apps-with-microsoft-fabric-and-microsoft-databases/">Agentic apps with Fabric & Databases</a> · <a href="https://azure.microsoft.com/en-us/blog/announcing-microsoft-discovery-general-availability-and-microsoft-discovery-app-preview/">Microsoft Discovery GA</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://www.youtube.com/watch?v=FFMm454fxNA">Build 2026 Satya Nadella Opening Keynote（官方完整视频）</a> · <a href="https://build.microsoft.com/en-US/sessions">官方 session 目录</a> <span class="tier primary">primary</span></p>
+    </details>
+
+    <details>
+      <summary>⚠️ 局限与存疑（research 诚实性）</summary>
+      <ul>
+        <li><strong>Foundry Agent Service / 托管 agent 是否如期 GA</strong>——"next 30 days" vs "end of June" 两官方源冲突，Learn 6/19 仍标 preview；需 7 月后回看兑现。</li>
+        <li><strong>MAI-Thinking-1 的真实状态</strong>——transcript 称私有预览、blog 概述称 GA，源内冲突未解。</li>
+        <li><strong>Windows 专属 agent 栈的成熟度与最终命名</strong>——随 Windows 11 26H2 推出，2026 下半年才见分晓。</li>
+        <li>所有厂商 benchmark（MAI 各项 / +54% recall / 省 10× / 7× 数仓 / 3× HorizonDB）<strong>无独立第三方复现</strong>，仅作"官方宣称"呈现。</li>
+        <li>配图中标 "© Microsoft" 者为官方素材外链引用（hero 主视觉、keynote 舞台照，均自 microsoft.ai，带来源标注，用于评论/研究）；其余标 "42-research 绘制" 者为自绘 SVG 示意图（自包含、矢量、无外部依赖）。</li>
+        <li>官方 hub 共 70+ 公告，本课题聚焦 AI 主线约 25 条；非 AI-核心条目（Azure Cobalt 200 / Azure Linux 4.0 / 量子 Majorana 2 等）未纳入主体。</li>
+      </ul>
+    </details>
+
+    <footer class="topic">
+      42-research · 本产物为自包含语义化 HTML，遵循 <a href="https://schema.org/ScholarlyArticle">schema.org/ScholarlyArticle</a>。
+      真相源在 git，查询索引在 D1，方法论见 <code>docs/methodology</code>。所有文字来源回到 Microsoft 官方一手，采集于 2026-06-22。
+    </footer>
+
+  </article>
+</body>
+</html>
