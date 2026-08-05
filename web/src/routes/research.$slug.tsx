@@ -2,7 +2,7 @@ import { createFileRoute, Link, notFound } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { getRequest } from '@tanstack/react-start/server'
 import { topics } from '../data/topics'
-import { extractBody, extractJsonLd } from '../lib/artifact'
+import { extractBody, extractJsonLd, extractScopedStyles } from '../lib/artifact'
 import { SITE, topicUrl } from '../lib/site'
 import { articleJsonLd, serializeJsonLd } from '../lib/seo'
 import { useT } from '../i18n/useLocale'
@@ -29,12 +29,16 @@ const getArtifact = createServerFn({ method: 'GET' })
         const origin = new URL(getRequest().url).origin
         res = await fetch(new URL(artifact, origin))
       }
-      if (!res.ok) return { bodyHtml: '', jsonLd: null }
+      if (!res.ok) return { bodyHtml: '', styles: '', jsonLd: null }
       const html = await res.text()
-      return { bodyHtml: extractBody(html), jsonLd: extractJsonLd(html) }
+      return {
+        bodyHtml: extractBody(html),
+        styles: extractScopedStyles(html),
+        jsonLd: extractJsonLd(html),
+      }
     } catch {
       // 读取/解析失败：降级为空，组件展示 abstract 兜底。
-      return { bodyHtml: '', jsonLd: null }
+      return { bodyHtml: '', styles: '', jsonLd: null }
     }
   })
 
@@ -45,9 +49,9 @@ export const Route = createFileRoute('/research/$slug')({
     const topic = topics.find((t) => t.slug === params.slug)
     if (!topic) throw notFound()
 
-    const { bodyHtml, jsonLd } = await getArtifact({ data: topic.artifact })
+    const { bodyHtml, styles, jsonLd } = await getArtifact({ data: topic.artifact })
 
-    return { topic, bodyHtml, jsonLd }
+    return { topic, bodyHtml, styles, jsonLd }
   },
 
   head: ({ loaderData }) => {
@@ -100,7 +104,7 @@ function TopicNotFound() {
 }
 
 function ResearchDetail() {
-  const { topic: t, bodyHtml } = Route.useLoaderData()
+  const { topic: t, bodyHtml, styles } = Route.useLoaderData()
   const tr = useT()
 
   return (
@@ -150,10 +154,16 @@ function ResearchDetail() {
         <p className="text-base leading-7 text-[var(--fg)]">{t.tldr}</p>
       </div>
 
-      {/* SSR 正文 — @tailwindcss/typography prose 排版 */}
+      {/* SSR 正文 — 有产物样式时按产物自身排版渲染（@scope 隔离，见 artifact.ts），
+          无样式时降级 @tailwindcss/typography prose 排版 */}
       <div className="rise mt-10" style={{ animationDelay: '200ms' }}>
-        {bodyHtml ? (
+        {bodyHtml && styles ? (
           // 产物 HTML 由 42-research 自有模板生成，内容可控，XSS 风险已在 ADR-003 登记
+          <article
+            className="artifact-html overflow-hidden rounded-2xl border border-[var(--border)]"
+            dangerouslySetInnerHTML={{ __html: `<style>${styles}</style>${bodyHtml}` }}
+          />
+        ) : bodyHtml ? (
           <article
             className="prose-research prose max-w-none"
             dangerouslySetInnerHTML={{ __html: bodyHtml }}

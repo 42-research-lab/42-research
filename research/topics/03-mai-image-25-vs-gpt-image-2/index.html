@@ -323,8 +323,9 @@
     </footer>
   </article>
 
+  <!-- artifact-interactive-start -->
   <!-- Lightbox：与来源报告一致的看图交互（点击放大 / 左右键与滑动切换同场景五档 / Esc 关闭）。
-       仅在原始产物页生效；SSR 详情页不执行内联脚本，点击图片降级为打开原图链接。 -->
+       仅在原始产物页生效；SSR 详情页会剥除本区块（见 artifact.ts），点击图片降级为打开原图链接。 -->
   <style>
     .lb { position: fixed; inset: 0; z-index: 100; display: none;
       background: rgba(4,5,10,.93); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
@@ -452,5 +453,6 @@
     }, { passive: true });
   })();
   </script>
+  <!-- artifact-interactive-end -->
 </body>
 </html>

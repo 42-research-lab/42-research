@@ -66,8 +66,8 @@ export const topics: Topic[] = [
     artifact: '/topics/02-microsoft-build-2026-ai/index.zh.html',
     category: '发布会研读',
     tldr: '自下而上的 agent 全栈：模型→运行时→知识→应用→OS→治理；主线清晰但多为预览，两个流行说法被对抗验证纠正',
-    cover: '/topics/02-microsoft-build-2026-ai/cover.png',
-    coverSource: '/topics/02-microsoft-build-2026-ai/index.zh.html',
+    cover: '/topics/02-microsoft-build-2026-ai/cover-hero.jpg',
+    coverSource: 'https://microsoft.ai/news/building-a-hillclimbing-machine-launching-seven-new-mai-models/',
   },
   {
     slug: 'mai-image-25-vs-gpt-image-2',
