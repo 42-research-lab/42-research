@@ -98,6 +98,13 @@ def validate(path: Path) -> list[str]:
     if re.search(r'<script[^>]+src=', s):
         fail("发现外部脚本 <script src>; 产物应自包含", errs)
 
+    # 8: 外链必须新标签打开 (target="_blank"), 避免读者被导离站点
+    for am in re.finditer(r'<a\s+([^>]*)>', s, re.S):
+        attrs = am.group(1)
+        if re.search(r'href="https?://', attrs) and 'target=' not in attrs:
+            href = re.search(r'href="([^"]*)"', attrs)
+            fail(f"外链缺少 target=\"_blank\": {href.group(1) if href else attrs[:80]}", errs)
+
     return errs
 
 
