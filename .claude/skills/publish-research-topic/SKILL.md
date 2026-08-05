@@ -154,7 +154,13 @@ conventional 风格、**不带任何 "Generated" 字样**。**一次课题发布
 feat(research): publish topic 02 — MAI-Image-2.5 vs GPT-Image-2
 ```
 
-> 本项目规约：**只 commit，不 push**。不要执行 `git push`。
+> 本项目规约：**只 commit，不 push**。不要执行 `git push`。push 与部署需用户明确授权。
+
+### 8. 上线部署（需用户授权）
+
+凭证与全部部署信息在仓库根 `.cloudflare.env`（gitignored，含 worker 名/域名/部署命令备忘）。
+部署后**必须 purge zone cache**（命令见该文件）——旧部署的边缘缓存会残留 404 与旧 sitemap，
+表现为「新 URL 全 200、老 URL 随机 404」的诡异现象。最后逐项复验线上 7 项检查（同步骤 5，域名换生产域）。
 
 ## 发布完成 Checklist（DoD）
 
