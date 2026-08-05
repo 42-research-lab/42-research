@@ -66,6 +66,8 @@ cp research/topics/NN-<slug>/index.html web/public/topics/NN-<slug>/index.html
 - 下载到 `web/public/topics/NN-<slug>/cover.png`（或 `.jpg`，与 `topics.ts` 里的 `cover` 路径一致）。
 - **记下来源 URL**——它要填进 `topics.ts` 的 `coverSource`，详情页会展示"封面来源"署名。
 - 尊重来源版权：用于评述/研究引用，注明出处；如来源明确禁止，换一张可用的或自绘示意图。
+- **实测/评测类课题例外**：封面优先用自有实验产出（代表图或拼图，如课题 02 的 3×2 实测原图 montage）——
+  自己的实验数据本身就是一手来源，比官方宣传图更可信；此时 `coverSource` 指向产物自身路径即可。
 
 ### 4. 登记到 topics.ts 清单
 
@@ -124,7 +126,11 @@ for u in research/<slug> research research/<slug>.md sitemap.xml rss.xml llms.tx
   printf '%s -> ' "$u"; curl -s -o /dev/null -w '%{http_code}\n' "http://localhost:8042/$u"
 done
 ```
-（`.md` 端点是 `research.$slug.tsx` 里 `endsWith('.md')` 的嵌入 handler，不是独立路由文件。）
+（`.md` 端点是独立转义路由 `web/src/routes/research.{$slug}[.]md.ts`——不要在页面路由挂 GET handler，
+start-server-core 1.169+ 要求 handler 必须返回 Response，「返回 undefined 落回组件」的旧写法会 500。）
+
+> **环境坑**：`pnpm install` / `pnpm dev` 报 `ERR_PNPM_IGNORED_BUILDS` → 检查 `web/pnpm-workspace.yaml`
+> 的 `allowBuilds:` 是否还留着 `set this to true or false` 占位符，填成 `true` 即可（esbuild/sharp/workerd）。
 
 ### 6. 三道构建关：tsc / test / build
 
@@ -140,10 +146,12 @@ pnpm -C web build                # vite build，双环境产物
 
 ### 7. commit（只 commit，不 push）
 
-提交信息：简洁中文、conventional 风格、**不带任何 "Generated" 字样**。例：
+提交信息：**英文**（本项目是国际化开源项目，commit message 不得出现中文——用户 2026-08-05 明确反馈）、
+conventional 风格、**不带任何 "Generated" 字样**。**一次课题发布 = 一个 commit**（产物 + 封面 + topics.ts
++ 过程中的 skill 回写都并入），与课题无关的修复才单独拆 commit。例：
 
 ```
-feat(topic): 发布课题《课题标题》—— 产物 + topics.ts 登记 + 封面
+feat(research): publish topic 02 — MAI-Image-2.5 vs GPT-Image-2
 ```
 
 > 本项目规约：**只 commit，不 push**。不要执行 `git push`。
@@ -156,11 +164,27 @@ feat(topic): 发布课题《课题标题》—— 产物 + topics.ts 登记 + �
 - [ ] `topics.ts` 一条新记录，所有字段与 JSON-LD 一致（slug 去前缀、路径带前缀）
 - [ ] 详情页/目录页/5 端点全部 200 且含本课题
 - [ ] `tsc --noEmit` / `test` / `build` 三道关全绿
-- [ ] 已 commit（中文、无 Generated）、未 push
+- [ ] 已 commit（英文、单 commit、无 Generated）、未 push
 
 ## 在 research loop 中的位置
 
 `research-methodology`（怎么研究）→ `research-artifact-html`（结晶为产物）→ **`publish-research-topic`（上站发布）**。
+
+## 使用即迭代（Self-Upgrade）
+
+**本 skill 每一次被使用都是一次实战检验。使用中发现问题，当场回写升级——不留到「以后」。**
+
+| 使用中发现 | 当场动作 |
+|---|---|
+| 清单步骤与仓库实际不符（路径 / 端口 / 脚本 / 字段变了） | 以仓库为准当场修清单——失实清单比没清单更危险 |
+| 发布后发现新坑（端点漏内容、卡片与详情页不一致等） | 补进对应步骤的坑说明或 DoD checklist |
+| 同类手工步骤 ≥2 次 / 明显绕路 | 沉淀成脚本或合并步骤 |
+| Checklist 某项被证明永远多余 / 永远缺失 | 增删该项，不让 checklist 变成仪式 |
+
+**收口（每次升级全过才算完成）**：
+1. 改动落进 SKILL.md（保持精简，SKILL.md ≤ 200 行，超限内容外移 `references/`）；
+2. `CHANGELOG.md` 追加**一条聚合大条目**（一次升级 = 一条；新能力 = minor +0.1，纯修复/文档 = patch 并入描述）；
+3. 拿不准的改动记入 CHANGELOG 末尾「迭代待办」，下次使用时顺手清。
 
 ## 参考
 

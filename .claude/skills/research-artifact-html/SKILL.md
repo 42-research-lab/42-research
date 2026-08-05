@@ -47,6 +47,15 @@ D1 只存从 JSON-LD 派生的索引，**永远可从 HTML 全量重建**，所�
 
 一句话：正文既要在「剥样式后的 SSR 页」可读，也要在「转纯文本的 .md」可读。语义化 + 不依赖交互，两边都稳。
 
+### 图片证据（实测类课题，课题 02 先例）
+
+- 证据图放 `research/topics/NN-<slug>/evidence/`（降采样 JPEG，单张 ≤200KB），随产物一起同步到 `web/public/`。
+- `<img src>` 用**根绝对路径** `/topics/NN-<slug>/evidence/xx.jpg`——SSR 详情页与原始产物页都能加载；
+  file:// 直开时图片降级缺失，所以 **alt 与 figcaption 必须把图说清**（`.md` 转换后也只剩文字）。
+- 自有实验台账（如 results.json）**脱敏后随产物公开**，JSON-LD `citation[]` 用 `"@type": "Dataset"` 指向站内路径——
+  这是实验可复现的落点，也是「自有数据 = primary」的凭据。
+- 正文注明「原始输出、未经修饰/挑选」。
+
 ## 工作流
 
 ### 1. 确认课题已完成研究
@@ -150,6 +159,23 @@ python3 .claude/skills/research-artifact-html/scripts/validate_artifact.py resea
 
 本 skill 在 research loop 中的位置：
 `research-methodology`（怎么研究）→ **`research-artifact-html`（结晶为产物）** → `publish-research-topic`（上站发布）。
+
+## 使用即迭代（Self-Upgrade）
+
+**本 skill 每一次被使用都是一次实战检验。使用中发现问题，当场回写升级——不留到「以后」。**
+
+| 使用中发现 | 当场动作 |
+|---|---|
+| `validate_artifact.py` 漏检了一类真实错误 | 补校验规则，并用「坏例」确认脚本能拦住 |
+| 模板 / CSS 在下游踩坑（SSR 剥样式、`.md` 转换塌结构） | 修模板 + 在 SKILL.md 记录该约束 |
+| 新产物形态首次出现（如含图片证据、含交互数据） | 把处理方式（路径 / 降级策略）固化进 skill |
+| 文档描述与 `web/src` 代码实际行为不符 | 以代码为准当场修文档——失实文档比没文档更危险 |
+| 同类手工步骤 ≥2 次 | 沉淀成 `scripts/` 工具 |
+
+**收口（每次升级全过才算完成）**：
+1. 改动落进 SKILL.md / 模板 / 脚本（SKILL.md ≤ 200 行，超限内容外移 `references/`）；
+2. `CHANGELOG.md` 追加**一条聚合大条目**（一次升级 = 一条；新能力 = minor +0.1，纯修复/文档 = patch 并入描述）；
+3. 改了校验脚本必须跑一次真实产物回归；拿不准的记 CHANGELOG 末尾「迭代待办」。
 
 ## 示例参考
 

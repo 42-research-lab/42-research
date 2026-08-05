@@ -1,0 +1,610 @@
+{
+ "s1-simple--mai-2.5": {
+  "bytes": 1605250,
+  "usage": {
+   "num_output_tokens": 1024,
+   "num_input_text_tokens": 21,
+   "num_input_image_tokens": 0
+  },
+  "ok": true,
+  "latency_s": 25.0
+ },
+ "s1-simple--mai-2.5-flash": {
+  "bytes": 1378060,
+  "usage": {
+   "num_output_tokens": 1024,
+   "num_input_text_tokens": 27,
+   "num_input_image_tokens": 0
+  },
+  "ok": true,
+  "latency_s": 15.5
+ },
+ "s1-simple--mai-2.5-pro": {
+  "bytes": 1588922,
+  "usage": {
+   "num_output_tokens": 1024,
+   "num_input_text_tokens": 21,
+   "num_input_image_tokens": 0
+  },
+  "ok": true,
+  "latency_s": 29.8
+ },
+ "s1-simple--gpt-image-2-medium": {
+  "bytes": 1211509,
+  "usage": {
+   "input_tokens": 27,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 27
+   },
+   "output_tokens": 1756,
+   "output_tokens_details": {
+    "image_tokens": 1756,
+    "text_tokens": 0
+   },
+   "total_tokens": 1783
+  },
+  "ok": true,
+  "latency_s": 52.6
+ },
+ "s1-simple--gpt-image-2-high": {
+  "bytes": 1339076,
+  "usage": {
+   "input_tokens": 27,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 27
+   },
+   "output_tokens": 7024,
+   "output_tokens_details": {
+    "image_tokens": 7024,
+    "text_tokens": 0
+   },
+   "total_tokens": 7051
+  },
+  "ok": true,
+  "latency_s": 157.8
+ },
+ "s2-medium--mai-2.5": {
+  "bytes": 757600,
+  "usage": {
+   "num_output_tokens": 1024,
+   "num_input_text_tokens": 58,
+   "num_input_image_tokens": 0
+  },
+  "ok": true,
+  "latency_s": 46.6
+ },
+ "s2-medium--mai-2.5-flash": {
+  "bytes": 931683,
+  "usage": {
+   "num_output_tokens": 1024,
+   "num_input_text_tokens": 64,
+   "num_input_image_tokens": 0
+  },
+  "ok": true,
+  "latency_s": 13.9
+ },
+ "s2-medium--mai-2.5-pro": {
+  "bytes": 877277,
+  "usage": {
+   "num_output_tokens": 1024,
+   "num_input_text_tokens": 58,
+   "num_input_image_tokens": 0
+  },
+  "ok": true,
+  "latency_s": 28.5
+ },
+ "s2-medium--gpt-image-2-medium": {
+  "bytes": 1099692,
+  "usage": {
+   "input_tokens": 64,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 64
+   },
+   "output_tokens": 1756,
+   "output_tokens_details": {
+    "image_tokens": 1756,
+    "text_tokens": 0
+   },
+   "total_tokens": 1820
+  },
+  "ok": true,
+  "latency_s": 46.1
+ },
+ "s2-medium--gpt-image-2-high": {
+  "bytes": 1144962,
+  "usage": {
+   "input_tokens": 64,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 64
+   },
+   "output_tokens": 7024,
+   "output_tokens_details": {
+    "image_tokens": 7024,
+    "text_tokens": 0
+   },
+   "total_tokens": 7088
+  },
+  "ok": true,
+  "latency_s": 138.2
+ },
+ "s3-complex--mai-2.5": {
+  "bytes": 1694635,
+  "usage": {
+   "num_output_tokens": 1024,
+   "num_input_text_tokens": 91,
+   "num_input_image_tokens": 0
+  },
+  "ok": true,
+  "latency_s": 28.9
+ },
+ "s3-complex--mai-2.5-flash": {
+  "bytes": 1680342,
+  "usage": {
+   "num_output_tokens": 1024,
+   "num_input_text_tokens": 97,
+   "num_input_image_tokens": 0
+  },
+  "ok": true,
+  "latency_s": 17.3
+ },
+ "s3-complex--mai-2.5-pro": {
+  "bytes": 1854631,
+  "usage": {
+   "num_output_tokens": 1024,
+   "num_input_text_tokens": 91,
+   "num_input_image_tokens": 0
+  },
+  "ok": true,
+  "latency_s": 32.1
+ },
+ "s3-complex--gpt-image-2-medium": {
+  "bytes": 1644735,
+  "usage": {
+   "input_tokens": 97,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 97
+   },
+   "output_tokens": 1756,
+   "output_tokens_details": {
+    "image_tokens": 1756,
+    "text_tokens": 0
+   },
+   "total_tokens": 1853
+  },
+  "ok": true,
+  "latency_s": 61.3
+ },
+ "s3-complex--gpt-image-2-high": {
+  "bytes": 1749080,
+  "usage": {
+   "input_tokens": 97,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 97
+   },
+   "output_tokens": 7024,
+   "output_tokens_details": {
+    "image_tokens": 7024,
+    "text_tokens": 0
+   },
+   "total_tokens": 7121
+  },
+  "ok": true,
+  "latency_s": 170.7
+ },
+ "s4-portrait--mai-2.5": {
+  "bytes": 1771765,
+  "usage": {
+   "num_output_tokens": 1024,
+   "num_input_text_tokens": 65,
+   "num_input_image_tokens": 0
+  },
+  "ok": true,
+  "latency_s": 31.7
+ },
+ "s4-portrait--mai-2.5-flash": {
+  "bytes": 1616973,
+  "usage": {
+   "num_output_tokens": 1024,
+   "num_input_text_tokens": 71,
+   "num_input_image_tokens": 0
+  },
+  "ok": true,
+  "latency_s": 16.0
+ },
+ "s4-portrait--mai-2.5-pro": {
+  "bytes": 1794615,
+  "usage": {
+   "num_output_tokens": 1024,
+   "num_input_text_tokens": 65,
+   "num_input_image_tokens": 0
+  },
+  "ok": true,
+  "latency_s": 29.8
+ },
+ "s4-portrait--gpt-image-2-medium": {
+  "bytes": 1679662,
+  "usage": {
+   "input_tokens": 71,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 71
+   },
+   "output_tokens": 1756,
+   "output_tokens_details": {
+    "image_tokens": 1756,
+    "text_tokens": 0
+   },
+   "total_tokens": 1827
+  },
+  "ok": true,
+  "latency_s": 58.6
+ },
+ "s4-portrait--gpt-image-2-high": {
+  "bytes": 1691644,
+  "usage": {
+   "input_tokens": 71,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 71
+   },
+   "output_tokens": 7024,
+   "output_tokens_details": {
+    "image_tokens": 7024,
+    "text_tokens": 0
+   },
+   "total_tokens": 7095
+  },
+  "ok": true,
+  "latency_s": 160.0
+ },
+ "s5-photoshoot--mai-2.5": {
+  "bytes": 1595263,
+  "usage": {
+   "num_output_tokens": 1024,
+   "num_input_text_tokens": 71,
+   "num_input_image_tokens": 0
+  },
+  "ok": true,
+  "latency_s": 27.4
+ },
+ "s5-photoshoot--mai-2.5-flash": {
+  "bytes": 1365548,
+  "usage": {
+   "num_output_tokens": 1024,
+   "num_input_text_tokens": 77,
+   "num_input_image_tokens": 0
+  },
+  "ok": true,
+  "latency_s": 15.6
+ },
+ "s5-photoshoot--mai-2.5-pro": {
+  "bytes": 1512936,
+  "usage": {
+   "num_output_tokens": 1024,
+   "num_input_text_tokens": 71,
+   "num_input_image_tokens": 0
+  },
+  "ok": true,
+  "latency_s": 32.9
+ },
+ "s5-photoshoot--gpt-image-2-medium": {
+  "ok": false,
+  "error": "400 Client Error: Bad Request for url: <endpoint-redacted>",
+  "latency_s": 45.4
+ },
+ "s5-photoshoot--gpt-image-2-high": {
+  "ok": false,
+  "error": "400 Client Error: Bad Request for url: <endpoint-redacted>",
+  "latency_s": 162.0
+ },
+ "s6-cartoon--mai-2.5": {
+  "bytes": 1135143,
+  "usage": {
+   "num_output_tokens": 1024,
+   "num_input_text_tokens": 76,
+   "num_input_image_tokens": 0
+  },
+  "ok": true,
+  "latency_s": 26.8
+ },
+ "s6-cartoon--mai-2.5-flash": {
+  "bytes": 871457,
+  "usage": {
+   "num_output_tokens": 1024,
+   "num_input_text_tokens": 82,
+   "num_input_image_tokens": 0
+  },
+  "ok": true,
+  "latency_s": 14.3
+ },
+ "s6-cartoon--mai-2.5-pro": {
+  "bytes": 899332,
+  "usage": {
+   "num_output_tokens": 1024,
+   "num_input_text_tokens": 76,
+   "num_input_image_tokens": 0
+  },
+  "ok": true,
+  "latency_s": 27.6
+ },
+ "s6-cartoon--gpt-image-2-medium": {
+  "bytes": 857289,
+  "usage": {
+   "input_tokens": 82,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 82
+   },
+   "output_tokens": 1756,
+   "output_tokens_details": {
+    "image_tokens": 1756,
+    "text_tokens": 0
+   },
+   "total_tokens": 1838
+  },
+  "ok": true,
+  "latency_s": 48.0
+ },
+ "s6-cartoon--gpt-image-2-high": {
+  "bytes": 769553,
+  "usage": {
+   "input_tokens": 82,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 82
+   },
+   "output_tokens": 7024,
+   "output_tokens_details": {
+    "image_tokens": 7024,
+    "text_tokens": 0
+   },
+   "total_tokens": 7106
+  },
+  "ok": true,
+  "latency_s": 132.3
+ },
+ "s7-f1-motion--mai-2.5": {
+  "bytes": 1354340,
+  "usage": {
+   "num_output_tokens": 1024,
+   "num_input_text_tokens": 69,
+   "num_input_image_tokens": 0
+  },
+  "ok": true,
+  "latency_s": 26.8
+ },
+ "s7-f1-motion--mai-2.5-flash": {
+  "bytes": 1153770,
+  "usage": {
+   "num_output_tokens": 1024,
+   "num_input_text_tokens": 75,
+   "num_input_image_tokens": 0
+  },
+  "ok": true,
+  "latency_s": 15.6
+ },
+ "s7-f1-motion--mai-2.5-pro": {
+  "bytes": 1353850,
+  "usage": {
+   "num_output_tokens": 1024,
+   "num_input_text_tokens": 69,
+   "num_input_image_tokens": 0
+  },
+  "ok": true,
+  "latency_s": 31.5
+ },
+ "s7-f1-motion--gpt-image-2-medium": {
+  "bytes": 1392130,
+  "usage": {
+   "input_tokens": 75,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 75
+   },
+   "output_tokens": 1756,
+   "output_tokens_details": {
+    "image_tokens": 1756,
+    "text_tokens": 0
+   },
+   "total_tokens": 1831
+  },
+  "ok": true,
+  "latency_s": 58.3
+ },
+ "s7-f1-motion--gpt-image-2-high": {
+  "bytes": 1312924,
+  "usage": {
+   "input_tokens": 75,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 75
+   },
+   "output_tokens": 7024,
+   "output_tokens_details": {
+    "image_tokens": 7024,
+    "text_tokens": 0
+   },
+   "total_tokens": 7099
+  },
+  "ok": true,
+  "latency_s": 158.8
+ },
+ "s8-cjk-poster--mai-2.5": {
+  "bytes": 1299083,
+  "usage": {
+   "num_output_tokens": 1024,
+   "num_input_text_tokens": 243,
+   "num_input_image_tokens": 0
+  },
+  "ok": true,
+  "latency_s": 28.3
+ },
+ "s8-cjk-poster--mai-2.5-flash": {
+  "bytes": 1175516,
+  "usage": {
+   "num_output_tokens": 1024,
+   "num_input_text_tokens": 249,
+   "num_input_image_tokens": 0
+  },
+  "ok": true,
+  "latency_s": 17.9
+ },
+ "s8-cjk-poster--mai-2.5-pro": {
+  "bytes": 1158016,
+  "usage": {
+   "num_output_tokens": 1024,
+   "num_input_text_tokens": 243,
+   "num_input_image_tokens": 0
+  },
+  "ok": true,
+  "latency_s": 37.6
+ },
+ "s8-cjk-poster--gpt-image-2-medium": {
+  "bytes": 1330813,
+  "usage": {
+   "input_tokens": 249,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 249
+   },
+   "output_tokens": 1756,
+   "output_tokens_details": {
+    "image_tokens": 1756,
+    "text_tokens": 0
+   },
+   "total_tokens": 2005
+  },
+  "ok": true,
+  "latency_s": 62.3
+ },
+ "s8-cjk-poster--gpt-image-2-high": {
+  "bytes": 1295543,
+  "usage": {
+   "input_tokens": 249,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 249
+   },
+   "output_tokens": 7024,
+   "output_tokens_details": {
+    "image_tokens": 7024,
+    "text_tokens": 0
+   },
+   "total_tokens": 7273
+  },
+  "ok": true,
+  "latency_s": 155.4
+ },
+ "s9-comic--mai-2.5": {
+  "bytes": 1609389,
+  "usage": {
+   "num_output_tokens": 1024,
+   "num_input_text_tokens": 230,
+   "num_input_image_tokens": 0
+  },
+  "ok": true,
+  "latency_s": 28.9
+ },
+ "s9-comic--mai-2.5-flash": {
+  "bytes": 1476484,
+  "usage": {
+   "num_output_tokens": 1024,
+   "num_input_text_tokens": 236,
+   "num_input_image_tokens": 0
+  },
+  "ok": true,
+  "latency_s": 18.0
+ },
+ "s9-comic--mai-2.5-pro": {
+  "bytes": 1480756,
+  "usage": {
+   "num_output_tokens": 1024,
+   "num_input_text_tokens": 230,
+   "num_input_image_tokens": 0
+  },
+  "ok": true,
+  "latency_s": 33.0
+ },
+ "s9-comic--gpt-image-2-medium": {
+  "bytes": 1742024,
+  "usage": {
+   "input_tokens": 236,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 236
+   },
+   "output_tokens": 1756,
+   "output_tokens_details": {
+    "image_tokens": 1756,
+    "text_tokens": 0
+   },
+   "total_tokens": 1992
+  },
+  "ok": true,
+  "latency_s": 65.6
+ },
+ "s9-comic--gpt-image-2-high": {
+  "bytes": 1650063,
+  "usage": {
+   "input_tokens": 236,
+   "input_tokens_details": {
+    "image_tokens": 0,
+    "text_tokens": 236
+   },
+   "output_tokens": 7024,
+   "output_tokens_details": {
+    "image_tokens": 7024,
+    "text_tokens": 0
+   },
+   "total_tokens": 7260
+  },
+  "ok": true,
+  "latency_s": 161.7
+ },
+ "s10-kid-sports--mai-2.5": {
+  "bytes": 1573780,
+  "usage": {
+   "num_output_tokens": 1024,
+   "num_input_text_tokens": 69,
+   "num_input_image_tokens": 0
+  },
+  "ok": true,
+  "latency_s": 26.5
+ },
+ "s10-kid-sports--mai-2.5-flash": {
+  "bytes": 1462877,
+  "usage": {
+   "num_output_tokens": 1024,
+   "num_input_text_tokens": 75,
+   "num_input_image_tokens": 0
+  },
+  "ok": true,
+  "latency_s": 16.8
+ },
+ "s10-kid-sports--mai-2.5-pro": {
+  "bytes": 1733215,
+  "usage": {
+   "num_output_tokens": 1024,
+   "num_input_text_tokens": 69,
+   "num_input_image_tokens": 0
+  },
+  "ok": true,
+  "latency_s": 37.2
+ },
+ "s10-kid-sports--gpt-image-2-medium": {
+  "ok": false,
+  "error": "400 Client Error: Bad Request for url: <endpoint-redacted>",
+  "latency_s": 52.6
+ },
+ "s10-kid-sports--gpt-image-2-high": {
+  "ok": false,
+  "error": "400 Client Error: Bad Request for url: <endpoint-redacted>",
+  "latency_s": 137.6
+ }
+}

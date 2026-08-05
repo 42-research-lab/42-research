@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<!--
+  42-research · 课题 02 产物 (Self-contained Research Artifact)
+  此 HTML 同时是「真相源 + 展示页 + AI 可读数据」(见 ADR-001)。
+  构建时解析下方 JSON-LD 入 D1。
+-->
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MAI-Image-2.5 vs GPT-Image-2：微软自研生图追上 OpenAI 了吗？· 42-research</title>
+  <meta name="description" content="在 Azure AI Foundry 上以同一组 10 场景 prompt 实测 MAI-Image-2.5 三档与 GPT-Image-2 两档（50 请求、46 成功）。文字渲染归 GPT，人像摄影归 MAI，中间隔着一次内容过滤拦截和十倍延迟差。全部外部声明回到官方一手核实。" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "identifier": "02-mai-image-25-vs-gpt-image-2",
+    "headline": "MAI-Image-2.5 vs GPT-Image-2：微软自研生图追上 OpenAI 了吗？",
+    "abstract": "在 Azure AI Foundry 上以同一组 10 场景 prompt 实测 MAI-Image-2.5 三档与 GPT-Image-2 两档（50 请求、46 成功、4 个被内容过滤拦截），延迟与 token 用量取自逐请求台账并脱敏公开。结论按内容类型分化：文字渲染归 GPT，人像摄影归 MAI——后者在 Azure 默认内容过滤下是唯一可用选项。",
+    "datePublished": "2026-08-05",
+    "dateModified": "2026-08-05",
+    "author": { "@type": "Organization", "name": "42-research" },
+    "keywords": ["mai-image-2.5", "gpt-image-2", "azure-ai-foundry", "image-generation", "content-filter", "model-evaluation", "text-to-image"],
+    "researchStatus": "publish",
+    "hypothesis": "MAI-Image-2.5 系列的生图质量已足以在生产环境替代 GPT-Image-2 作为默认生图模型。判据：同 prompt 实测 10 场景中，MAI 至少半数场景不劣于 GPT-Image-2 medium，且不存在「整类需求不可用」的硬缺陷。",
+    "conclusion": "假设部分成立、按内容类型分化：人像/真人摄影场景 MAI 三款不仅达标，且在 Azure 默认内容过滤下是唯一可用选项（GPT 两档请求被拦截）；但中文/高密度文字渲染 GPT 两档近乎零错字、MAI 三款均有字形级错字，文字类需求 MAI 不能替代 GPT。通用配图与人像走 MAI-Image-2.5，文字海报/漫画走 GPT-Image-2 medium。结论仅在默认过滤配置、1024×1024、单次生成的边界内成立。",
+    "citation": [
+      { "@type": "Dataset", "url": "/topics/02-mai-image-25-vs-gpt-image-2/evidence/results.json", "name": "本研究实测台账（50 请求的延迟/token/错误逐条记录，脱敏公开）", "tier": "primary", "verified": true, "accessed": "2026-08-04" },
+      { "@type": "CreativeWork", "url": "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/how-to/use-foundry-models-mai-image", "name": "Microsoft Learn: Deploy and use MAI image models（/mai/v1 协议、7 区、分辨率与配额、Preview）", "tier": "primary", "verified": true, "accessed": "2026-08-05" },
+      { "@type": "CreativeWork", "url": "https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/new-mai-models-in-microsoft-foundry-across-text-image-voice-and-speech/4524632", "name": "MAI-Image-2.5 与 Flash 发布公告（2026-06-02，含 2.5 定价）", "tier": "primary", "verified": true, "accessed": "2026-08-05" },
+      { "@type": "CreativeWork", "url": "https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/introducing-mai-image-2-5-pro-and-mai-voice-2-flash-in-microsoft-foundry/4539446", "name": "MAI-Image-2.5-Pro 发布公告（2026-07-23，含 Pro 定价）", "tier": "primary", "verified": true, "accessed": "2026-08-05" },
+      { "@type": "CreativeWork", "url": "https://microsoft.ai/news/building-a-hillclimbing-machine-launching-seven-new-mai-models/", "name": "Microsoft AI 七模型发布（Mustafa Suleyman，2026-06-02）", "tier": "primary", "verified": true, "accessed": "2026-08-05" },
+      { "@type": "CreativeWork", "url": "https://labs.ai.azure.com/innovations/mai-image-2-5/", "name": "Microsoft Foundry Labs：MAI-Image-2.5 模型页（Arena 名次与公告口径冲突的另一方）", "tier": "primary", "verified": true, "accessed": "2026-08-05" },
+      { "@type": "CreativeWork", "url": "https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/introducing-openais-gpt-image-2-in-microsoft-foundry/4500571", "name": "GPT-image-2 GA 公告（2026-04-21，任意分辨率至 4K）", "tier": "primary", "verified": true, "accessed": "2026-08-05" },
+      { "@type": "CreativeWork", "url": "https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/dall-e", "name": "Microsoft Learn: OpenAI 图像模型用法（quality/n/格式/inpaint/contentFilter）", "tier": "primary", "verified": true, "accessed": "2026-08-05" },
+      { "@type": "CreativeWork", "url": "https://learn.microsoft.com/en-us/azure/foundry-classic/foundry-models/concepts/content-filter", "name": "Microsoft Learn: 内容过滤（被过滤 prompt 返回 400 + content_filter；阈值可配置）", "tier": "primary", "verified": true, "accessed": "2026-08-05" },
+      { "@type": "CreativeWork", "url": "https://wavespeed.ai/blog/posts/mai-image-2-5-api/", "name": "WaveSpeed：MAI-Image-2.5 API 解读（Flash 牌价转述，与内部口径冲突已标注）", "tier": "secondary", "verified": false, "accessed": "2026-08-05" },
+      { "@type": "CreativeWork", "url": "https://mer.vin/2026/06/mai-image-2-5-arena-2-image-editing-and-foundry-pricing-explained/", "name": "Mervin Praison：2.5 定价与 Arena 名次拆分（独立转述，与官方一致）", "tier": "secondary", "verified": true, "accessed": "2026-08-05" },
+      { "@type": "CreativeWork", "url": "https://www.getmaxim.ai/bifrost/llm-cost-calculator/provider/azure/model/gpt-image-2", "name": "gpt-image-2 每图成本参考（多计算器交叉一致：low $0.006 / medium $0.053 / high $0.211）", "tier": "secondary", "verified": false, "accessed": "2026-08-05" }
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #0a0a0f; --fg: #e8e8ed; --muted: #9090a0; --accent: #f6821f;
+      --accent2: #6b8cff; --card: #14141c; --border: #26263a;
+      --ok: #3ecf8e; --warn: #ffb454; --max: 820px; --radius: 12px;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--fg);
+      font: 16px/1.7 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased; }
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 4rem 1.5rem 6rem; }
+    header.topic { border-bottom: 1px solid var(--border); padding-bottom: 2rem; margin-bottom: 2.5rem; }
+    .badge { display: inline-block; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: .2rem .7rem; }
+    h1 { font-size: clamp(1.9rem, 5vw, 2.6rem); line-height: 1.12; margin: 1rem 0 .5rem; letter-spacing: -.02em; }
+    .meta { color: var(--muted); font-size: .9rem; }
+    .abstract { font-size: 1.12rem; opacity: .92; margin-top: 1.5rem; }
+    h2 { font-size: 1.55rem; margin: 3.5rem 0 1rem; letter-spacing: -.01em; scroll-margin-top: 1rem; }
+    h3 { font-size: 1.12rem; margin: 2rem 0 .6rem; color: var(--accent2); }
+    a { color: var(--accent2); text-decoration: none; border-bottom: 1px solid transparent; }
+    a:hover { border-bottom-color: var(--accent2); }
+    p { margin: .9rem 0; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin: 1.5rem 0; }
+    .hypothesis { border-left: 3px solid var(--accent2); }
+    .conclusion { border-left: 3px solid var(--ok); }
+    .warn-box { border-left: 3px solid var(--warn); }
+    table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: .9rem; }
+    th, td { text-align: left; padding: .65rem .8rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { color: var(--muted); font-weight: 600; font-size: .76rem; text-transform: uppercase; letter-spacing: .05em; }
+    td strong.mai { color: var(--accent); } td strong.gpt { color: var(--accent2); }
+    details { border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; margin: 1rem 0; }
+    summary { cursor: pointer; font-weight: 600; color: var(--accent2); }
+    .tier { font-size: .7rem; padding: .05rem .4rem; border-radius: 4px; border: 1px solid var(--border); color: var(--muted); }
+    .tier.primary { color: var(--ok); border-color: var(--ok); }
+    .tier.secondary { color: var(--warn); border-color: var(--warn); }
+    .cite { font-size: .85rem; color: var(--muted); margin: .5rem 0; }
+    ul, ol { padding-left: 1.2rem; } li { margin: .4rem 0; }
+    footer.topic { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); color: var(--muted); font-size: .85rem; }
+    .verdict { font-weight: 700; }
+    .verdict.mai { color: var(--accent); } .verdict.gpt { color: var(--accent2); } .verdict.split { color: var(--warn); }
+    figure.ev { margin: 1.5rem 0; }
+    figure.ev .pair { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+    figure.ev .single { display: grid; grid-template-columns: minmax(0, 480px); justify-content: center; }
+    figure.ev img { width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--border); display: block; }
+    figure.ev figcaption { font-size: .82rem; color: var(--muted); margin-top: .55rem; line-height: 1.55; }
+    @media (max-width: 600px) { .wrap { padding: 2.5rem 1.1rem 4rem; } table { font-size: .82rem; } figure.ev .pair { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <article class="wrap">
+    <header class="topic">
+      <span class="badge">Research · 课题 02 · Published</span>
+      <h1>MAI-Image-2.5 vs GPT-Image-2：微软自研生图追上 OpenAI 了吗？</h1>
+      <p class="meta">发布 2026-08-05 · 实测 2026-08-04 · 42-research · 逐请求台账脱敏公开，外部声明全部回到官方一手核实</p>
+      <p class="abstract">微软自研的 <strong>MAI-Image-2.5</strong> 系列（2.5 / Flash / Pro，均为 Preview）与 OpenAI 的 <strong>GPT-Image-2</strong>（medium / high 两档，GA），在 Azure AI Foundry 上用同一组 10 场景 prompt 各生成一次，共 50 次请求、46 张成功出图。答案不在「谁的画质更好」：<strong>文字归 GPT，人像归 MAI</strong>——中间隔着一次内容过滤拦截和十倍的出图时间差。</p>
+    </header>
+
+    <section>
+      <div class="card hypothesis">
+        <h3 style="margin-top:0">🔬 假设 (Hypothesis)</h3>
+        <p>MAI-Image-2.5 系列的生图质量已足以在生产环境替代 GPT-Image-2 作为默认生图模型。</p>
+        <p><strong>判据</strong>：同 prompt 实测 10 场景中，MAI 至少半数场景不劣于 GPT-Image-2 medium，且不存在「某整类需求不可用」的硬缺陷。满足两者则假设成立；任一不满足则按场景分化。</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>0. 先厘清三个容易被误传的说法</h2>
+      <div class="card warn-box">
+        <p>本研究不附和厂商话术，也纠正我们自己内部速报里的不严谨表述：</p>
+        <ul>
+          <li><strong>「MAI-Image-2.5 是 Arena 第二名」</strong> — 口径混乱。微软发布公告写「No. 2」，自家 Foundry Labs 模型页写「debuting at #3（+74.5 ELO）」，官方博客又称「超过 Nano Banana Pro 的 Arena 分数」，第三方拆分口径为文生图 No.3 / 图编辑 No.2。同一厂商的三个页面给出两种名次——<strong>本研究不采信任何榜单名次作为结论依据</strong>，只使用自己的同题实测。<span class="tier primary">primary 核实（冲突已记录）</span></li>
+          <li><strong>「GPT-Image-2 只支持固定三档分辨率」</strong> — 不实（本课题的内部速报也曾如此记载，在此更正）。官方文档明确：GPT-Image-2 支持任意分辨率至 4K（各边 16 px 倍数，总像素 655,360–8,294,400）。反而是 MAI 系总像素上限约 1024×1024（各边最小 768）。<strong>分辨率自由度上 GPT 更强，不是更弱。</strong><span class="tier primary">primary 核实</span></li>
+          <li><strong>「MAI Flash 每图 $0.027」</strong> — 说满了。Flash 图像输出牌价存在 $26/M 与 $33/M 两种口径（后者出自对官方公告的转述，且注明有 $19.50–$33 区间），每图成本应表述为 <strong>$0.027–$0.034 区间</strong>，而非单点。<span class="tier secondary">secondary 冲突已标注</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>1. 实验设计（可复现）</h2>
+      <table>
+        <thead><tr><th>项</th><th>设置</th></tr></thead>
+        <tbody>
+          <tr><td>平台</td><td>Azure AI Foundry（MAI 走专有 <code>/mai/v1/images/generations</code>，GPT 走 OpenAI images API，api-version 2025-04-01-preview）</td></tr>
+          <tr><td>被测模型</td><td>MAI-Image-2.5（2026-06-02）/ 2.5-Flash（2026-06-02）/ 2.5-Pro（2026-06-19），均 Preview、GlobalStandard、12 RPM 满配额；GPT-Image-2（2026-04-21，GA）medium 与 high 两档</td></tr>
+          <tr><td>规格</td><td>统一 1024×1024，每题每档生成 1 次，<strong>不重试、不挑选</strong>，全部原始输出</td></tr>
+          <tr><td>场景</td><td>10 组：简单主体 / 英文海报 / 复杂多对象 / 双人人像 / 真人写真 / 卡通细节指令 / F1 高速运动 / 中英高密度海报 / 四格漫画 / 儿童运动</td></tr>
+          <tr><td>产出</td><td>50 格 = 46 张成功 + 4 个请求返回 HTTP 400（详见 §2.2）</td></tr>
+          <tr><td>台账</td><td>逐请求延迟、token 用量、错误码记录于 <a href="/topics/02-mai-image-25-vs-gpt-image-2/evidence/results.json">results.json（脱敏公开）</a>；生成脚本幂等，跳过已成功格子</td></tr>
+        </tbody>
+      </table>
+      <p class="cite">质量裁决（最佳 / 达标 / 有偏离）为人工逐格核对 prompt 要求（文字逐字、指令逐项）。文字错字这类<strong>客观可数缺陷</strong>是本研究最强的证据；画质观感类判断的主观性在 §4 对抗验证中如实交代。</p>
+    </section>
+
+    <section>
+      <h2>2. 实测结果</h2>
+
+      <h3>2.1 文字渲染：GPT-Image-2 明显占优，中文拉开最大差距</h3>
+      <p>英文海报（s2）五档全对——短英文文字对当代模型已不构成难点。差距出现在中文：中英高密度海报（s8）与四格漫画（s9）两题，GPT 两档近乎零错字，议程、嘉宾、票务多段文字全部可读且正确；MAI 三款版面结构正确，但<strong>均出现字形级错字</strong>（「圆卓对适」「特邀熹宾」「峰缝2026」），Flash 乱码最多且议程行重复。</p>
+      <figure class="ev">
+        <div class="pair">
+          <img src="/topics/02-mai-image-25-vs-gpt-image-2/evidence/s8-cjk-poster--gpt-image-2-high.jpg" alt="s8 中英高密度海报：GPT-Image-2 high 输出，多段中英文字近乎零错字" loading="lazy" />
+          <img src="/topics/02-mai-image-25-vs-gpt-image-2/evidence/s8-cjk-poster--mai-2.5.jpg" alt="s8 中英高密度海报：MAI-Image-2.5 输出，版面正确但存在字形级错字" loading="lazy" />
+        </div>
+        <figcaption>s8 中英高密度海报。左：GPT-Image-2 high（近乎零错字）；右：MAI-Image-2.5（版面对、字形错）。原图未经修饰。</figcaption>
+      </figure>
+      <figure class="ev">
+        <div class="pair">
+          <img src="/topics/02-mai-image-25-vs-gpt-image-2/evidence/s9-comic--gpt-image-2-medium.jpg" alt="s9 四格漫画：GPT-Image-2 medium 输出，分镜清晰零错字" loading="lazy" />
+          <img src="/topics/02-mai-image-25-vs-gpt-image-2/evidence/s9-comic--mai-2.5-flash.jpg" alt="s9 四格漫画：MAI-Image-2.5-Flash 输出，多个对白气泡乱码" loading="lazy" />
+        </div>
+        <figcaption>s9 四格漫画。左：GPT-Image-2 medium（分镜编号清晰、零错字，报错屏是真实的 PostgreSQL 错误行）；右：MAI-2.5-Flash（多个气泡乱码）。</figcaption>
+      </figure>
+
+      <h3>2.2 人像与真人摄影：MAI 全部放行，GPT 两档被内容过滤拦截</h3>
+      <p>这是本次实测最重要的发现。真人写真（s5）与儿童运动（s10）两题，GPT-Image-2 medium/high 的请求<strong>全部返回 HTTP 400</strong>（s5 当日复测 2/2 复现），其余 8 场景 GPT 全部成功——失败仅集中于写实人像题材。Azure 官方文档规定：prompt 命中内容过滤即返回 400 + <code>content_filter</code>，图像生成模型同样经过 Azure AI Content Safety 过滤。同一批 prompt，MAI 三款全部正常产出摄影级图片。</p>
+      <figure class="ev">
+        <div class="pair">
+          <img src="/topics/02-mai-image-25-vs-gpt-image-2/evidence/s5-photoshoot--mai-2.5.jpg" alt="s5 真人写真：MAI-Image-2.5 输出摄影级大片；GPT 两档同题请求被内容过滤拦截，无图可展示" loading="lazy" />
+          <img src="/topics/02-mai-image-25-vs-gpt-image-2/evidence/s10-kid-sports--mai-2.5-pro.jpg" alt="s10 儿童街头足球：MAI-Image-2.5-Pro 输出，动作凝固与纪实感俱佳；GPT 两档同题被拦截" loading="lazy" />
+        </div>
+        <figcaption>左：s5 真人写真，MAI-Image-2.5；右：s10 儿童运动，MAI-2.5-Pro。这两题 GPT-Image-2 两档均无产出——不是画质偏好问题，是能不能用的问题。</figcaption>
+      </figure>
+      <p>画质本身 MAI 也站得住：双人陶艺（s4）「四手同框」这一经典失败点，MAI 三款全部过关且皮肤纹理最佳，GPT medium 出现手部交缠瑕疵（high 档修正）。</p>
+      <figure class="ev">
+        <div class="pair">
+          <img src="/topics/02-mai-image-25-vs-gpt-image-2/evidence/s4-portrait--mai-2.5.jpg" alt="s4 双人陶艺：MAI-Image-2.5，四手全对，皮肤纹理最佳" loading="lazy" />
+          <img src="/topics/02-mai-image-25-vs-gpt-image-2/evidence/s4-portrait--gpt-image-2-medium.jpg" alt="s4 双人陶艺：GPT-Image-2 medium，手部出现交缠瑕疵" loading="lazy" />
+        </div>
+        <figcaption>s4 双人陶艺。左：MAI-Image-2.5（四手全对）；右：GPT-Image-2 medium（手部交缠）。</figcaption>
+      </figure>
+      <p><strong>重要边界</strong>：Azure OpenAI 侧的内容过滤阈值可以配置（完全关闭需通过 Limited Access 审批），本次实测为<strong>默认过滤配置</strong>。「GPT 人像不可用」这个结论只在默认配置下成立——调低阈值后的行为未实测，见 §4。</p>
+
+      <h3>2.3 延迟：两端相差十倍</h3>
+      <p>取各档全部成功样本的中位数（MAI 各 n=10，GPT 各 n=8），逐请求原始值见公开台账：</p>
+      <table>
+        <thead><tr><th>模型档位</th><th>中位延迟</th><th>区间（最快–最慢）</th><th>样本数</th></tr></thead>
+        <tbody>
+          <tr><td><strong class="mai">MAI-2.5-Flash</strong></td><td>15.8 s</td><td>13.9–18.0 s</td><td>10</td></tr>
+          <tr><td><strong class="mai">MAI-2.5</strong></td><td>27.9 s</td><td>25.0–46.6 s</td><td>10</td></tr>
+          <tr><td><strong class="mai">MAI-2.5-Pro</strong></td><td>31.8 s</td><td>27.6–37.6 s</td><td>10</td></tr>
+          <tr><td><strong class="gpt">GPT-Image-2 medium</strong></td><td>58.5 s</td><td>46.1–65.6 s</td><td>8</td></tr>
+          <tr><td><strong class="gpt">GPT-Image-2 high</strong></td><td>158.3 s</td><td>132.3–170.7 s</td><td>8</td></tr>
+        </tbody>
+      </table>
+      <p>文字复述（供纯文本读者）：Flash 中位 15.8 秒最快，MAI-2.5 约 28 秒，Pro 约 32 秒，GPT medium 约 58 秒，GPT high 158 秒——最快与最慢档相差整十倍。GPT 的延迟与其「思考/路由层」设计一致（官方公告称其会检查自身输出），这是档位特性而非故障。</p>
+
+      <h3>2.4 成本：按一手 token 计数核算</h3>
+      <p>两家都按 token 计费。<strong>每图 token 数取自本次实测的 API usage 字段（一手）</strong>：MAI 三款恒定 1024 output tokens/图；GPT-Image-2 在 1024×1024 下 medium 1756 / high 7024 image tokens——四倍 token 差直接构成四倍价差。</p>
+      <table>
+        <thead><tr><th>模型档位</th><th>图像输出牌价 / 1M tokens</th><th>实测 tokens/图</th><th>每图成本 @1024²</th></tr></thead>
+        <tbody>
+          <tr><td><strong class="mai">MAI-2.5</strong></td><td>$47（官方公告）</td><td>1,024（恒定）</td><td>≈$0.048</td></tr>
+          <tr><td><strong class="mai">MAI-2.5-Flash</strong></td><td>$26–$33（口径分歧，见 §0）</td><td>1,024（恒定）</td><td>≈$0.027–$0.034</td></tr>
+          <tr><td><strong class="mai">MAI-2.5-Pro</strong></td><td>$106（官方公告）</td><td>1,024（恒定）</td><td>≈$0.109</td></tr>
+          <tr><td><strong class="gpt">GPT-Image-2 medium</strong></td><td>$30（多源二手一致）</td><td>1,756（实测）</td><td>≈$0.053</td></tr>
+          <tr><td><strong class="gpt">GPT-Image-2 high</strong></td><td>$30（多源二手一致）</td><td>7,024（实测）</td><td>≈$0.211</td></tr>
+        </tbody>
+      </table>
+      <p>文字复述：MAI-2.5 每图约 $0.048，与 GPT medium（$0.053）基本持平，约为 GPT high（$0.211）的四分之一；Pro 约 $0.109 仍只有 GPT high 的一半。MAI 每图成本恒定不随尺寸跳变；GPT 另有未参与测试的 low 档（约 $0.006/图）与 Batch 半价。注意：GPT 图出 $30/M 未能从官方定价页直接引用（页面动态渲染），依据为多个独立计算器交叉一致且与实测 token 数换算自洽，绝对值入账前请以官方计算器复核。</p>
+
+      <h3>2.5 指令遵循、版权倾向与能力面差异</h3>
+      <ul>
+        <li><strong>细节指令 GPT 更强</strong>：卡通细节题（s6）含「右耳创可贴」这类左右方位判断，GPT 两档逐项全对；MAI 2.5/Pro 一致把创可贴镜像画到左耳，Flash 还丢了钥匙数量与挥手动作。复杂多对象题（s3）仅 MAI-2.5 漏一项（纸箱里的猫），其余四档全对。</li>
+        <li><strong>版权倾向相反</strong>：F1 题（s7）GPT 直接画出真实车队涂装（McLaren / Mercedes PETRONAS 字样），MAI 倾向虚构品牌。商用素材合规角度 MAI 的保守倾向更稳，但这是单场景观察（n=1），不能外推为系统性策略差异。</li>
+      </ul>
+      <figure class="ev">
+        <div class="pair">
+          <img src="/topics/02-mai-image-25-vs-gpt-image-2/evidence/s6-cartoon--gpt-image-2-medium.jpg" alt="s6 卡通细节：GPT-Image-2 medium，含右耳创可贴在内逐项全对" loading="lazy" />
+          <img src="/topics/02-mai-image-25-vs-gpt-image-2/evidence/s6-cartoon--mai-2.5.jpg" alt="s6 卡通细节：MAI-Image-2.5，创可贴镜像画到左耳" loading="lazy" />
+        </div>
+        <figcaption>s6 卡通细节指令。左：GPT-Image-2 medium（「右耳创可贴」方位正确）；右：MAI-Image-2.5（镜像画反）。</figcaption>
+      </figure>
+      <figure class="ev">
+        <div class="pair">
+          <img src="/topics/02-mai-image-25-vs-gpt-image-2/evidence/s7-f1-motion--gpt-image-2-high.jpg" alt="s7 F1 高速运动：GPT-Image-2 high，出现真实车队涂装" loading="lazy" />
+          <img src="/topics/02-mai-image-25-vs-gpt-image-2/evidence/s7-f1-motion--mai-2.5.jpg" alt="s7 F1 高速运动：MAI-Image-2.5，倾向虚构品牌涂装" loading="lazy" />
+        </div>
+        <figcaption>s7 F1 高速运动。左：GPT-Image-2 high（真实车队涂装）；右：MAI-Image-2.5（虚构品牌）。</figcaption>
+      </figure>
+      <p>产品形态差异往往比画质更早决定选型（均为官方文档口径）：</p>
+      <ul>
+        <li><strong>分辨率</strong>：GPT 任意宽高（16 px 倍数）至 4K；MAI 各边 ≥768 且总像素 ≤1,048,576（约 1024² 封顶），可任意比例。</li>
+        <li><strong>协议</strong>：GPT 为 OpenAI images 兼容接口，现有 SDK 直接可用；MAI 为专有 <code>/mai/v1</code>（edits 走 multipart），需要网关/SDK 单独适配。</li>
+        <li><strong>批量与编辑</strong>：GPT 支持 n=1–10、mask 局部重绘（inpaint）、png/jpeg 输出；MAI 单请求一张、输出恒为 PNG、支持图生图 edits。</li>
+        <li><strong>可用性</strong>：MAI 系全部 Preview（无 SLA），仅 7 个 region，GlobalStandard 配额最高档 12 RPM/订阅/区，上量需多订阅多区池化；GPT-Image-2 已 GA。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>3. 决策矩阵</h2>
+      <table>
+        <thead><tr><th>评估维度</th><th>MAI-Image-2.5 系</th><th>GPT-Image-2</th><th>倾向</th></tr></thead>
+        <tbody>
+          <tr><td>中文/高密度文字渲染</td><td>弱（字形级错字，三款皆有）</td><td>强（两档近乎零错字）</td><td class="verdict gpt">GPT</td></tr>
+          <tr><td>细节指令遵循（方位等）</td><td>中（镜像/漏项）</td><td>强（逐项全对）</td><td class="verdict gpt">GPT</td></tr>
+          <tr><td>人像/真人摄影（默认过滤下）</td><td>强（全放行且质量佳）</td><td>不可用（请求被拦截）</td><td class="verdict mai">MAI（唯一选项）</td></tr>
+          <tr><td>出图延迟</td><td>强（15.8–31.8 s 中位）</td><td>弱（58.5–158.3 s 中位）</td><td class="verdict mai">MAI</td></tr>
+          <tr><td>每图成本 @1024²</td><td>$0.027–$0.109</td><td>$0.006（low，未测质量）–$0.211</td><td class="verdict split">同档位基本持平</td></tr>
+          <tr><td>分辨率自由度</td><td>弱（≈1024² 封顶）</td><td>强（任意至 4K）</td><td class="verdict gpt">GPT</td></tr>
+          <tr><td>接入成本（协议/SDK）</td><td>弱（专有 /mai/v1 需适配）</td><td>强（OpenAI 兼容）</td><td class="verdict gpt">GPT</td></tr>
+          <tr><td>生产成熟度（SLA/配额/区域）</td><td>弱（Preview、7 区、12 RPM）</td><td>强（GA）</td><td class="verdict gpt">GPT</td></tr>
+          <tr><td>商用品牌合规倾向</td><td>倾向虚构品牌（n=1 观察）</td><td>会画真实涂装（n=1 观察）</td><td class="verdict split">证据不足，倾向 MAI</td></tr>
+        </tbody>
+      </table>
+      <p>矩阵复述：文字、指令细节、分辨率、接入与成熟度五个维度 GPT 占优；人像可用性与延迟两个维度 MAI 占优且前者是硬门槛；成本同档位基本持平。<strong>没有全场胜者，分流是唯一理性解。</strong></p>
+    </section>
+
+    <section>
+      <h2>4. 对抗验证：这些结论可能错在哪</h2>
+      <p>按方法论要求，综合前主动找反例。以下每一条都实际收窄了结论的适用边界：</p>
+      <ol>
+        <li><strong>「GPT 人像不可用」依赖默认过滤配置</strong>。Azure OpenAI 内容过滤阈值可配置，完全关闭需 Limited Access 审批。获批调低阈值后 s5/s10 是否放行，本次未实测——对能走审批流程的企业，这条「唯一选项」结论可能不成立。另外 4 个失败请求的响应体未存档（台账只有状态码），「内容过滤」的判定依据是：失败仅集中在两个写实人像题、当日复测 2/2 复现、且与官方文档规定的 400 + content_filter 行为一致。</li>
+        <li><strong>样本量薄</strong>：每题每档 n=1、单评审裁决。文字错字是客观可数缺陷，支撑最强；「毛发质感更好」这类观感判断在 n=1 下不具统计力，本研究刻意不把此类判断写进结论。</li>
+        <li><strong>成本结论可被 low 档反转</strong>：GPT low 档约 $0.006/图，若其质量满足业务底线，成本维度将彻底倒向 GPT——low 档未参与本次质量测试，是明确的未验证分支。</li>
+        <li><strong>延迟未做多时段/多区采样</strong>：单日单区（GPT 与 MAI 还不同区）测得，绝对值会随负载波动；但 10 倍量级差与两家档位设计（Flash 优化吞吐 vs GPT 思考/路由层）方向一致，量级结论稳健、精确值不稳健。</li>
+        <li><strong>时效性</strong>：MAI 系为 Preview（版本迭代快，2026 年内已发 5 个图像模型），定价与配额均可能变动；本文所有外部事实核实日期为 2026-08-05，超过一个季度后应视为待复核。</li>
+      </ol>
+    </section>
+
+    <section>
+      <div class="card conclusion">
+        <h3 style="margin-top:0">✅ 结论 (Conclusion)</h3>
+        <p><strong>假设部分成立，按内容类型分化。</strong>「MAI 半数场景不劣于 GPT medium」成立（人像、写实、延迟、成本侧全面达标或占优）；但「无整类需求硬缺陷」不成立——中文/高密度文字渲染 MAI 三款均有字形级错字，文字类需求上 MAI 不能替代 GPT。</p>
+        <p>落地建议：<strong>通用配图与人像写真走 MAI-Image-2.5</strong>（大批量低延迟场景用 Flash，但文字最弱；Pro 主要贵在画面信息密度，指令遵循无优势且同样有中文错字，性价比首选 2.5 本体）；<strong>文字海报、漫画、细节指令严格的需求走 GPT-Image-2 medium</strong>；high 档约三倍延迟、四倍价格，仅在文字密度极高时值得。</p>
+        <p><strong>适用边界</strong>：以上结论在 Azure 默认内容过滤、1024×1024、单次生成、2026-08 版本与牌价下成立。若你能通过审批调整过滤配置、或 GPT low 档质量满足业务底线、或需要 4K/高分辨率输出，结论需按 §4 重新评估。</p>
+      </div>
+    </section>
+
+    <details>
+      <summary>📚 引用与来源（一手优先，标注核实日期 2026-08-05）</summary>
+      <p class="cite"><a href="/topics/02-mai-image-25-vs-gpt-image-2/evidence/results.json">本研究实测台账 results.json（50 请求逐条延迟/token/错误，脱敏公开）</a> <span class="tier primary">primary · 自有实验</span></p>
+      <p class="cite"><a href="https://learn.microsoft.com/en-us/azure/foundry/foundry-models/how-to/use-foundry-models-mai-image">Microsoft Learn: MAI image models（协议/区域/分辨率/配额/Preview）</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/new-mai-models-in-microsoft-foundry-across-text-image-voice-and-speech/4524632">MAI-Image-2.5 + Flash 发布公告（2026-06-02，2.5 定价 $5/$8/$47）</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/introducing-mai-image-2-5-pro-and-mai-voice-2-flash-in-microsoft-foundry/4539446">MAI-Image-2.5-Pro 发布公告（2026-07-23，Pro 定价 $106/M 图出）</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://microsoft.ai/news/building-a-hillclimbing-machine-launching-seven-new-mai-models/">Microsoft AI：七模型发布（厂商榜单宣称，未独立验证）</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://labs.ai.azure.com/innovations/mai-image-2-5/">Foundry Labs：MAI-Image-2.5（Arena #3 口径，与公告 No.2 冲突）</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/introducing-openais-gpt-image-2-in-microsoft-foundry/4500571">GPT-image-2 GA 公告（2026-04-21，任意分辨率至 4K）</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/dall-e">Microsoft Learn: OpenAI 图像模型用法（quality/n/inpaint/contentFilter）</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://learn.microsoft.com/en-us/azure/foundry-classic/foundry-models/concepts/content-filter">Microsoft Learn: 内容过滤（400 + content_filter；阈值可配置）</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://wavespeed.ai/blog/posts/mai-image-2-5-api/">WaveSpeed：Flash 牌价转述（$1.75 入 / $33 出，含区间说明）</a> <span class="tier secondary">secondary</span></p>
+      <p class="cite"><a href="https://mer.vin/2026/06/mai-image-2-5-arena-2-image-editing-and-foundry-pricing-explained/">Mervin Praison：2.5 定价独立转述与 Arena 口径拆分</a> <span class="tier secondary">secondary</span></p>
+      <p class="cite"><a href="https://www.getmaxim.ai/bifrost/llm-cost-calculator/provider/azure/model/gpt-image-2">gpt-image-2 每图成本参考（与 futureagi/cloudprice 交叉一致）</a> <span class="tier secondary">secondary</span></p>
+    </details>
+
+    <details>
+      <summary>⚠️ 局限与存疑（research 诚实性）</summary>
+      <ul>
+        <li>4 个失败请求仅存 HTTP 状态码，响应体未存档；「内容过滤」为推断（依据见 §4.1），非直接证据。</li>
+        <li>Flash 图像输出牌价存在 $26/M 与 $33/M 口径分歧，每图成本以区间表述；GPT 图出 $30/M 未能从官方定价页直接引用（动态渲染），为多源二手一致 + 实测 token 换算自洽。</li>
+        <li>每题每档单次生成（n=1）、单评审主观裁决，未做多评审一致性检验；观感类差异不作为结论依据。</li>
+        <li>GPT low 档、4K 分辨率、图生图 edits 质量均未测试；版权倾向为单场景观察。</li>
+        <li>MAI 系为 Preview，版本/牌价/配额变动快；本文外部事实核实日期 2026-08-05。</li>
+        <li>所有厂商 benchmark（Arena 名次、ELO 提升、「超过 Nano Banana Pro」）均未独立验证，本研究不采信为结论依据。</li>
+      </ul>
+    </details>
+
+    <footer class="topic">
+      42-research · 本产物为自包含语义化 HTML，遵循 <a href="https://schema.org/ScholarlyArticle">schema.org/ScholarlyArticle</a>。
+      真相源在 git，查询索引在 D1，方法论见 <code>docs/methodology</code>。附图均为实测原始输出的降采样副本，未经任何修饰。
+    </footer>
+  </article>
+</body>
+</html>
