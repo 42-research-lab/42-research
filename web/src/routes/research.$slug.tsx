@@ -205,7 +205,11 @@ function ArtifactLightbox({
       className="fixed inset-0 z-[100] grid grid-rows-[auto_minmax(0,1fr)_auto] gap-3 bg-[rgba(4,5,10,0.93)] p-5 backdrop-blur"
       role="dialog"
       aria-modal="true"
-      onClick={(e) => e.target === e.currentTarget && onClose()}
+      onClick={(e) => {
+        // 空白处（非图片、非按钮、非指示点）点击即关闭
+        const el = e.target as HTMLElement
+        if (!el.closest('img') && !el.closest('button')) onClose()
+      }}
       onTouchStart={(e) => setTouchX(e.changedTouches[0].clientX)}
       onTouchEnd={(e) => {
         if (touchX == null) return
@@ -296,9 +300,13 @@ function ResearchDetail() {
             {t.datePublished} · {t.citations} {tr.detail.primaryCitations}
           </span>
         </div>
-        <h1 className="display mt-4 text-3xl font-extrabold tracking-tight text-[var(--fg)] sm:text-5xl">
-          {t.title}
-        </h1>
+        {/* 产物按自身排版渲染时自带 hero/标题，站点大标题让位以免同屏双标题；
+            prose 降级路径仍渲染站点标题 */}
+        {!styles && (
+          <h1 className="display mt-4 text-3xl font-extrabold tracking-tight text-[var(--fg)] sm:text-5xl">
+            {t.title}
+          </h1>
+        )}
       </header>
 
       {/* 封面图 — 来源一手素材，本地化引用（来源标注见页尾）。

@@ -443,7 +443,11 @@
     $("lbClose").addEventListener("click", close);
     $("lbPrev").addEventListener("click", function () { step(-1); });
     $("lbNext").addEventListener("click", function () { step(1); });
-    lb.addEventListener("click", function (e) { if (e.target === lb) close(); });
+    lb.addEventListener("click", function (e) {
+      var el = e.target;
+      // 空白处（非图片、非按钮）点击即关闭
+      if (el && el.closest && !el.closest("img") && !el.closest("button")) close();
+    });
     document.addEventListener("keydown", function (e) {
       if (!lb.classList.contains("open")) return;
       if (e.key === "Escape") close();
