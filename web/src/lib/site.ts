@@ -11,7 +11,7 @@ export const SITE = {
     '42-research investigates the technical questions people actually care about, and answers them with reproducible, traceable, peer-reviewable methods — no guessing, no echoing unverified claims.',
   /** Primary slogan. */
   tagline: 'Every question worth asking deserves a real answer.',
-  baseUrl: 'https://42-research.pages.dev',
+  baseUrl: 'https://42r.larrykoo.com',
   author: 'larrykoo711',
   authorUrl: 'https://github.com/larrykoo711',
   /** GitHub repository (single source of truth for all GitHub links). */

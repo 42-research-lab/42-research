@@ -10,7 +10,7 @@
 
 Reproducible, traceable, peer-reviewable research into the technical questions people actually care about.
 
-[**Website →**](https://42-research.pages.dev) · [Methodology](docs/methodology/RESEARCH_METHODOLOGY.md) · [Contributing](CONTRIBUTING.md)
+[**Website →**](https://42r.larrykoo.com) · [Methodology](docs/methodology/RESEARCH_METHODOLOGY.md) · [Contributing](CONTRIBUTING.md)
 
 </div>
 
@@ -35,6 +35,6 @@ The goal is verifiable conclusions, not just code. See the [Contributing Guide](
 
 42·Research 研究技术与科技领域里大家真正关心的问题，并发布可复现、可溯源、可同行评审的答案。每个课题以自包含语义化 HTML 产物发布，内嵌 schema.org/ScholarlyArticle 的 JSON-LD；每个结论都说明在什么条件下成立、附可点击的一手来源。
 
-网站默认英文、提供中文：[42-research.pages.dev](https://42-research.pages.dev)。参与方式见 [CONTRIBUTING.md](CONTRIBUTING.md)，方法论见 [docs/methodology](docs/methodology/RESEARCH_METHODOLOGY.md)。
+网站默认英文、提供中文：[42r.larrykoo.com](https://42r.larrykoo.com)。参与方式见 [CONTRIBUTING.md](CONTRIBUTING.md)，方法论见 [docs/methodology](docs/methodology/RESEARCH_METHODOLOGY.md)。
 
 </details>
