@@ -1,17 +1,11 @@
+import { createContext, useCallback, useContext, useMemo, type ReactNode } from 'react'
+import { useRouter, useRouterState } from '@tanstack/react-router'
 import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode,
-} from 'react'
-import {
-  DEFAULT_LOCALE,
   LOCALE_STORAGE_KEY,
   LOCALE_TAG,
-  isLocale,
+  localeFromPathname,
   messages,
+  switchLocalePath,
   type Locale,
 } from './index'
 import type { Messages } from './en'
@@ -25,39 +19,35 @@ type LocaleContextValue = {
 const LocaleContext = createContext<LocaleContextValue | null>(null)
 
 /**
- * Read the initial locale on the client from <html lang> (set by LOCALE_INIT_SCRIPT
- * before paint). On the server this provider renders with DEFAULT_LOCALE ('en'),
- * keeping SSR deterministic and English-first.
+ * URL 是语言唯一真相源：/zh 前缀 → zh，无前缀 → en（默认）。
+ * SSR 与 CSR 从同一 pathname 推导，天然一致，无 hydration 漂移。
+ * setLocale = 记住手动选择（最高优先级，见 LOCALE_REDIRECT_SCRIPT）+ 跳转到
+ * 目标语言的等价 URL——语言切换就是一次普通导航，loader/head 全部随之重跑。
  */
-function readInitialLocale(): Locale {
-  if (typeof document === 'undefined') return DEFAULT_LOCALE
-  const stored = localStorage.getItem(LOCALE_STORAGE_KEY)
-  if (isLocale(stored)) return stored
-  return document.documentElement.lang.toLowerCase().startsWith('zh')
-    ? 'zh'
-    : DEFAULT_LOCALE
-}
-
 export function LocaleProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>(DEFAULT_LOCALE)
+  const pathname = useRouterState({ select: (s) => s.location.pathname })
+  const locale = localeFromPathname(pathname)
+  const router = useRouter()
 
-  // After hydration, adopt the client's persisted/declared locale.
-  useEffect(() => {
-    setLocaleState(readInitialLocale())
-  }, [])
+  const setLocale = useCallback(
+    (l: Locale) => {
+      try {
+        localStorage.setItem(LOCALE_STORAGE_KEY, l)
+        document.documentElement.lang = LOCALE_TAG[l]
+      } catch {
+        /* storage unavailable — navigation below still switches the language */
+      }
+      if (l !== localeFromPathname(pathname)) {
+        router.history.push(switchLocalePath(pathname, l))
+      }
+    },
+    [pathname, router],
+  )
 
-  const setLocale = useCallback((l: Locale) => {
-    setLocaleState(l)
-    try {
-      localStorage.setItem(LOCALE_STORAGE_KEY, l)
-      document.cookie = `${LOCALE_STORAGE_KEY}=${l};path=/;max-age=31536000;samesite=lax`
-      document.documentElement.lang = LOCALE_TAG[l]
-    } catch {
-      /* storage unavailable — keep in-memory state only */
-    }
-  }, [])
-
-  const value: LocaleContextValue = { locale, setLocale, t: messages(locale) }
+  const value = useMemo<LocaleContextValue>(
+    () => ({ locale, setLocale, t: messages(locale) }),
+    [locale, setLocale],
+  )
   return <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>
 }
 

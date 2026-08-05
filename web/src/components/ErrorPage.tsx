@@ -49,10 +49,10 @@ export default function ErrorPage({ code, title, message, onRetry, detail }: Err
         <p className="max-w-md text-sm leading-7 text-[var(--fg-soft)]">{message}</p>
 
         <div className="mt-2 flex flex-wrap items-center justify-center gap-3">
-          <Link to="/" className="btn-primary">
+          <Link to="/{-$locale}" className="btn-primary">
             返回首页
           </Link>
-          <Link to="/research" className="btn-ghost">
+          <Link to="/{-$locale}/research" className="btn-ghost">
             浏览研究
           </Link>
           {onRetry && (

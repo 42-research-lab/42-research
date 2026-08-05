@@ -7,8 +7,8 @@
  */
 import { Link } from '@tanstack/react-router'
 import type { CSSProperties } from 'react'
-import type { Topic } from '../data/topics'
-import { useT } from '../i18n/useLocale'
+import { localizeTopic, type Topic } from '../data/topics'
+import { useLocale } from '../i18n/useLocale'
 import { LogoMark } from './Logo'
 
 interface TopicCardProps {
@@ -18,10 +18,11 @@ interface TopicCardProps {
 }
 
 export function TopicCard({ topic, featured = false, style }: TopicCardProps) {
-  const t = useT()
+  const { locale, t } = useLocale()
+  const loc = localizeTopic(topic, locale)
   return (
     <Link
-      to="/research/$slug"
+      to="/{-$locale}/research/$slug"
       params={{ slug: topic.slug }}
       className="card rise block overflow-hidden"
       style={style}
@@ -38,7 +39,7 @@ export function TopicCard({ topic, featured = false, style }: TopicCardProps) {
             {t.status[topic.status]}
           </span>
           <span className="mono rounded-md border border-[var(--border)] px-2 py-0.5 text-xs text-[var(--muted)]">
-            {topic.category}
+            {loc.category}
           </span>
         </div>
 
@@ -48,12 +49,12 @@ export function TopicCard({ topic, featured = false, style }: TopicCardProps) {
             featured ? 'text-2xl sm:text-3xl' : 'text-xl sm:text-2xl'
           }`}
         >
-          {topic.title}
+          {loc.title}
         </h3>
 
         {/* 摘要（截断 3 行） */}
         <p className="mt-2 text-sm leading-6 text-[var(--fg-soft)] line-clamp-3">
-          {topic.abstract}
+          {loc.abstract}
         </p>
 
         {/* 关键词 chips */}

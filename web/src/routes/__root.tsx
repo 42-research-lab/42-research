@@ -1,10 +1,10 @@
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
+import { HeadContent, Scripts, createRootRoute, useRouterState } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
 import { LocaleProvider } from '../i18n/useLocale'
-import { LOCALE_INIT_SCRIPT } from '../i18n'
+import { LOCALE_REDIRECT_SCRIPT, LOCALE_TAG, localeFromPathname } from '../i18n'
 import { en } from '../i18n/en'
 
 import appCss from '../styles.css?url'
@@ -52,13 +52,14 @@ export const Route = createRootRoute({
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  // lang 由 URL 决定（/zh 前缀 → zh-CN），SSR/CSR 一致；
+  // suppressHydrationWarning 容忍 THEME_INIT_SCRIPT 对 class 的首屏改写。
+  const pathname = useRouterState({ select: (s) => s.location.pathname })
   return (
-    // 默认 en(英文为主)。LOCALE_INIT_SCRIPT 会在首屏前按持久化选择改写 lang,
-    // 客户端 LocaleProvider 再据此驱动文案; suppressHydrationWarning 容忍这次改写。
-    <html lang="en" suppressHydrationWarning>
+    <html lang={LOCALE_TAG[localeFromPathname(pathname)]} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
-        <script dangerouslySetInnerHTML={{ __html: LOCALE_INIT_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: LOCALE_REDIRECT_SCRIPT }} />
         <HeadContent />
       </head>
       <body className="font-sans antialiased [overflow-wrap:anywhere] selection:bg-[rgba(246,130,31,0.26)]">

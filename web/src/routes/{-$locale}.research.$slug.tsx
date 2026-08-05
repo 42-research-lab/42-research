@@ -2,10 +2,11 @@ import { useCallback, useEffect, useState } from 'react'
 import { createFileRoute, Link, notFound } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { getRequest } from '@tanstack/react-start/server'
-import { topics } from '../data/topics'
+import { localizeTopic, topics } from '../data/topics'
+import { LOCALE_TAG, resolveLocale } from '../i18n'
 import { extractBody, extractJsonLd, extractScopedStyles } from '../lib/artifact'
-import { SITE, topicUrl } from '../lib/site'
-import { articleJsonLd, serializeJsonLd } from '../lib/seo'
+import { SITE } from '../lib/site'
+import { articleJsonLd, localeAlternates, serializeJsonLd } from '../lib/seo'
 import { useT } from '../i18n/useLocale'
 import ErrorPage from '../components/ErrorPage'
 
@@ -43,21 +44,25 @@ const getArtifact = createServerFn({ method: 'GET' })
     }
   })
 
-export const Route = createFileRoute('/research/$slug')({
-  // .md 端点已拆至独立路由 research.{$slug}[.]md.ts（ADR-004），
+export const Route = createFileRoute('/{-$locale}/research/$slug')({
+  // .md 端点已拆至独立路由 {-$locale}.research.{$slug}[.]md.ts（ADR-004），
   // 本页面路由不再挂 GET handler——start-server-core 1.169+ 要求 handler 必须返回 Response。
   loader: async ({ params }) => {
     const topic = topics.find((t) => t.slug === params.slug)
     if (!topic) throw notFound()
 
-    const { bodyHtml, styles, jsonLd } = await getArtifact({ data: topic.artifact })
+    // URL 是语言唯一真相源（{-$locale} 已由布局路由校验）：/zh/* 读中文产物，无前缀读英文产物。
+    const locale = resolveLocale(params.locale)
+    const artifactPath = localizeTopic(topic, locale).artifact
+    const { bodyHtml, styles, jsonLd } = await getArtifact({ data: artifactPath })
 
-    return { topic, bodyHtml, styles, jsonLd }
+    return { topic, bodyHtml, styles, jsonLd, locale }
   },
 
   head: ({ loaderData }) => {
     if (!loaderData) return {}
-    const { topic, jsonLd } = loaderData
+    const { topic, jsonLd, locale } = loaderData
+    const loc = localizeTopic(topic, locale)
 
     // 若产物 JSON-LD 解析成功则复用，否则用 seo.ts 统一生成 ScholarlyArticle
     const structuredData = jsonLd ?? articleJsonLd(topic)
@@ -66,18 +71,19 @@ export const Route = createFileRoute('/research/$slug')({
 
     return {
       meta: [
-        { title: `${topic.title} · 42-research` },
-        { name: 'description', content: topic.abstract },
-        { property: 'og:title', content: topic.title },
-        { property: 'og:description', content: topic.abstract },
+        { title: `${loc.title} · 42-research` },
+        { name: 'description', content: loc.abstract },
+        { property: 'og:title', content: loc.title },
+        { property: 'og:description', content: loc.abstract },
         { property: 'og:type', content: 'article' },
+        { property: 'og:locale', content: LOCALE_TAG[locale] },
         ...(ogImage ? [{ property: 'og:image', content: ogImage }] : []),
         { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:title', content: topic.title },
-        { name: 'twitter:description', content: topic.abstract },
+        { name: 'twitter:title', content: loc.title },
+        { name: 'twitter:description', content: loc.abstract },
         ...(ogImage ? [{ name: 'twitter:image', content: ogImage }] : []),
       ],
-      links: [{ rel: 'canonical', href: topicUrl(topic.slug) }],
+      links: localeAlternates(`/research/${topic.slug}`, locale),
       scripts: [
         {
           type: 'application/ld+json',
@@ -274,16 +280,19 @@ function ArtifactLightbox({
 }
 
 function ResearchDetail() {
-  const { topic: t, bodyHtml, styles } = Route.useLoaderData()
+  const { topic: t, bodyHtml: viewBody, styles: viewStyles, locale } = Route.useLoaderData()
   const tr = useT()
   const theme = useSiteTheme()
   const { lb, setLb, step, onArticleClick } = useArtifactLightbox()
+
+  // 语言切换 = URL 切换（/zh 前缀），loader 已按 URL 读对应语言产物，无需客户端热替换。
+  const loc = localizeTopic(t, locale)
 
   return (
     <main className="page-wrap px-4 pb-16 pt-12">
       {/* 面包屑 */}
       <Link
-        to="/research"
+        to="/{-$locale}/research"
         className="mono text-sm text-[var(--muted)] transition hover:text-[var(--fg)]"
       >
         {tr.detail.breadcrumb}
@@ -302,9 +311,9 @@ function ResearchDetail() {
         </div>
         {/* 产物按自身排版渲染时自带 hero/标题，站点大标题让位以免同屏双标题；
             prose 降级路径仍渲染站点标题 */}
-        {!styles && (
+        {!viewStyles && (
           <h1 className="display mt-4 text-3xl font-extrabold tracking-tight text-[var(--fg)] sm:text-5xl">
-            {t.title}
+            {loc.title}
           </h1>
         )}
       </header>
@@ -318,7 +327,7 @@ function ResearchDetail() {
         >
           <img
             src={t.cover}
-            alt={t.title}
+            alt={loc.title}
             className="aspect-video w-full object-cover"
             loading="eager"
           />
@@ -328,13 +337,13 @@ function ResearchDetail() {
       {/* TL;DR 结论块 — 醒目卡片，便于机器/人快速提取 */}
       <div className="rise card mt-8 border-l-4 border-l-[var(--ok)] p-5" style={{ animationDelay: '120ms' }}>
         <p className="kicker mb-2">{tr.detail.tldrKicker}</p>
-        <p className="text-base leading-7 text-[var(--fg)]">{t.tldr}</p>
+        <p className="text-base leading-7 text-[var(--fg)]">{loc.tldr}</p>
       </div>
 
       {/* SSR 正文 — 有产物样式时按产物自身排版渲染（@scope 隔离，见 artifact.ts），
           无样式时降级 @tailwindcss/typography prose 排版 */}
       <div className="rise mt-10" style={{ animationDelay: '200ms' }}>
-        {bodyHtml && styles ? (
+        {viewBody && viewStyles ? (
           // 产物 HTML 由 42-research 自有模板生成，内容可控，XSS 风险已在 ADR-003 登记。
           // 通栏 full-bleed：产物自带底色与排版，跳出 page-wrap 铺满视口宽度，还原独立产物页观感。
           // data-theme 透传站点主题（产物含 light 调色板时随站点亮暗切换）；
@@ -344,18 +353,18 @@ function ResearchDetail() {
             data-theme={theme}
             style={{ width: '100vw', marginLeft: 'calc(50% - 50vw)' }}
             onClick={onArticleClick}
-            dangerouslySetInnerHTML={{ __html: `<style>${styles}</style>${bodyHtml}` }}
+            dangerouslySetInnerHTML={{ __html: `<style>${viewStyles}</style>${viewBody}` }}
           />
-        ) : bodyHtml ? (
+        ) : viewBody ? (
           <article
             className="prose-research prose max-w-none"
-            dangerouslySetInnerHTML={{ __html: bodyHtml }}
+            dangerouslySetInnerHTML={{ __html: viewBody }}
           />
         ) : (
           // fetch 失败降级：展示 abstract
           <div className="card p-6">
             <p className="kicker mb-2">{tr.detail.abstractKicker}</p>
-            <p className="text-base leading-7 text-[var(--fg-soft)]">{t.abstract}</p>
+            <p className="text-base leading-7 text-[var(--fg-soft)]">{loc.abstract}</p>
           </div>
         )}
       </div>
@@ -376,7 +385,7 @@ function ResearchDetail() {
       {/* 查看原始产物链接 */}
       <div className="mt-6 border-t border-[var(--border)] pt-6">
         <a
-          href={t.artifact}
+          href={loc.artifact}
           target="_blank"
           rel="noreferrer"
           className="mono text-sm text-[var(--muted)] transition hover:text-[var(--fg-soft)]"

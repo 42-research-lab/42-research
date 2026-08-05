@@ -5,7 +5,7 @@
  * 只收录 status === 'publish' 的课题。
  */
 import { SITE, topicUrl } from './site'
-import type { Topic } from '../data/topics'
+import { localizeTopic, type Topic } from '../data/topics'
 
 /** 转义 XML 特殊字符（&<>"'） */
 function escapeXml(str: string): string {
@@ -35,18 +35,20 @@ export function buildRss(topics: Topic[]): string {
 
   const items = published
     .map((t) => {
+      // feed 声明 <language>en</language>，条目文案取英文变体（缺省回落中文）
+      const loc = localizeTopic(t, 'en')
       const link = topicUrl(t.slug)
       const pubDate = toRfc822(t.datePublished)
       const keywords = t.keywords.map(escapeXml).join(', ')
 
       return [
         '    <item>',
-        `      <title>${escapeXml(t.title)}</title>`,
+        `      <title>${escapeXml(loc.title)}</title>`,
         `      <link>${escapeXml(link)}</link>`,
-        `      <description>${escapeXml(t.abstract)}</description>`,
+        `      <description>${escapeXml(loc.abstract)}</description>`,
         `      <guid isPermaLink="true">${escapeXml(link)}</guid>`,
         `      <pubDate>${pubDate}</pubDate>`,
-        `      <category>${escapeXml(t.category)}</category>`,
+        `      <category>${escapeXml(loc.category)}</category>`,
         keywords ? `      <tags>${keywords}</tags>` : '',
         '    </item>',
       ]

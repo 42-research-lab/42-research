@@ -2,29 +2,33 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { topics } from '../data/topics'
 import { TopicCard } from '../components/TopicCard'
 import { SITE } from '../lib/site'
-import { websiteJsonLd, serializeJsonLd } from '../lib/seo'
+import { websiteJsonLd, serializeJsonLd, localeAlternates } from '../lib/seo'
+import { LOCALE_TAG, messages, resolveLocale } from '../i18n'
 import { useT } from '../i18n/useLocale'
 
-export const Route = createFileRoute('/')({
-  loader: () => ({ topics }),
-  head: () => {
+export const Route = createFileRoute('/{-$locale}/')({
+  loader: ({ params }) => ({ topics, locale: resolveLocale(params.locale) }),
+  head: ({ loaderData }) => {
+    const locale = loaderData?.locale ?? 'en'
+    const site = messages(locale).site
     return {
       meta: [
-        { title: SITE.title },
-        { name: 'description', content: SITE.description },
-        { property: 'og:title', content: SITE.title },
-        { property: 'og:description', content: SITE.description },
+        { title: site.title },
+        { name: 'description', content: site.description },
+        { property: 'og:title', content: site.title },
+        { property: 'og:description', content: site.description },
         { property: 'og:type', content: 'website' },
+        { property: 'og:locale', content: LOCALE_TAG[locale] },
         { property: 'og:image', content: `${SITE.baseUrl}/og-image.png` },
         { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:title', content: SITE.title },
-        { name: 'twitter:description', content: SITE.description },
+        { name: 'twitter:title', content: site.title },
+        { name: 'twitter:description', content: site.description },
       ],
-      links: [{ rel: 'canonical', href: SITE.baseUrl }],
+      links: localeAlternates('', locale),
       scripts: [
         {
           type: 'application/ld+json',
-          children: serializeJsonLd(websiteJsonLd()),
+          children: serializeJsonLd(websiteJsonLd(locale)),
         },
       ],
     }
@@ -63,10 +67,10 @@ function Home() {
         </p>
 
         <div className="flex flex-wrap items-center gap-3">
-          <Link to="/research" className="btn-primary">
+          <Link to="/{-$locale}/research" className="btn-primary">
             {h.ctaBrowse}
           </Link>
-          <Link to="/about" className="btn-ghost">
+          <Link to="/{-$locale}/about" className="btn-ghost">
             {h.ctaHow}
           </Link>
         </div>
@@ -102,7 +106,7 @@ function Home() {
         <div className="mb-8 flex items-baseline justify-between">
           <h2 className="display text-2xl font-bold text-[var(--fg)] sm:text-3xl">{h.featured.heading}</h2>
           <Link
-            to="/research"
+            to="/{-$locale}/research"
             className="mono text-sm text-[var(--fg-soft)] transition-colors hover:text-[var(--accent)]"
           >
             {h.featured.all}
@@ -147,7 +151,7 @@ function Home() {
         <p className="max-w-lg text-sm leading-7 text-[var(--fg-soft)]">
           {h.cta.body}
         </p>
-        <Link to="/contribute" className="btn-primary mt-2">
+        <Link to="/{-$locale}/contribute" className="btn-primary mt-2">
           {h.cta.button}
         </Link>
       </section>

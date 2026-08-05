@@ -7,10 +7,12 @@ import { useT } from '../i18n/useLocale'
 
 export default function Header() {
   const t = useT()
+  // 目标路径带 {-$locale} 可选参数：Link 会继承当前 URL 的 locale，
+  // 在 /zh/* 下导航自然停留在中文前缀，无前缀下停留在默认英文。
   const nav = [
-    { to: '/research', label: t.nav.research },
-    { to: '/contribute', label: t.nav.contribute },
-    { to: '/about', label: t.nav.about },
+    { to: '/{-$locale}/research', label: t.nav.research },
+    { to: '/{-$locale}/contribute', label: t.nav.contribute },
+    { to: '/{-$locale}/about', label: t.nav.about },
   ] as const
 
   return (
@@ -25,7 +27,7 @@ export default function Header() {
           Logo 容器允许收缩(min-w-0)，字标在小屏退回 42·R 给导航让路；
           导航 shrink-0 永不收缩、whitespace-nowrap 永不折行，确保始终单行平铺。
         */}
-        <Link to="/" className="flex min-w-0 flex-shrink items-center gap-2.5 overflow-hidden">
+        <Link to="/{-$locale}" className="flex min-w-0 flex-shrink items-center gap-2.5 overflow-hidden">
           <LogoMark size={30} />
           <span
             className="mono whitespace-nowrap font-bold tracking-tight text-[var(--fg)]"

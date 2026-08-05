@@ -1,19 +1,23 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { SITE } from '../lib/site'
-import { en } from '../i18n/en'
+import { localeAlternates } from '../lib/seo'
+import { LOCALE_TAG, messages, resolveLocale } from '../i18n'
 import { useT } from '../i18n/useLocale'
 
-export const Route = createFileRoute('/contribute')({
-  head: () => ({
-    meta: [
-      { title: en.contribute.metaTitle },
-      {
-        name: 'description',
-        content: en.contribute.metaDescription,
-      },
-    ],
-    links: [{ rel: 'canonical', href: `${SITE.baseUrl}/contribute` }],
-  }),
+export const Route = createFileRoute('/{-$locale}/contribute')({
+  loader: ({ params }) => ({ locale: resolveLocale(params.locale) }),
+  head: ({ loaderData }) => {
+    const locale = loaderData?.locale ?? 'en'
+    const m = messages(locale).contribute
+    return {
+      meta: [
+        { title: m.metaTitle },
+        { name: 'description', content: m.metaDescription },
+        { property: 'og:locale', content: LOCALE_TAG[locale] },
+      ],
+      links: localeAlternates('/contribute', locale),
+    }
+  },
   component: Contribute,
 })
 
@@ -87,7 +91,7 @@ function Contribute() {
         </ul>
         <p className="mt-5 text-sm leading-7 text-[var(--fg-soft)]">
           {c.gate.noteA}{' '}
-          <Link to="/about" className="text-[var(--accent-2)] hover:text-[var(--fg)]">
+          <Link to="/{-$locale}/about" className="text-[var(--accent-2)] hover:text-[var(--fg)]">
             {c.gate.noteLink}
           </Link>
           {c.gate.noteB}
@@ -95,7 +99,7 @@ function Contribute() {
       </section>
 
       <div className="mt-12">
-        <Link to="/" className="btn-ghost">
+        <Link to="/{-$locale}" className="btn-ghost">
           {c.back}
         </Link>
       </div>

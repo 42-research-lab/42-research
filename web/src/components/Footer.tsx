@@ -5,13 +5,14 @@ import { useT } from '../i18n/useLocale'
 
 export default function Footer() {
   const t = useT()
+  // {-$locale} 由 Link 从当前 URL 继承（中文站内导航停留在 /zh 前缀下）
   const navGroups = [
     {
       title: t.footer.browse,
       links: [
-        { to: '/research', label: t.footer.research },
-        { to: '/about', label: t.footer.about },
-        { to: '/contribute', label: t.footer.contribute },
+        { to: '/{-$locale}/research', label: t.footer.research },
+        { to: '/{-$locale}/about', label: t.footer.about },
+        { to: '/{-$locale}/contribute', label: t.footer.contribute },
       ],
     },
   ] as const
@@ -22,7 +23,7 @@ export default function Footer() {
         <div className="flex flex-col gap-10 sm:flex-row sm:justify-between">
           {/* 品牌 + slogan */}
           <div className="flex max-w-xs flex-col gap-3">
-            <Link to="/" className="logo-lockup w-fit">
+            <Link to="/{-$locale}" className="logo-lockup w-fit">
               <LogoMark size={24} />
               <span className="mono text-sm font-bold tracking-tight text-[var(--fg)]">
                 42<span className="text-[var(--accent)]">·</span>Research

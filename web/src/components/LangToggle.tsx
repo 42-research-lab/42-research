@@ -92,10 +92,15 @@ export default function LangToggle() {
         下拉面板：指针 hover 经 group-hover 显隐，键盘焦点经 open 显隐。
         两条路径用 opacity+pointer-events 切换，避免布局抖动并保持平滑过渡。
       */}
+      {/*
+        pt-1 是 hover 桥：间隙用内边距而非外边距实现，指针从按钮移向面板时
+        始终处于 group 内，group-hover 不会中断（曾因 mt-1 间隙导致菜单提前消失）。
+      */}
       <div
         role="menu"
         className={[
-          'absolute right-0 top-full mt-1 min-w-[10rem] overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card)] p-1 shadow-lg transition duration-150',
+          'absolute right-0 top-full min-w-[10rem] rounded-xl border border-[var(--border)] bg-[var(--card)] bg-clip-padding p-1 shadow-lg transition duration-150',
+          'mt-1 before:absolute before:-top-2 before:left-0 before:right-0 before:h-2 before:content-[""]',
           'pointer-events-none translate-y-1 opacity-0',
           'group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100',
           open ? 'pointer-events-auto translate-y-0 opacity-100' : '',

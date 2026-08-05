@@ -20,4 +20,9 @@ export const SITE = {
   locale: 'en',
 } as const
 
-export const topicUrl = (slug: string) => `${SITE.baseUrl}/research/${slug}`
+/** Absolute URL of a locale-neutral path ('' for home) in the given locale. */
+export const pageUrl = (path: string, locale: 'en' | 'zh' = 'en') =>
+  `${SITE.baseUrl}${locale === 'zh' ? '/zh' : ''}${path}`
+
+export const topicUrl = (slug: string, locale: 'en' | 'zh' = 'en') =>
+  pageUrl(`/research/${slug}`, locale)

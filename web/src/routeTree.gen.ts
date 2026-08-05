@@ -9,20 +9,26 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as Char123LocaleChar125RouteImport } from './routes/{-$locale}'
 import { Route as VersionDottxtRouteImport } from './routes/version[.]txt'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as RssDotxmlRouteImport } from './routes/rss[.]xml'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
-import { Route as ResearchRouteImport } from './routes/research'
 import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
-import { Route as ContributeRouteImport } from './routes/contribute'
-import { Route as AboutRouteImport } from './routes/about'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as ResearchIndexRouteImport } from './routes/research.index'
+import { Route as Char123LocaleChar125IndexRouteImport } from './routes/{-$locale}.index'
+import { Route as Char123LocaleChar125ResearchRouteImport } from './routes/{-$locale}.research'
+import { Route as Char123LocaleChar125ContributeRouteImport } from './routes/{-$locale}.contribute'
+import { Route as Char123LocaleChar125AboutRouteImport } from './routes/{-$locale}.about'
 import { Route as TopicsSlugRouteImport } from './routes/topics.$slug'
-import { Route as ResearchChar123slugChar125DotmdRouteImport } from './routes/research.{$slug}[.]md'
-import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
+import { Route as Char123LocaleChar125ResearchIndexRouteImport } from './routes/{-$locale}.research.index'
+import { Route as Char123LocaleChar125ResearchChar123slugChar125DotmdRouteImport } from './routes/{-$locale}.research.{$slug}[.]md'
+import { Route as Char123LocaleChar125ResearchSlugRouteImport } from './routes/{-$locale}.research.$slug'
 
+const Char123LocaleChar125Route = Char123LocaleChar125RouteImport.update({
+  id: '/{-$locale}',
+  path: '/{-$locale}',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VersionDottxtRoute = VersionDottxtRouteImport.update({
   id: '/version.txt',
   path: '/version.txt',
@@ -43,160 +49,174 @@ const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
   path: '/robots.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ResearchRoute = ResearchRouteImport.update({
-  id: '/research',
-  path: '/research',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
   id: '/llms.txt',
   path: '/llms.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ContributeRoute = ContributeRouteImport.update({
-  id: '/contribute',
-  path: '/contribute',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ResearchIndexRoute = ResearchIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => ResearchRoute,
-} as any)
+const Char123LocaleChar125IndexRoute =
+  Char123LocaleChar125IndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => Char123LocaleChar125Route,
+  } as any)
+const Char123LocaleChar125ResearchRoute =
+  Char123LocaleChar125ResearchRouteImport.update({
+    id: '/research',
+    path: '/research',
+    getParentRoute: () => Char123LocaleChar125Route,
+  } as any)
+const Char123LocaleChar125ContributeRoute =
+  Char123LocaleChar125ContributeRouteImport.update({
+    id: '/contribute',
+    path: '/contribute',
+    getParentRoute: () => Char123LocaleChar125Route,
+  } as any)
+const Char123LocaleChar125AboutRoute =
+  Char123LocaleChar125AboutRouteImport.update({
+    id: '/about',
+    path: '/about',
+    getParentRoute: () => Char123LocaleChar125Route,
+  } as any)
 const TopicsSlugRoute = TopicsSlugRouteImport.update({
   id: '/topics/$slug',
   path: '/topics/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ResearchChar123slugChar125DotmdRoute =
-  ResearchChar123slugChar125DotmdRouteImport.update({
+const Char123LocaleChar125ResearchIndexRoute =
+  Char123LocaleChar125ResearchIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => Char123LocaleChar125ResearchRoute,
+  } as any)
+const Char123LocaleChar125ResearchChar123slugChar125DotmdRoute =
+  Char123LocaleChar125ResearchChar123slugChar125DotmdRouteImport.update({
     id: '/{$slug}.md',
     path: '/{$slug}.md',
-    getParentRoute: () => ResearchRoute,
+    getParentRoute: () => Char123LocaleChar125ResearchRoute,
   } as any)
-const ResearchSlugRoute = ResearchSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => ResearchRoute,
-} as any)
+const Char123LocaleChar125ResearchSlugRoute =
+  Char123LocaleChar125ResearchSlugRouteImport.update({
+    id: '/$slug',
+    path: '/$slug',
+    getParentRoute: () => Char123LocaleChar125ResearchRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/contribute': typeof ContributeRoute
   '/llms.txt': typeof LlmsDottxtRoute
-  '/research': typeof ResearchRouteWithChildren
   '/robots.txt': typeof RobotsDottxtRoute
   '/rss.xml': typeof RssDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/version.txt': typeof VersionDottxtRoute
-  '/research/$slug': typeof ResearchSlugRoute
-  '/research/{$slug}.md': typeof ResearchChar123slugChar125DotmdRoute
+  '/{-$locale}': typeof Char123LocaleChar125RouteWithChildren
   '/topics/$slug': typeof TopicsSlugRoute
-  '/research/': typeof ResearchIndexRoute
+  '/{-$locale}/about': typeof Char123LocaleChar125AboutRoute
+  '/{-$locale}/contribute': typeof Char123LocaleChar125ContributeRoute
+  '/{-$locale}/research': typeof Char123LocaleChar125ResearchRouteWithChildren
+  '/{-$locale}/': typeof Char123LocaleChar125IndexRoute
+  '/{-$locale}/research/$slug': typeof Char123LocaleChar125ResearchSlugRoute
+  '/{-$locale}/research/{$slug}.md': typeof Char123LocaleChar125ResearchChar123slugChar125DotmdRoute
+  '/{-$locale}/research/': typeof Char123LocaleChar125ResearchIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/contribute': typeof ContributeRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/rss.xml': typeof RssDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/version.txt': typeof VersionDottxtRoute
-  '/research/$slug': typeof ResearchSlugRoute
-  '/research/{$slug}.md': typeof ResearchChar123slugChar125DotmdRoute
   '/topics/$slug': typeof TopicsSlugRoute
-  '/research': typeof ResearchIndexRoute
+  '/{-$locale}/about': typeof Char123LocaleChar125AboutRoute
+  '/{-$locale}/contribute': typeof Char123LocaleChar125ContributeRoute
+  '/{-$locale}': typeof Char123LocaleChar125IndexRoute
+  '/{-$locale}/research/$slug': typeof Char123LocaleChar125ResearchSlugRoute
+  '/{-$locale}/research/{$slug}.md': typeof Char123LocaleChar125ResearchChar123slugChar125DotmdRoute
+  '/{-$locale}/research': typeof Char123LocaleChar125ResearchIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/contribute': typeof ContributeRoute
   '/llms.txt': typeof LlmsDottxtRoute
-  '/research': typeof ResearchRouteWithChildren
   '/robots.txt': typeof RobotsDottxtRoute
   '/rss.xml': typeof RssDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/version.txt': typeof VersionDottxtRoute
-  '/research/$slug': typeof ResearchSlugRoute
-  '/research/{$slug}.md': typeof ResearchChar123slugChar125DotmdRoute
+  '/{-$locale}': typeof Char123LocaleChar125RouteWithChildren
   '/topics/$slug': typeof TopicsSlugRoute
-  '/research/': typeof ResearchIndexRoute
+  '/{-$locale}/about': typeof Char123LocaleChar125AboutRoute
+  '/{-$locale}/contribute': typeof Char123LocaleChar125ContributeRoute
+  '/{-$locale}/research': typeof Char123LocaleChar125ResearchRouteWithChildren
+  '/{-$locale}/': typeof Char123LocaleChar125IndexRoute
+  '/{-$locale}/research/$slug': typeof Char123LocaleChar125ResearchSlugRoute
+  '/{-$locale}/research/{$slug}.md': typeof Char123LocaleChar125ResearchChar123slugChar125DotmdRoute
+  '/{-$locale}/research/': typeof Char123LocaleChar125ResearchIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
-    | '/about'
-    | '/contribute'
     | '/llms.txt'
-    | '/research'
     | '/robots.txt'
     | '/rss.xml'
     | '/sitemap.xml'
     | '/version.txt'
-    | '/research/$slug'
-    | '/research/{$slug}.md'
+    | '/{-$locale}'
     | '/topics/$slug'
-    | '/research/'
+    | '/{-$locale}/about'
+    | '/{-$locale}/contribute'
+    | '/{-$locale}/research'
+    | '/{-$locale}/'
+    | '/{-$locale}/research/$slug'
+    | '/{-$locale}/research/{$slug}.md'
+    | '/{-$locale}/research/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
-    | '/about'
-    | '/contribute'
     | '/llms.txt'
     | '/robots.txt'
     | '/rss.xml'
     | '/sitemap.xml'
     | '/version.txt'
-    | '/research/$slug'
-    | '/research/{$slug}.md'
     | '/topics/$slug'
-    | '/research'
+    | '/{-$locale}/about'
+    | '/{-$locale}/contribute'
+    | '/{-$locale}'
+    | '/{-$locale}/research/$slug'
+    | '/{-$locale}/research/{$slug}.md'
+    | '/{-$locale}/research'
   id:
     | '__root__'
-    | '/'
-    | '/about'
-    | '/contribute'
     | '/llms.txt'
-    | '/research'
     | '/robots.txt'
     | '/rss.xml'
     | '/sitemap.xml'
     | '/version.txt'
-    | '/research/$slug'
-    | '/research/{$slug}.md'
+    | '/{-$locale}'
     | '/topics/$slug'
-    | '/research/'
+    | '/{-$locale}/about'
+    | '/{-$locale}/contribute'
+    | '/{-$locale}/research'
+    | '/{-$locale}/'
+    | '/{-$locale}/research/$slug'
+    | '/{-$locale}/research/{$slug}.md'
+    | '/{-$locale}/research/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
-  ContributeRoute: typeof ContributeRoute
   LlmsDottxtRoute: typeof LlmsDottxtRoute
-  ResearchRoute: typeof ResearchRouteWithChildren
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   RssDotxmlRoute: typeof RssDotxmlRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   VersionDottxtRoute: typeof VersionDottxtRoute
+  Char123LocaleChar125Route: typeof Char123LocaleChar125RouteWithChildren
   TopicsSlugRoute: typeof TopicsSlugRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/{-$locale}': {
+      id: '/{-$locale}'
+      path: '/{-$locale}'
+      fullPath: '/{-$locale}'
+      preLoaderRoute: typeof Char123LocaleChar125RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/version.txt': {
       id: '/version.txt'
       path: '/version.txt'
@@ -225,13 +245,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RobotsDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/research': {
-      id: '/research'
-      path: '/research'
-      fullPath: '/research'
-      preLoaderRoute: typeof ResearchRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/llms.txt': {
       id: '/llms.txt'
       path: '/llms.txt'
@@ -239,33 +252,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LlmsDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/contribute': {
-      id: '/contribute'
+    '/{-$locale}/': {
+      id: '/{-$locale}/'
+      path: '/'
+      fullPath: '/{-$locale}/'
+      preLoaderRoute: typeof Char123LocaleChar125IndexRouteImport
+      parentRoute: typeof Char123LocaleChar125Route
+    }
+    '/{-$locale}/research': {
+      id: '/{-$locale}/research'
+      path: '/research'
+      fullPath: '/{-$locale}/research'
+      preLoaderRoute: typeof Char123LocaleChar125ResearchRouteImport
+      parentRoute: typeof Char123LocaleChar125Route
+    }
+    '/{-$locale}/contribute': {
+      id: '/{-$locale}/contribute'
       path: '/contribute'
-      fullPath: '/contribute'
-      preLoaderRoute: typeof ContributeRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/{-$locale}/contribute'
+      preLoaderRoute: typeof Char123LocaleChar125ContributeRouteImport
+      parentRoute: typeof Char123LocaleChar125Route
     }
-    '/about': {
-      id: '/about'
+    '/{-$locale}/about': {
+      id: '/{-$locale}/about'
       path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/research/': {
-      id: '/research/'
-      path: '/'
-      fullPath: '/research/'
-      preLoaderRoute: typeof ResearchIndexRouteImport
-      parentRoute: typeof ResearchRoute
+      fullPath: '/{-$locale}/about'
+      preLoaderRoute: typeof Char123LocaleChar125AboutRouteImport
+      parentRoute: typeof Char123LocaleChar125Route
     }
     '/topics/$slug': {
       id: '/topics/$slug'
@@ -274,49 +287,76 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TopicsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/research/{$slug}.md': {
-      id: '/research/{$slug}.md'
-      path: '/{$slug}.md'
-      fullPath: '/research/{$slug}.md'
-      preLoaderRoute: typeof ResearchChar123slugChar125DotmdRouteImport
-      parentRoute: typeof ResearchRoute
+    '/{-$locale}/research/': {
+      id: '/{-$locale}/research/'
+      path: '/'
+      fullPath: '/{-$locale}/research/'
+      preLoaderRoute: typeof Char123LocaleChar125ResearchIndexRouteImport
+      parentRoute: typeof Char123LocaleChar125ResearchRoute
     }
-    '/research/$slug': {
-      id: '/research/$slug'
+    '/{-$locale}/research/{$slug}.md': {
+      id: '/{-$locale}/research/{$slug}.md'
+      path: '/{$slug}.md'
+      fullPath: '/{-$locale}/research/{$slug}.md'
+      preLoaderRoute: typeof Char123LocaleChar125ResearchChar123slugChar125DotmdRouteImport
+      parentRoute: typeof Char123LocaleChar125ResearchRoute
+    }
+    '/{-$locale}/research/$slug': {
+      id: '/{-$locale}/research/$slug'
       path: '/$slug'
-      fullPath: '/research/$slug'
-      preLoaderRoute: typeof ResearchSlugRouteImport
-      parentRoute: typeof ResearchRoute
+      fullPath: '/{-$locale}/research/$slug'
+      preLoaderRoute: typeof Char123LocaleChar125ResearchSlugRouteImport
+      parentRoute: typeof Char123LocaleChar125ResearchRoute
     }
   }
 }
 
-interface ResearchRouteChildren {
-  ResearchSlugRoute: typeof ResearchSlugRoute
-  ResearchChar123slugChar125DotmdRoute: typeof ResearchChar123slugChar125DotmdRoute
-  ResearchIndexRoute: typeof ResearchIndexRoute
+interface Char123LocaleChar125ResearchRouteChildren {
+  Char123LocaleChar125ResearchSlugRoute: typeof Char123LocaleChar125ResearchSlugRoute
+  Char123LocaleChar125ResearchChar123slugChar125DotmdRoute: typeof Char123LocaleChar125ResearchChar123slugChar125DotmdRoute
+  Char123LocaleChar125ResearchIndexRoute: typeof Char123LocaleChar125ResearchIndexRoute
 }
 
-const ResearchRouteChildren: ResearchRouteChildren = {
-  ResearchSlugRoute: ResearchSlugRoute,
-  ResearchChar123slugChar125DotmdRoute: ResearchChar123slugChar125DotmdRoute,
-  ResearchIndexRoute: ResearchIndexRoute,
+const Char123LocaleChar125ResearchRouteChildren: Char123LocaleChar125ResearchRouteChildren =
+  {
+    Char123LocaleChar125ResearchSlugRoute:
+      Char123LocaleChar125ResearchSlugRoute,
+    Char123LocaleChar125ResearchChar123slugChar125DotmdRoute:
+      Char123LocaleChar125ResearchChar123slugChar125DotmdRoute,
+    Char123LocaleChar125ResearchIndexRoute:
+      Char123LocaleChar125ResearchIndexRoute,
+  }
+
+const Char123LocaleChar125ResearchRouteWithChildren =
+  Char123LocaleChar125ResearchRoute._addFileChildren(
+    Char123LocaleChar125ResearchRouteChildren,
+  )
+
+interface Char123LocaleChar125RouteChildren {
+  Char123LocaleChar125AboutRoute: typeof Char123LocaleChar125AboutRoute
+  Char123LocaleChar125ContributeRoute: typeof Char123LocaleChar125ContributeRoute
+  Char123LocaleChar125ResearchRoute: typeof Char123LocaleChar125ResearchRouteWithChildren
+  Char123LocaleChar125IndexRoute: typeof Char123LocaleChar125IndexRoute
 }
 
-const ResearchRouteWithChildren = ResearchRoute._addFileChildren(
-  ResearchRouteChildren,
-)
+const Char123LocaleChar125RouteChildren: Char123LocaleChar125RouteChildren = {
+  Char123LocaleChar125AboutRoute: Char123LocaleChar125AboutRoute,
+  Char123LocaleChar125ContributeRoute: Char123LocaleChar125ContributeRoute,
+  Char123LocaleChar125ResearchRoute:
+    Char123LocaleChar125ResearchRouteWithChildren,
+  Char123LocaleChar125IndexRoute: Char123LocaleChar125IndexRoute,
+}
+
+const Char123LocaleChar125RouteWithChildren =
+  Char123LocaleChar125Route._addFileChildren(Char123LocaleChar125RouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
-  ContributeRoute: ContributeRoute,
   LlmsDottxtRoute: LlmsDottxtRoute,
-  ResearchRoute: ResearchRouteWithChildren,
   RobotsDottxtRoute: RobotsDottxtRoute,
   RssDotxmlRoute: RssDotxmlRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   VersionDottxtRoute: VersionDottxtRoute,
+  Char123LocaleChar125Route: Char123LocaleChar125RouteWithChildren,
   TopicsSlugRoute: TopicsSlugRoute,
 }
 export const routeTree = rootRouteImport

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<!--
+  42-research · Topic 01 artifact (Self-contained Research Artifact) · English
+  This HTML is source-of-truth + presentation + AI-readable data at once (see ADR-001).
+  English variant of index.html (zh); same identifier, same JSON-LD facts.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vibecoding: Cloudflare or Vercel? · 42-research</title>
+  <meta name="description" content="For AI-driven vibecoding, which is the better long-term bet — Cloudflare or Vercel? Grounded in first-party pricing, ecosystem momentum, and adversarial verification." />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "identifier": "01-vibecoding-cloudflare-vs-vercel",
+    "headline": "Vibecoding: Cloudflare or Vercel?",
+    "abstract": "For AI-driven vibecoding, which is the better long-term bet — Cloudflare (Workers + D1 + R2 + Vite/VoidZero) or Vercel (Next.js + v0)? Grounded in first-party pricing, the June 2026 ecosystem shift, and adversarial verification.",
+    "datePublished": "2026-06-06",
+    "dateModified": "2026-06-06",
+    "author": { "@type": "Organization", "name": "42-research" },
+    "keywords": ["vibecoding", "cloudflare", "vercel", "tanstack-start", "edge-computing", "ai-native"],
+    "researchStatus": "publish",
+    "inLanguage": "en",
+    "hypothesis": "In the long run, Cloudflare (Workers + D1 + R2 + the VoidZero/Vite toolchain) is a better fit for AI-driven vibecoding than Vercel.",
+    "conclusion": "Momentum and cost point to Cloudflare (especially after the June 2026 VoidZero acquisition and its AI-native toolchain), but production maturity and the one-click Next.js loop remain Vercel's moat. The answer splits by scenario rather than crowning a single winner.",
+    "citation": [
+      { "@type": "CreativeWork", "url": "https://developers.cloudflare.com/workers/platform/pricing/", "name": "Cloudflare Workers Pricing", "tier": "primary", "verified": true, "accessed": "2026-06-06" },
+      { "@type": "CreativeWork", "url": "https://developers.cloudflare.com/r2/pricing/", "name": "Cloudflare R2 Pricing (zero egress)", "tier": "primary", "verified": true, "accessed": "2026-06-06" },
+      { "@type": "CreativeWork", "url": "https://vercel.com/docs/pricing", "name": "Vercel Pricing", "tier": "primary", "verified": true, "accessed": "2026-06-06" },
+      { "@type": "CreativeWork", "url": "https://www.cloudflare.com/press/press-releases/2026/cloudflare-acquires-voidzero-to-build-the-future-of-the-ai-native-web/", "name": "Cloudflare acquires VoidZero", "tier": "primary", "verified": true, "accessed": "2026-06-06" },
+      { "@type": "CreativeWork", "url": "https://tanstack.com/blog/announcing-tanstack-start-v1", "name": "TanStack Start v1 RC (NOT stable 1.0)", "tier": "primary", "verified": true, "accessed": "2026-06-06" },
+      { "@type": "CreativeWork", "url": "https://github.com/cloudflare/vinext", "name": "vinext (experimental)", "tier": "primary", "verified": true, "accessed": "2026-06-06" },
+      { "@type": "CreativeWork", "url": "https://opennext.js.org/cloudflare", "name": "OpenNext Cloudflare limitations", "tier": "primary", "verified": true, "accessed": "2026-06-06" }
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #0a0a0f; --fg: #e8e8ed; --muted: #9090a0; --accent: #f6821f;
+      --accent2: #6b8cff; --card: #14141c; --border: #26263a;
+      --ok: #3ecf8e; --warn: #ffb454; --max: 820px; --radius: 12px;
+    }
+    :root[data-theme="light"] {
+      --bg: #f7f7f5; --fg: #1a1d24; --muted: #575c66; --accent: #b45309;
+      --accent2: #4a58c8; --card: #fdfdfc; --border: #dedcd6;
+      --ok: #12806a; --warn: #9a6612;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--fg);
+      font: 16px/1.7 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased; }
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 4rem 1.5rem 6rem; }
+    header.topic { border-bottom: 1px solid var(--border); padding-bottom: 2rem; margin-bottom: 2.5rem; }
+    .badge { display: inline-block; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: .2rem .7rem; }
+    h1 { font-size: clamp(1.9rem, 5vw, 2.8rem); line-height: 1.12; margin: 1rem 0 .5rem; letter-spacing: -.02em; }
+    .meta { color: var(--muted); font-size: .9rem; }
+    .abstract { font-size: 1.12rem; opacity: .92; margin-top: 1.5rem; }
+    h2 { font-size: 1.55rem; margin: 3.5rem 0 1rem; letter-spacing: -.01em; scroll-margin-top: 1rem; }
+    h3 { font-size: 1.12rem; margin: 2rem 0 .6rem; color: var(--accent2); }
+    a { color: var(--accent2); text-decoration: none; border-bottom: 1px solid transparent; }
+    a:hover { border-bottom-color: var(--accent2); }
+    p { margin: .9rem 0; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin: 1.5rem 0; }
+    .hypothesis { border-left: 3px solid var(--accent2); }
+    .conclusion { border-left: 3px solid var(--ok); }
+    .warn-box { border-left: 3px solid var(--warn); }
+    table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: .9rem; }
+    th, td { text-align: left; padding: .65rem .8rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { color: var(--muted); font-weight: 600; font-size: .76rem; text-transform: uppercase; letter-spacing: .05em; }
+    td strong.cf { color: var(--accent); } td strong.vc { color: var(--accent2); }
+    .tabs { margin: 2rem 0; }
+    .tabs input { display: none; }
+    .tab-labels { display: flex; gap: .4rem; flex-wrap: wrap; border-bottom: 1px solid var(--border); }
+    .tab-labels label { cursor: pointer; padding: .55rem .95rem; color: var(--muted); border-bottom: 2px solid transparent; font-size: .88rem; }
+    .tab-panel { display: none; padding-top: 1.5rem; }
+    #t1:checked ~ .tab-labels label[for=t1],
+    #t2:checked ~ .tab-labels label[for=t2],
+    #t3:checked ~ .tab-labels label[for=t3] { color: var(--accent); border-bottom-color: var(--accent); }
+    #t1:checked ~ #p1, #t2:checked ~ #p2, #t3:checked ~ #p3 { display: block; }
+    details { border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; margin: 1rem 0; }
+    summary { cursor: pointer; font-weight: 600; color: var(--accent2); }
+    .tier { font-size: .7rem; padding: .05rem .4rem; border-radius: 4px; border: 1px solid var(--border); color: var(--muted); }
+    .tier.primary { color: var(--ok); border-color: var(--ok); }
+    .tier.secondary { color: var(--warn); border-color: var(--warn); }
+    .cite { font-size: .85rem; color: var(--muted); margin: .5rem 0; }
+    ul { padding-left: 1.2rem; } li { margin: .4rem 0; }
+    footer.topic { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); color: var(--muted); font-size: .85rem; }
+    .verdict { font-weight: 700; }
+    .verdict.cf { color: var(--accent); } .verdict.vc { color: var(--accent2); } .verdict.split { color: var(--warn); }
+    @media (max-width: 600px) { .wrap { padding: 2.5rem 1.1rem 4rem; } table { font-size: .82rem; } }
+  </style>
+</head>
+<body>
+  <article class="wrap">
+    <header class="topic">
+      <span class="badge">Research · Topic 01 · Published</span>
+      <h1>Vibecoding: Cloudflare or Vercel?</h1>
+      <p class="meta">Published 2026-06-06 · Updated 2026-06-06 · 42-research · Every price verified against first-party sources</p>
+      <p class="abstract">For AI-driven <strong>vibecoding</strong>, which is the better long-term bet — <strong>Cloudflare</strong> (Workers + D1 + R2 + the VoidZero/Vite toolchain) or <strong>Vercel</strong> (Next.js + v0)? This study is grounded in first-party pricing as of June 2026, ecosystem momentum, and adversarial verification.</p>
+    </header>
+
+    <section>
+      <div class="card hypothesis">
+        <h3 style="margin-top:0">🔬 Hypothesis</h3>
+        <p>In the long run, Cloudflare (Workers + D1 + R2 + the VoidZero/Vite toolchain) is a better fit for AI-driven vibecoding than Vercel.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>0. First, three popular claims that don't hold up</h2>
+      <div class="card warn-box">
+        <p>This is research, not marketing amplification. Three claims we checked at the outset turned out false or overstated:</p>
+        <ul>
+          <li><strong>"TanStack Start has shipped a stable 1.0"</strong> — False. The official announcement is literally titled <em>"v1 Release Candidate"</em> (2025-09-23); as of June 2026 it is still an RC, and RSC support is still in development. <span class="tier primary">primary verified</span></li>
+          <li><strong>"TanStack Start beats Next.js with 5.5x throughput"</strong> — The number comes from a second-hand blog post with <strong>no independent benchmark behind it</strong>; treat it as unverified marketing. <span class="tier secondary">secondary, doubtful</span></li>
+          <li><strong>"Vercel bandwidth costs $550/TB"</strong> — Contradicts the official $0.15/GB (≈$150/TB). The first-party number wins. <span class="tier primary">primary verified</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>1. Cost model (first-party prices)</h2>
+      <div class="tabs">
+        <input type="radio" name="tabs" id="t1" checked />
+        <input type="radio" name="tabs" id="t2" />
+        <input type="radio" name="tabs" id="t3" />
+        <div class="tab-labels">
+          <label for="t1">Cloudflare</label>
+          <label for="t2">Vercel</label>
+          <label for="t3">Structural differences</label>
+        </div>
+        <div class="tab-panel" id="p1">
+          <table>
+            <thead><tr><th>Item</th><th>Free</th><th>Paid entry</th><th>Overage</th></tr></thead>
+            <tbody>
+              <tr><td>Workers</td><td>100k req/day</td><td>$5/mo incl. 10M requests</td><td>$0.30/M requests; CPU $0.02/M ms</td></tr>
+              <tr><td>D1 (SQLite)</td><td>5M row reads/day</td><td>25B row reads/mo included</td><td>writes $1/M rows; storage $0.75/GB-mo</td></tr>
+              <tr><td>R2</td><td>10GB</td><td>$0.015/GB-mo</td><td><strong class="cf">egress is free, full stop</strong></td></tr>
+            </tbody>
+          </table>
+          <p class="cite">Key detail: Workers <strong>bill only actual CPU time</strong> — waiting on fetch/DB I/O costs nothing; D1/R2 scale to zero.</p>
+        </div>
+        <div class="tab-panel" id="p2">
+          <table>
+            <thead><tr><th>Item</th><th>Included</th><th>Overage</th></tr></thead>
+            <tbody>
+              <tr><td>Hobby</td><td>Free but <strong>no commercial use</strong></td><td>—</td></tr>
+              <tr><td>Pro</td><td>$20/seat/mo, $20 credit + 1TB transfer</td><td>bandwidth <strong class="vc">$0.15/GB</strong></td></tr>
+              <tr><td>Fluid Compute</td><td>Active-CPU billing per CPU-hour tier</td><td>first 1M invocations free, then ~$0.60/M</td></tr>
+            </tbody>
+          </table>
+          <p class="cite">Fluid: CPU billing pauses during I/O waits, but <strong>memory keeps billing</strong>.</p>
+        </div>
+        <div class="tab-panel" id="p3">
+          <p>Two structural levers make Cloudflare cheaper for <strong>bandwidth-heavy / static-heavy / object-storage</strong> workloads:</p>
+          <ul>
+            <li><strong class="cf">R2's zero egress</strong> — against Vercel's $0.15/GB, this is where high-traffic projects diverge the most.</li>
+            <li><strong class="cf">Workers don't bill wall-clock time</strong> — CPU-only billing favors I/O-bound apps.</li>
+          </ul>
+          <p>For <strong>compute-heavy SSR</strong> both sides bill active CPU and the gap narrows; Vercel's Fluid 2 vCPU/4GB instances are actually tuned for SSR throughput.</p>
+          <p class="cite verdict cf">Cost dimension leans: Cloudflare (structurally ahead on bandwidth/storage-heavy workloads)</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>2. Decision matrix</h2>
+      <table>
+        <thead><tr><th>Dimension</th><th>Cloudflare</th><th>Vercel</th><th>Leans</th></tr></thead>
+        <tbody>
+          <tr><td>Cost (bandwidth/storage-heavy)</td><td>Strong (R2 zero egress, $5 entry)</td><td>Weak (bandwidth $0.15/GB)</td><td class="verdict cf">CF</td></tr>
+          <tr><td>Native Next.js feature coverage</td><td>Weak (OpenNext caveats)</td><td>Strong (first-party)</td><td class="verdict vc">Vercel</td></tr>
+          <tr><td>Integrated vibecoding DX</td><td>Medium (strong Claude-agent story)</td><td>Strong (v0, same-company loop)</td><td class="verdict vc">Vercel</td></tr>
+          <tr><td>Cold start / edge footprint</td><td>Strong (&lt;5ms, 330+ cities)</td><td>Medium</td><td class="verdict cf">CF</td></tr>
+          <tr><td>Vendor lock-in (lower is better)</td><td>Strong (standard Web APIs / Vite)</td><td>Weak (deep Next.js coupling)</td><td class="verdict cf">CF</td></tr>
+          <tr><td>Edge-native data / storage</td><td>Strong (D1 + R2 built-in)</td><td>Medium (Neon / Blob partners)</td><td class="verdict cf">CF</td></tr>
+          <tr><td>Long-term ecosystem (AI-native toolchain)</td><td>Strong (owns VoidZero/Vite)</td><td>Medium (Next.js still dominant)</td><td class="verdict split">CF long-term / Vercel today</td></tr>
+          <tr><td>Production maturity today</td><td>Medium (Start is RC, vinext experimental)</td><td>Strong</td><td class="verdict vc">Vercel</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>3. Ecosystem: why "long term" points to Cloudflare</h2>
+      <p><strong>On 2026-06-04, Cloudflare acquired VoidZero</strong> (the Vite/Vitest/Rolldown/Oxc suite, with Evan You joining ETI). The stated strategy — "one-click from local code to the global network" — aims squarely at <em>local-to-production predictability for the AI coding-agent era</em>. Vite sees over 100M weekly downloads; it is already the shared substrate of the web ecosystem.</p>
+      <details>
+        <summary>⚖️ The counter-view that must sit alongside</summary>
+        <p>The New Stack raises the sharp question: does a single commercial entity owning the industry's standard toolchain make the open web sturdier, or more fragile? It is a legitimate hedge. Evan You has publicly committed to keeping Vite "neutral, open, vendor-agnostic", and Cloudflare seeded a $1M independent Vite ecosystem fund — but neutrality has to be observed over years, not taken on promise.</p>
+      </details>
+      <p><strong>vinext</strong> (Cloudflare's Vite-based reimplementation of the Next.js API surface) is directionally aggressive, but the README says <em>"Experimental, use at your own risk"</em> at v0.0.55 — <strong>strategic direction ≠ production readiness</strong>.</p>
+    </section>
+
+    <section>
+      <h2>4. Adversarial check: where Vercel still wins</h2>
+      <p>The methodology requires hunting for counter-examples before synthesis. Vercel is the better choice <strong>today</strong> when:</p>
+      <ol>
+        <li><strong>You depend on advanced Next.js features</strong> (PPR, global ISR, Server Components, Edge Middleware, Image Optimization) — zero-config and partly exclusive on Vercel; the same code on Cloudflare needs OpenNext and inherits a long caveat list (no edge runtime, 3MiB gzip limit on the free tier, build-time env pitfalls, middleware auth breakage).</li>
+        <li><strong>You want the end-to-end vibecoding loop</strong> — v0 is the only "AI agent + production infra under one roof" product, from prompt to a deployed preview URL. Cloudflare's side (experimental vinext, RC-stage Start) has no equally mature integrated equivalent.</li>
+        <li><strong>Compute-heavy SSR throughput</strong> — Fluid's 2 vCPU/4GB instances are tuned for it; the cost advantage narrows.</li>
+        <li><strong>Your team is already all-in on Next.js</strong> — migration cost plus OpenNext pitfalls can cancel out the price advantage.</li>
+      </ol>
+    </section>
+
+    <section>
+      <div class="card conclusion">
+        <h3 style="margin-top:0">✅ Conclusion</h3>
+        <p><strong>Momentum and cost point to Cloudflare</strong> (especially post-VoidZero: an AI-native toolchain, R2's zero egress, &lt;5ms cold starts, low lock-in); <strong>but production maturity and the one-click pure-Next.js loop remain Vercel's moat</strong>.</p>
+        <p>The hypothesis holds <strong>conditionally</strong>: for cost-sensitive, bandwidth/storage-heavy, low-lock-in, AI-native-toolchain bets, Cloudflare is the better long-term answer — this site itself runs on TanStack Start + Cloudflare as dogfooding. If your project leans on advanced Next.js features or needs the v0-style one-click loop, Vercel is the safer choice today. <strong>The answer splits by scenario; there is no single winner.</strong></p>
+      </div>
+    </section>
+
+    <details>
+      <summary>📚 Citations (primary sources first)</summary>
+      <p class="cite"><a href="https://developers.cloudflare.com/workers/platform/pricing/">Cloudflare Workers Pricing</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://developers.cloudflare.com/r2/pricing/">R2 Pricing — zero egress</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://vercel.com/docs/pricing">Vercel Pricing</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://www.cloudflare.com/press/press-releases/2026/cloudflare-acquires-voidzero-to-build-the-future-of-the-ai-native-web/">Cloudflare acquires VoidZero</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://tanstack.com/blog/announcing-tanstack-start-v1">TanStack Start v1 RC (not stable 1.0)</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://github.com/cloudflare/vinext">vinext (experimental)</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://opennext.js.org/cloudflare">OpenNext Cloudflare limitations</a> <span class="tier primary">primary</span></p>
+      <p class="cite"><a href="https://venturebeat.com/infrastructure/vercel-rebuilt-v0-to-tackle-the-90-problem-connecting-ai-generated-code-to">Vercel v0 rebuild</a> <span class="tier secondary">secondary</span></p>
+      <p class="cite"><a href="https://thenewstack.io/cloudflare-voidzero-acquisition-vite/">Neutrality critique (the hedge)</a> <span class="tier secondary">secondary</span></p>
+    </details>
+
+    <details>
+      <summary>⚠️ Limitations and open questions (research honesty)</summary>
+      <ul>
+        <li>All benchmark figures (5.5x / 4x / 57% / 99.99%) are vendor-run or second-hand with <strong>no independent replication</strong>; none were used as evidence for conclusions.</li>
+        <li>Typical monthly cost estimates are second-hand; directionally credible but not independently recomputed — run the official calculators with your own traffic assumptions.</li>
+        <li>No first-party whitepaper exists for the named large-scale migration cases.</li>
+        <li>vinext / TanStack Start move fast; citations are valid as of 2026-06-06.</li>
+      </ul>
+    </details>
+
+    <footer class="topic">
+      42-research · This artifact is self-contained semantic HTML following <a href="https://schema.org/ScholarlyArticle">schema.org/ScholarlyArticle</a>.
+      Source of truth lives in git, the query index in D1; methodology in <code>docs/methodology</code>.
+    </footer>
+  </article>
+</body>
+</html>

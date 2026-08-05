@@ -4,7 +4,8 @@
  * topicToMarkdown: 生成带 YAML frontmatter + 纯文本正文的 Markdown 字符串。
  * 正文简单去 HTML 标签，保留段落与标题结构，无外部依赖。
  */
-import type { Topic } from '../data/topics'
+import { localizeTopic, type Topic } from '../data/topics'
+import { LOCALE_TAG, type Locale } from '../i18n'
 import { SITE, topicUrl } from './site'
 
 /**
@@ -55,34 +56,40 @@ export function htmlToText(html: string): string {
  * bodyText 为已处理的纯文本正文（由调用方从 HTML 产物提取并转换）。
  * bodyText 为空时降级使用 topic.abstract。
  */
-export function topicToMarkdown(topic: Topic, bodyText: string): string {
-  const canonical = topicUrl(topic.slug)
+export function topicToMarkdown(topic: Topic, bodyText: string, locale: Locale = 'en'): string {
+  const loc = localizeTopic(topic, locale)
+  const canonical = topicUrl(topic.slug, locale)
+  const alternate = topicUrl(topic.slug, locale === 'zh' ? 'en' : 'zh')
 
-  // YAML frontmatter
+  // YAML frontmatter（title/abstract 随 locale；language + alternate 供 Agent 发现另一语言版本）
   const frontmatter = [
     '---',
-    `title: "${topic.title.replace(/"/g, '\\"')}"`,
+    `title: "${loc.title.replace(/"/g, '\\"')}"`,
     `slug: ${topic.slug}`,
-    `category: "${topic.category}"`,
+    `language: ${LOCALE_TAG[locale]}`,
+    `category: "${loc.category}"`,
     `datePublished: ${topic.datePublished}`,
     `citations: ${topic.citations}`,
     `canonical: ${canonical}`,
+    `alternate: ${alternate}.md`,
     `status: ${topic.status}`,
     `keywords: [${topic.keywords.map((k) => `"${k}"`).join(', ')}]`,
     '---',
   ].join('\n')
 
   // 正文：优先使用转换后的 bodyText，否则降级 abstract
-  const body = bodyText.trim() || topic.abstract
+  const body = bodyText.trim() || loc.abstract
+  const abstractLabel = locale === 'zh' ? '摘要' : 'Abstract'
+  const sourceLabel = locale === 'zh' ? '来源' : 'Source'
 
   const sections = [
     frontmatter,
     '',
-    `# ${topic.title}`,
+    `# ${loc.title}`,
     '',
-    `> **TL;DR** — ${topic.tldr}`,
+    `> **TL;DR** — ${loc.tldr}`,
     '',
-    `**摘要**：${topic.abstract}`,
+    `**${abstractLabel}**: ${loc.abstract}`,
     '',
     '---',
     '',
@@ -90,7 +97,7 @@ export function topicToMarkdown(topic: Topic, bodyText: string): string {
     '',
     '---',
     '',
-    `*来源：[${SITE.name}](${SITE.baseUrl}) · canonical: ${canonical}*`,
+    `*${sourceLabel}: [${SITE.name}](${SITE.baseUrl}) · canonical: ${canonical}*`,
   ]
 
   return sections.join('\n')

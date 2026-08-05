@@ -6,14 +6,23 @@
  * English-first, matching the site's default locale.
  */
 import { createFileRoute } from '@tanstack/react-router'
-import { topics } from '../data/topics'
-import { SITE, topicUrl } from '../lib/site'
+import { localizeTopic, topics } from '../data/topics'
+import { SITE, pageUrl, topicUrl } from '../lib/site'
 
 function buildLlmsTxt(): string {
   const publishedTopics = topics.filter((t) => t.status === 'publish')
 
+  // English is the site default (unprefixed URLs); Chinese lives under /zh —
+  // both .md endpoint sets are listed so agents can pick the language they need.
   const researchSection = publishedTopics
-    .map((t) => `- [${t.title}](${SITE.baseUrl}/research/${t.slug}.md): ${t.tldr}`)
+    .map((t) => {
+      const loc = localizeTopic(t, 'en')
+      return `- [${loc.title}](${topicUrl(t.slug)}.md): ${loc.tldr}`
+    })
+    .join('\n')
+
+  const researchZhSection = publishedTopics
+    .map((t) => `- [${t.title}](${topicUrl(t.slug, 'zh')}.md): ${t.tldr}`)
     .join('\n')
 
   const pagesSection = [
@@ -21,10 +30,14 @@ function buildLlmsTxt(): string {
     `- [Research index](${SITE.baseUrl}/research): All research topics`,
     `- [About](${SITE.baseUrl}/about): Research methodology of 42-research`,
     `- [Contribute](${SITE.baseUrl}/contribute): Submit a research topic`,
+    `- [中文站](${pageUrl('', 'zh')}): Chinese edition — every page mirrored under /zh`,
   ].join('\n')
 
   const topicDetailsSection = publishedTopics
-    .map((t) => `- [${t.title}](${topicUrl(t.slug)}): ${t.abstract}`)
+    .map((t) => {
+      const loc = localizeTopic(t, 'en')
+      return `- [${loc.title}](${topicUrl(t.slug)}): ${loc.abstract}`
+    })
     .join('\n')
 
   return [
@@ -38,6 +51,12 @@ function buildLlmsTxt(): string {
     '',
     researchSection || '(no published topics yet)',
     '',
+    '## Research (中文版)',
+    '',
+    'The same topics in Chinese, served from explicit /zh URLs.',
+    '',
+    researchZhSection || '(no published topics yet)',
+    '',
     '## Research Pages',
     '',
     topicDetailsSection || '(no published topics yet)',
@@ -49,7 +68,7 @@ function buildLlmsTxt(): string {
     '## Data Endpoints',
     '',
     `- [RSS](${SITE.baseUrl}/rss.xml): RSS 2.0, all published topics`,
-    `- [Sitemap](${SITE.baseUrl}/sitemap.xml): XML sitemap for search engines and AI crawlers`,
+    `- [Sitemap](${SITE.baseUrl}/sitemap.xml): XML sitemap, en + zh URLs with hreflang alternates`,
     `- [llms.txt](${SITE.baseUrl}/llms.txt): this file, the AI-agent site map`,
     '',
     `---`,

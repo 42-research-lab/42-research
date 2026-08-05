@@ -1,19 +1,23 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { SITE } from '../lib/site'
-import { en } from '../i18n/en'
+import { localeAlternates } from '../lib/seo'
+import { LOCALE_TAG, messages, resolveLocale } from '../i18n'
 import { useT } from '../i18n/useLocale'
 
-export const Route = createFileRoute('/about')({
-  head: () => ({
-    meta: [
-      { title: en.about.metaTitle },
-      {
-        name: 'description',
-        content: en.about.metaDescription,
-      },
-    ],
-    links: [{ rel: 'canonical', href: `${SITE.baseUrl}/about` }],
-  }),
+export const Route = createFileRoute('/{-$locale}/about')({
+  loader: ({ params }) => ({ locale: resolveLocale(params.locale) }),
+  head: ({ loaderData }) => {
+    const locale = loaderData?.locale ?? 'en'
+    const m = messages(locale).about
+    return {
+      meta: [
+        { title: m.metaTitle },
+        { name: 'description', content: m.metaDescription },
+        { property: 'og:locale', content: LOCALE_TAG[locale] },
+      ],
+      links: localeAlternates('/about', locale),
+    }
+  },
   component: About,
 })
 
@@ -145,7 +149,7 @@ function About() {
           {a.participate.body}
         </p>
         <div className="flex flex-wrap gap-3">
-          <Link to="/contribute" className="btn-primary">
+          <Link to="/{-$locale}/contribute" className="btn-primary">
             {a.participate.ctaSubmit}
           </Link>
           <a

@@ -6,18 +6,36 @@
  *   JSON.stringify(obj).replace(/<\/script>/gi, '<\\/script>')
  * 防注入后注入 <script type="application/ld+json">。
  */
-import { SITE, topicUrl } from './site'
+import { SITE, pageUrl, topicUrl } from './site'
+import { LOCALE_TAG, type Locale } from '../i18n'
 import type { Topic } from '../data/topics'
 
-/** schema.org WebSite + publisher Organization（用于首页） */
-export function websiteJsonLd() {
+/**
+ * Explicit-URL i18n head links: per-locale canonical + hreflang alternates
+ * (en / zh-CN / x-default → en). `path` is the locale-neutral pathname
+ * ('' for home, '/research', '/research/{slug}', ...).
+ */
+export function localeAlternates(path: string, locale: Locale) {
+  const enUrl = pageUrl(path, 'en')
+  const zhUrl = pageUrl(path, 'zh')
+  // 属性名用小写 hreflang（HeadContent 原样输出属性，不走 React prop 规范化）
+  return [
+    { rel: 'canonical', href: locale === 'zh' ? zhUrl : enUrl },
+    { rel: 'alternate', hreflang: LOCALE_TAG.en, href: enUrl },
+    { rel: 'alternate', hreflang: LOCALE_TAG.zh, href: zhUrl },
+    { rel: 'alternate', hreflang: 'x-default', href: enUrl },
+  ]
+}
+
+/** schema.org WebSite + publisher Organization（用于首页，按 locale 标注 URL 与语言） */
+export function websiteJsonLd(locale: Locale = 'en') {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: SITE.name,
-    url: SITE.baseUrl,
+    url: pageUrl('', locale),
     description: SITE.description,
-    inLanguage: SITE.locale,
+    inLanguage: LOCALE_TAG[locale],
     publisher: {
       '@type': 'Organization',
       name: SITE.name,

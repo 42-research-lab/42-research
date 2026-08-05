@@ -2,24 +2,29 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useMemo, useState } from 'react'
 import { topics } from '../data/topics'
 import { TopicCard } from '../components/TopicCard'
-import { SITE } from '../lib/site'
-import { en } from '../i18n/en'
+import { localeAlternates } from '../lib/seo'
+import { LOCALE_TAG, messages, resolveLocale } from '../i18n'
 import { useT } from '../i18n/useLocale'
 
 /** Sentinel for "show all categories" — kept separate from the localized label. */
 const ALL = '__all__'
 
-export const Route = createFileRoute('/research/')({
-  loader: () => ({ topics }),
-  head: () => ({
-    meta: [
-      { title: en.research.metaTitle },
-      { name: 'description', content: en.research.metaDescription },
-      { property: 'og:title', content: en.research.metaTitle },
-      { property: 'og:description', content: en.research.metaDescription },
-    ],
-    links: [{ rel: 'canonical', href: `${SITE.baseUrl}/research` }],
-  }),
+export const Route = createFileRoute('/{-$locale}/research/')({
+  loader: ({ params }) => ({ topics, locale: resolveLocale(params.locale) }),
+  head: ({ loaderData }) => {
+    const locale = loaderData?.locale ?? 'en'
+    const m = messages(locale).research
+    return {
+      meta: [
+        { title: m.metaTitle },
+        { name: 'description', content: m.metaDescription },
+        { property: 'og:title', content: m.metaTitle },
+        { property: 'og:description', content: m.metaDescription },
+        { property: 'og:locale', content: LOCALE_TAG[locale] },
+      ],
+      links: localeAlternates('/research', locale),
+    }
+  },
   component: ResearchIndex,
 })
 

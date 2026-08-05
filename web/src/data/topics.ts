@@ -5,6 +5,8 @@
  * (见 ADR-001)。下一步将由构建脚本解析 JSON-LD 自动生成此清单并同步入 D1。
  * 暂以手写清单驱动网站，保证先 ship 可见的展示。
  */
+import type { Locale } from '../i18n'
+
 export interface Topic {
   slug: string
   no: string
@@ -28,6 +30,24 @@ export interface Topic {
   coverSource?: string
   /** 产物正文自带全幅 hero（含同一视觉）时置 true：详情页不再重复渲染封面图（封面仍用于卡片/og） */
   coverEmbedded?: boolean
+  /** 英文变体（缺省回落中文）。artifactEn 为英文产物路径（per-locale artifact） */
+  titleEn?: string
+  abstractEn?: string
+  tldrEn?: string
+  categoryEn?: string
+  artifactEn?: string
+}
+
+/** 按 locale 取课题的可本地化字段（en 变体缺省回落中文） */
+export function localizeTopic(t: Topic, locale: Locale) {
+  const en = locale === 'en'
+  return {
+    title: (en && t.titleEn) || t.title,
+    abstract: (en && t.abstractEn) || t.abstract,
+    tldr: (en && t.tldrEn) || t.tldr,
+    category: (en && t.categoryEn) || t.category,
+    artifact: (en && t.artifactEn) || t.artifact,
+  }
 }
 
 export const topics: Topic[] = [
@@ -50,6 +70,13 @@ export const topics: Topic[] = [
     tldr: '趋势与成本指向 Cloudflare，但当下生产成熟度与一键闭环仍是 Vercel 护城河——按场景分化',
     cover: '/topics/01-vibecoding-cloudflare-vs-vercel/cover.png',
     coverSource: 'https://blog.cloudflare.com/voidzero-joins-cloudflare/',
+    titleEn: 'Vibecoding: Cloudflare or Vercel?',
+    abstractEn:
+      'For AI-driven vibecoding, which is the better long-term bet — Cloudflare (Workers + D1 + R2 + Vite/VoidZero) or Vercel (Next.js + v0)? Grounded in first-party pricing, the June 2026 ecosystem shift, and adversarial verification.',
+    tldrEn:
+      "Momentum and cost point to Cloudflare, but production maturity and the one-click Next.js loop remain Vercel's moat — the answer splits by scenario",
+    categoryEn: 'Framework choice',
+    artifactEn: '/topics/01-vibecoding-cloudflare-vs-vercel/index.en.html',
   },
   {
     slug: 'microsoft-build-2026-ai',
@@ -71,6 +98,13 @@ export const topics: Topic[] = [
     cover: '/topics/02-microsoft-build-2026-ai/cover-hero.jpg',
     coverSource: 'https://microsoft.ai/news/building-a-hillclimbing-machine-launching-seven-new-mai-models/',
     coverEmbedded: true,
+    titleEn: 'Microsoft Build 2026: The AI-Agent Full Stack',
+    abstractEn:
+      "Build 2026's AI announcements, read bottom-up as a single stack: in-house MAI models, the Foundry agent runtime, the Microsoft IQ knowledge layer, Windows as a governed agent host, and the trust/governance layer. Built entirely on Microsoft primary sources, each claim clickable and checkable.",
+    tldrEn:
+      'A bottom-up agent stack — models → runtime → knowledge → apps → OS → governance. The throughline is clear, but most of it ships as preview, and two popular claims failed adversarial verification',
+    categoryEn: 'Conference deep-dive',
+    artifactEn: '/topics/02-microsoft-build-2026-ai/index.html',
   },
   {
     slug: 'mai-image-25-vs-gpt-image-2',
@@ -91,5 +125,12 @@ export const topics: Topic[] = [
     tldr: '文字归 GPT、人像归 MAI：中文海报 GPT 近乎零错字，MAI 三款均有字形级错字；真人题材 GPT 被 Azure 默认内容过滤拦截、MAI 是唯一可用选项；延迟差十倍，同档成本持平——分流是唯一理性解',
     cover: '/topics/03-mai-image-25-vs-gpt-image-2/cover.jpg',
     coverSource: '/topics/03-mai-image-25-vs-gpt-image-2/index.html',
+    titleEn: "MAI-Image-2.5 vs GPT-Image-2: Has Microsoft Caught Up with OpenAI?",
+    abstractEn:
+      "Same ten prompts, five model tiers on Azure AI Foundry — 50 requests, 46 images, 4 blocked by content filtering; latency and token usage from a per-request ledger, published sanitized. The verdict splits by content type: text rendering goes to GPT, people photography goes to MAI — which, under Azure's default content filter, is the only option that works at all.",
+    tldrEn:
+      "Text goes to GPT, people go to MAI: GPT renders dense Chinese posters nearly typo-free while all three MAI tiers make glyph-level errors; GPT gets blocked on realistic-people prompts under Azure's default filter while MAI passes; latency differs 10x, same-tier cost is a wash — split the traffic",
+    categoryEn: 'Model evaluation',
+    artifactEn: '/topics/03-mai-image-25-vs-gpt-image-2/index.en.html',
   },
 ]
