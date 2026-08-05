@@ -26,6 +26,8 @@ export interface Topic {
   cover?: string
   /** 封面图来源说明（可选） */
   coverSource?: string
+  /** 产物正文自带全幅 hero（含同一视觉）时置 true：详情页不再重复渲染封面图（封面仍用于卡片/og） */
+  coverEmbedded?: boolean
 }
 
 export const topics: Topic[] = [
@@ -68,6 +70,7 @@ export const topics: Topic[] = [
     tldr: '自下而上的 agent 全栈：模型→运行时→知识→应用→OS→治理；主线清晰但多为预览，两个流行说法被对抗验证纠正',
     cover: '/topics/02-microsoft-build-2026-ai/cover-hero.jpg',
     coverSource: 'https://microsoft.ai/news/building-a-hillclimbing-machine-launching-seven-new-mai-models/',
+    coverEmbedded: true,
   },
   {
     slug: 'mai-image-25-vs-gpt-image-2',

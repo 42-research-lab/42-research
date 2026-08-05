@@ -51,6 +51,13 @@
       --border-soft: #1e1e2e; --ok: #3ecf8e; --warn: #ffb454; --bad: #ef6b6b;
       --max: 1140px; --narrow: 820px; --radius: 12px;
     }
+    /* 亮色皮肤（借用来源报告的 light 调色板）。standalone 默认暗色；
+       SSR 详情页把站点主题透传为容器 data-theme，跟随站点亮暗切换。 */
+    :root[data-theme="light"] {
+      --bg: #f7f7f5; --fg: #1a1d24; --muted: #575c66; --accent: #b45309;
+      --accent2: #4a58c8; --card: #fdfdfc; --card2: #f2f2ef; --border: #dedcd6;
+      --border-soft: #e7e5df; --ok: #12806a; --warn: #9a6612; --bad: #b83c3c;
+    }
     * { box-sizing: border-box; }
     body { margin: 0; background: var(--bg); color: var(--fg);
       font: 16px/1.7 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", system-ui, sans-serif;

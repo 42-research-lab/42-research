@@ -1,3 +1,4 @@
+import { useCallback, useEffect, useState } from 'react'
 import { createFileRoute, Link, notFound } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { getRequest } from '@tanstack/react-start/server'
@@ -103,9 +104,176 @@ function TopicNotFound() {
   )
 }
 
+/** 站点主题（root class 由 ThemeToggle/__root 初始化脚本维护）→ 透传给产物容器 data-theme */
+function useSiteTheme(): 'dark' | 'light' {
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark')
+  useEffect(() => {
+    const root = document.documentElement
+    const read = () => setTheme(root.classList.contains('light') ? 'light' : 'dark')
+    read()
+    const mo = new MutationObserver(read)
+    mo.observe(root, { attributes: true, attributeFilter: ['class'] })
+    return () => mo.disconnect()
+  }, [])
+  return theme
+}
+
+interface LightboxShot {
+  src: string | null
+  name: string
+  note: string
+}
+interface LightboxState {
+  scene: string
+  shots: LightboxShot[]
+  idx: number
+}
+
+/**
+ * 详情页 lightbox：产物内联脚本被 SSR 剥除，这里用 React 重建同等交互
+ * （点击场景图放大 / 左右键与滑动切换同场景五档 / Esc 关闭）。
+ * 数据在点击时从产物 DOM 就地提取，产物结构由自有模板保证。
+ */
+function useArtifactLightbox() {
+  const [lb, setLb] = useState<LightboxState | null>(null)
+
+  const onArticleClick = useCallback((e: React.MouseEvent) => {
+    const target = e.target as HTMLElement
+    const media = target.closest('a.shot-media')
+    if (!media) return
+    const scene = media.closest('section.scene')
+    if (!scene) return
+    e.preventDefault()
+    const label = scene.querySelector('.scene-head h3')?.textContent ?? ''
+    const cards = Array.from(scene.querySelectorAll('.shot'))
+    const shots: LightboxShot[] = cards.map((card) => ({
+      src: card.querySelector('.shot-media img')?.getAttribute('src') ?? null,
+      name: card.querySelector('.shot-name')?.textContent ?? '',
+      note: card.querySelector('.shot-note')?.textContent ?? '',
+    }))
+    const idx = cards.findIndex((card) => card.contains(media))
+    setLb({ scene: label, shots, idx: Math.max(0, idx) })
+  }, [])
+
+  const step = useCallback(
+    (dir: number) => {
+      setLb((cur) => {
+        if (!cur) return cur
+        let m = cur.idx
+        for (let k = 0; k < cur.shots.length; k++) {
+          m = (m + dir + cur.shots.length) % cur.shots.length
+          if (cur.shots[m].src) return { ...cur, idx: m }
+        }
+        return cur
+      })
+    },
+    [],
+  )
+
+  useEffect(() => {
+    if (!lb) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setLb(null)
+      else if (e.key === 'ArrowLeft') step(-1)
+      else if (e.key === 'ArrowRight') step(1)
+    }
+    document.addEventListener('keydown', onKey)
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = ''
+    }
+  }, [lb, step])
+
+  return { lb, setLb, step, onArticleClick }
+}
+
+function ArtifactLightbox({
+  lb,
+  onClose,
+  onStep,
+}: {
+  lb: LightboxState
+  onClose: () => void
+  onStep: (dir: number) => void
+}) {
+  const [touchX, setTouchX] = useState<number | null>(null)
+  const shot = lb.shots[lb.idx]
+  if (!shot?.src) return null
+  return (
+    <div
+      className="fixed inset-0 z-[100] grid grid-rows-[auto_minmax(0,1fr)_auto] gap-3 bg-[rgba(4,5,10,0.93)] p-5 backdrop-blur"
+      role="dialog"
+      aria-modal="true"
+      onClick={(e) => e.target === e.currentTarget && onClose()}
+      onTouchStart={(e) => setTouchX(e.changedTouches[0].clientX)}
+      onTouchEnd={(e) => {
+        if (touchX == null) return
+        const dx = e.changedTouches[0].clientX - touchX
+        if (Math.abs(dx) > 40) onStep(dx > 0 ? -1 : 1)
+        setTouchX(null)
+      }}
+    >
+      <div className="flex items-start justify-between gap-4 text-[#f2f4f8]">
+        <div>
+          <div className="text-sm font-semibold">{lb.scene}</div>
+          <div className="mt-0.5 text-xs text-[#9aa2b4]">{shot.name}</div>
+        </div>
+        <button
+          type="button"
+          aria-label="关闭"
+          onClick={onClose}
+          className="h-9 w-9 shrink-0 rounded-full border border-white/20 bg-white/5 text-lg leading-none text-[#f2f4f8] hover:bg-white/15"
+        >
+          ×
+        </button>
+      </div>
+      <div className="relative grid min-h-0 place-items-center px-14">
+        <button
+          type="button"
+          aria-label="上一张"
+          onClick={() => onStep(-1)}
+          className="absolute left-1 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-white/20 bg-[rgba(10,12,18,0.62)] text-xl text-[#f2f4f8] hover:bg-[rgba(30,34,48,0.85)]"
+        >
+          ‹
+        </button>
+        <img
+          src={shot.src}
+          alt={`${lb.scene} — ${shot.name}`}
+          className="block h-auto max-h-[calc(100vh-190px)] w-auto max-w-[min(92vw,1024px)] rounded-xl object-contain"
+        />
+        <button
+          type="button"
+          aria-label="下一张"
+          onClick={() => onStep(1)}
+          className="absolute right-1 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-white/20 bg-[rgba(10,12,18,0.62)] text-xl text-[#f2f4f8] hover:bg-[rgba(30,34,48,0.85)]"
+        >
+          ›
+        </button>
+      </div>
+      <div className="flex flex-col items-center gap-2 text-center text-xs leading-relaxed text-[#9aa2b4]">
+        <div className="flex gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
+          {lb.shots.map((s, i) => (
+            <i
+              key={i}
+              className={`h-1.5 w-1.5 rounded-full ${
+                !s.src ? 'bg-[rgba(239,107,107,0.45)]' : i === lb.idx ? 'scale-125 bg-[#f2f4f8]' : 'bg-white/30'
+              }`}
+            />
+          ))}
+        </div>
+        <span className="max-w-[820px] text-[#d6dae4]">{shot.note}</span>
+        <span>← → 或左右滑动切换模型 · Esc 关闭</span>
+      </div>
+    </div>
+  )
+}
+
 function ResearchDetail() {
   const { topic: t, bodyHtml, styles } = Route.useLoaderData()
   const tr = useT()
+  const theme = useSiteTheme()
+  const { lb, setLb, step, onArticleClick } = useArtifactLightbox()
 
   return (
     <main className="page-wrap px-4 pb-16 pt-12">
@@ -133,8 +301,9 @@ function ResearchDetail() {
         </h1>
       </header>
 
-      {/* 封面图 — 来源一手素材，本地化引用（来源标注见页尾） */}
-      {t.cover && (
+      {/* 封面图 — 来源一手素材，本地化引用（来源标注见页尾）。
+          产物正文自带全幅 hero（coverEmbedded）时不重复渲染，避免同图出现两次 */}
+      {t.cover && !t.coverEmbedded && (
         <figure
           className="rise mt-8 overflow-hidden rounded-2xl border border-[var(--border)]"
           style={{ animationDelay: '80ms' }}
@@ -158,9 +327,15 @@ function ResearchDetail() {
           无样式时降级 @tailwindcss/typography prose 排版 */}
       <div className="rise mt-10" style={{ animationDelay: '200ms' }}>
         {bodyHtml && styles ? (
-          // 产物 HTML 由 42-research 自有模板生成，内容可控，XSS 风险已在 ADR-003 登记
+          // 产物 HTML 由 42-research 自有模板生成，内容可控，XSS 风险已在 ADR-003 登记。
+          // 通栏 full-bleed：产物自带底色与排版，跳出 page-wrap 铺满视口宽度，还原独立产物页观感。
+          // data-theme 透传站点主题（产物含 light 调色板时随站点亮暗切换）；
+          // onClick 事件代理承接场景图点击，弹出 React 版 lightbox（产物内联脚本已被 SSR 剥除）。
           <article
-            className="artifact-html overflow-hidden rounded-2xl border border-[var(--border)]"
+            className="artifact-html"
+            data-theme={theme}
+            style={{ width: '100vw', marginLeft: 'calc(50% - 50vw)' }}
+            onClick={onArticleClick}
             dangerouslySetInnerHTML={{ __html: `<style>${styles}</style>${bodyHtml}` }}
           />
         ) : bodyHtml ? (
@@ -186,6 +361,9 @@ function ResearchDetail() {
           </a>
         </p>
       )}
+
+      {/* 场景图 lightbox（仅产物含场景卡片时会被触发） */}
+      {lb && <ArtifactLightbox lb={lb} onClose={() => setLb(null)} onStep={step} />}
 
       {/* 查看原始产物链接 */}
       <div className="mt-6 border-t border-[var(--border)] pt-6">
