@@ -158,9 +158,11 @@ feat(research): publish topic 02 — MAI-Image-2.5 vs GPT-Image-2
 
 ### 8. 上线部署（需用户授权）
 
-凭证与全部部署信息在仓库根 `.cloudflare.env`（gitignored，含 worker 名/域名/部署命令备忘）。
-部署后**必须 purge zone cache**（命令见该文件）——旧部署的边缘缓存会残留 404 与旧 sitemap，
-表现为「新 URL 全 200、老 URL 随机 404」的诡异现象。最后逐项复验线上 7 项检查（同步骤 5，域名换生产域）。
+一条命令：`pnpm -C web deploy`（= `web/scripts/deploy.sh`，凭证自动读仓库根 `.cloudflare.env`）。
+脚本内置最佳实践闭环：build 注入 BUILD_ID → wrangler deploy → purge zone cache →
+**轮询 `/version.txt` 直到边缘收敛**（worker 脚本版本传播实测 15-30 分钟，静态资产层即时——
+凭「页面能打开」不能确认 SSR 已是新版）→ 收敛后二次 purge → 端点巡检全 200 才报成功。
+收敛超时脚本会明确报错，此时部署本身已成功，稍后重跑即可复验。
 
 ## 发布完成 Checklist（DoD）
 

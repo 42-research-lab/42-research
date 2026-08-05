@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VersionDottxtRouteImport } from './routes/version[.]txt'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as RssDotxmlRouteImport } from './routes/rss[.]xml'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
@@ -22,6 +23,11 @@ import { Route as TopicsSlugRouteImport } from './routes/topics.$slug'
 import { Route as ResearchChar123slugChar125DotmdRouteImport } from './routes/research.{$slug}[.]md'
 import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
 
+const VersionDottxtRoute = VersionDottxtRouteImport.update({
+  id: '/version.txt',
+  path: '/version.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -93,6 +99,7 @@ export interface FileRoutesByFullPath {
   '/robots.txt': typeof RobotsDottxtRoute
   '/rss.xml': typeof RssDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/version.txt': typeof VersionDottxtRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/research/{$slug}.md': typeof ResearchChar123slugChar125DotmdRoute
   '/topics/$slug': typeof TopicsSlugRoute
@@ -106,6 +113,7 @@ export interface FileRoutesByTo {
   '/robots.txt': typeof RobotsDottxtRoute
   '/rss.xml': typeof RssDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/version.txt': typeof VersionDottxtRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/research/{$slug}.md': typeof ResearchChar123slugChar125DotmdRoute
   '/topics/$slug': typeof TopicsSlugRoute
@@ -121,6 +129,7 @@ export interface FileRoutesById {
   '/robots.txt': typeof RobotsDottxtRoute
   '/rss.xml': typeof RssDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/version.txt': typeof VersionDottxtRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/research/{$slug}.md': typeof ResearchChar123slugChar125DotmdRoute
   '/topics/$slug': typeof TopicsSlugRoute
@@ -137,6 +146,7 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/rss.xml'
     | '/sitemap.xml'
+    | '/version.txt'
     | '/research/$slug'
     | '/research/{$slug}.md'
     | '/topics/$slug'
@@ -150,6 +160,7 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/rss.xml'
     | '/sitemap.xml'
+    | '/version.txt'
     | '/research/$slug'
     | '/research/{$slug}.md'
     | '/topics/$slug'
@@ -164,6 +175,7 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/rss.xml'
     | '/sitemap.xml'
+    | '/version.txt'
     | '/research/$slug'
     | '/research/{$slug}.md'
     | '/topics/$slug'
@@ -179,11 +191,19 @@ export interface RootRouteChildren {
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   RssDotxmlRoute: typeof RssDotxmlRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  VersionDottxtRoute: typeof VersionDottxtRoute
   TopicsSlugRoute: typeof TopicsSlugRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/version.txt': {
+      id: '/version.txt'
+      path: '/version.txt'
+      fullPath: '/version.txt'
+      preLoaderRoute: typeof VersionDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -296,6 +316,7 @@ const rootRouteChildren: RootRouteChildren = {
   RobotsDottxtRoute: RobotsDottxtRoute,
   RssDotxmlRoute: RssDotxmlRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  VersionDottxtRoute: VersionDottxtRoute,
   TopicsSlugRoute: TopicsSlugRoute,
 }
 export const routeTree = rootRouteImport
